@@ -2,16 +2,19 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 // import middlewares
+import express, {
+    Request, Application,
+    Response, NextFunction,
+} from 'express'
 import logger from 'morgan'
 import passport from 'passport'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import cors, { CorsOptions } from 'cors'
-import express, { Application } from 'express'
 
 // initialize
 const app: Application = express()
-const allowedOrigns: string[] = []
+const allowedOrigins: string[] = []
 const PORT: unknown = process.env.PORT || 2002
 const isProd: boolean = process.env.NODE_ENV === 'production'
 
@@ -20,11 +23,20 @@ app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({
     extended: true, limit: '10mb'
 }))
+app.use((req: Request, res: Response, next: NextFunction) => {
+    const origin: unknown = req.headers.origin
+    if (allowedOrigins.includes(origin as string)) {
+        res.header('Access-Control-Allow-Credentials')
+        res.header("Access-Control-Allow-Origin", origin as string)
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+    }
+    next()
+})
 app.use(cookieParser())
 app.use(logger('dev'))
 app.use(cors({
     origin: (origin, callback) => {
-        if (allowedOrigns.indexOf(origin!) !== -1 || !origin) {
+        if (allowedOrigins.indexOf(origin!) !== -1 || !origin) {
             callback(null, true)
         } else {
             throw new Error("Not allowed by CORS!")
