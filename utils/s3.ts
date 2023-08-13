@@ -1,4 +1,4 @@
-import awsCredentials from '../configs/aws'
+import awsCredentials from '../configs/aws.config'
 import {
     DeleteObjectCommand, DeleteObjectCommandInput,
     S3Client, PutObjectCommand, PutObjectCommandInput,
