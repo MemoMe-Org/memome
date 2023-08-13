@@ -2,8 +2,8 @@ import sharp from 'sharp'
 import bcrypt from 'bcrypt'
 import prisma from '../prisma'
 import handleFile from '../utils/file'
-import { uploadS3 } from '../utils/s3'
 import { Request, Response } from 'express'
+import { uploadS3, getS3 } from '../utils/s3'
 import StatusCodes from '../utils/StatusCodes'
 import genRandomString from '../utils/genRandomString'
 import { USER_REGEX, EMAIL_REGEX } from '../utils/RegEx'
@@ -61,15 +61,22 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
 
     if (req.file) {
         const file = handleFile(res, req.file)
-        const buffer: Buffer = await sharp(file.buffer)
-            .resize({ width: 600, height: 600, fit: 'cover' })
-            .toBuffer()
-        const path: string = `Avatars/${newUser.id}${file.extension}`
         try {
+            const buffer: Buffer = await sharp(file.buffer)
+                .resize({ width: 600, height: 600, fit: 'cover' })
+                .toBuffer()
+            const path: string = `Avatars/${newUser.id}${file.extension}`
+            const url = await getS3(path)
             await uploadS3(buffer, path, file.mimetype)
+            await prisma.users.update({
+                where: { id: newUser.id },
+                data: {
+                    avatar: { url, path }
+                }
+            })
         } catch {
             sendError(res, StatusCodes.BadRequest, 'Failed to upload profile picture')
-            // continue with account creation
+            // but continue with account creation
         }
     }
 
