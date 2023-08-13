@@ -10,11 +10,6 @@
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist"
   },
-  "pre-commit": [
-    "ts.check",
-    "build",
-    "add-build"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MemoMe-Org/auth.git"
