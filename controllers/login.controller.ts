@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import prisma from '../prisma'
 import genToken from '../utils/genToken'
 import { Request, Response } from 'express'
-import { EMAIL_REGEX } from '../utils/RegEx'
+import { EMAIL_REGEX } from '../utils/RegExp'
 import StatusCodes from '../utils/StatusCodes'
 import { sendError, sendSuccess } from '../utils/sendRes'
 const expressAsyncHandler = require('express-async-handler')
@@ -28,7 +28,7 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
     }
 
     if (user.auth_method !== "local") {
-        sendError(res, StatusCodes.NotFound, 'Sign in with Google or Github.')
+        sendError(res, StatusCodes.NotFound, 'Sign in with other Providers.')
         return
     }
 
@@ -39,10 +39,26 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
     }
 
     const token: string = genToken(user.username, user.email)
+    const isProd: boolean = process.env.NODE_ENV === "production"
+    const ipAddress: string | undefined = req.socket.remoteAddress?.split(":")[3]
 
-    // set cookie
+    await prisma.users.update({
+        where: { id: user.id },
+        data: {
+            ipAddress,
+            login_token: token,
+            last_login: `${new Date().toISOString()}`
+        }
+    })
+
+    res.cookie('auth', token, {
+        maxAge: 60 * 24 * 60 * 60 * 1000,
+        sameSite: isProd ? 'none' : 'strict',
+        httpOnly: true,
+        secure: isProd,
+    })
     sendSuccess(res, StatusCodes.OK, {
-
+        success: true
     })
 })
 
