@@ -6,7 +6,7 @@ import { Request, Response } from 'express'
 import { uploadS3, getS3 } from '../utils/s3'
 import StatusCodes from '../utils/StatusCodes'
 import genRandomString from '../utils/genRandomString'
-import { USER_REGEX, EMAIL_REGEX } from '../utils/RegEx'
+import { USER_REGEX, EMAIL_REGEX } from '../utils/RegExp'
 import { sendError, sendSuccess } from '../utils/sendRes'
 const expressAsyncHandler = require('express-async-handler')
 
@@ -75,7 +75,7 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
                 }
             })
         } catch {
-            sendError(res, StatusCodes.BadRequest, 'Failed to upload profile picture')
+            sendError(res, StatusCodes.BadRequest, 'Failed to upload profile picture.')
             // but continue with account creation
         }
     }
