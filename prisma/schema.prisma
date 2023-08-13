@@ -8,20 +8,23 @@ generator client {
 }
 
 model Users {
-    id               String     @id @default(auto()) @map("_id") @db.ObjectId
-    googleId         String?    @unique
-    username         String     @unique
-    email            String     @unique
-    password         String?
-    avatar           Json?
-    totp             String?
-    totp_expiry      Int?
-    email_verified   Boolean    @default(false)
-    account_verified Boolean    @default(false)
-    created_at       DateTime   @default(now())
-    last_login       String?
-    last_logout      String?
-    auth_method      AuthMethod
+    id             String     @id @default(auto()) @map("_id") @db.ObjectId
+    provider_id    String?    @unique
+    username       String     @unique
+    email          String     @unique
+    password       String?
+    avatar         Json?
+    totp           String?
+    totp_expiry    Int?
+    user_verified  Boolean    @default(false)
+    email_verified Boolean    @default(false)
+    created_at     DateTime   @default(now())
+    updated_at     DateTime   @updatedAt
+    last_login     String?
+    last_logout    String?
+    ipAddress      String?
+    login_token    String?
+    auth_method    AuthMethod
 }
 
 enum AuthMethod {
