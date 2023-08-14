@@ -1,3 +1,4 @@
+import { IMail } from '../interfaces'
 import plunk from '../configs/plunk.config'
 
 const sendEmail = async ({ to, subject, body }: IMail) => {

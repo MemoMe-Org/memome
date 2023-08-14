@@ -1,3 +1,4 @@
+import { ILimiter } from '../interfaces'
 import { sendError } from '../utils/sendRes'
 import { Request, Response, NextFunction } from 'express'
 import rateLimit,

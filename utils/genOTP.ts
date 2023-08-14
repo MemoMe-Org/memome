@@ -1,3 +1,5 @@
+import { IGenOTP } from '../interfaces'
+
 export default function generateOTP(): IGenOTP {
     let totp: string = ''
     const digits: string = '0918273645'
