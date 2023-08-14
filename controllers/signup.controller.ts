@@ -66,7 +66,7 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
             const buffer: Buffer = await sharp(file.buffer)
                 .resize({ width: 600, height: 600, fit: 'cover' })
                 .toBuffer()
-            const path: string = `Avatars/${newUser.id}${file.extension}`
+            const path: string = `Avatars/${newUser.id}.${file.extension}`
             const url = await getS3(path)
             await uploadS3(buffer, path, file.mimetype)
             await prisma.users.update({
