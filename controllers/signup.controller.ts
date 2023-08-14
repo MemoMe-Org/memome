@@ -5,6 +5,7 @@ import handleFile from '../utils/file'
 import { Request, Response } from 'express'
 import { uploadS3, getS3 } from '../utils/s3'
 import StatusCodes from '../utils/StatusCodes'
+import welcome from '../services/welcome.services'
 import genRandomString from '../utils/genRandomString'
 import { USER_REGEX, EMAIL_REGEX } from '../utils/RegExp'
 import { sendError, sendSuccess } from '../utils/sendRes'
@@ -79,6 +80,8 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
             // but continue with account creation
         }
     }
+
+    await welcome(newUser.username, newUser.email)
 
     sendSuccess(res, StatusCodes.Created, {
         success: true,
