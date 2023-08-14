@@ -6,12 +6,14 @@ import {
 
 const s3: S3Client = new S3Client(awsCredentials)
 
+const { BUCKET_NAME } = process.env
+
 const uploadS3 = async (buffer: Buffer, path: string, type?: string): Promise<void> => {
     const params: PutObjectCommandInput = {
-        Bucket: process.env.BUCKET_NAME!,
         Key: path,
         Body: buffer,
-        ContentType: type
+        ContentType: type,
+        Bucket: BUCKET_NAME!,
     }
     const command: PutObjectCommand = new PutObjectCommand(params)
     await s3.send(command)
@@ -20,7 +22,7 @@ const uploadS3 = async (buffer: Buffer, path: string, type?: string): Promise<vo
 const deleteS3 = async (path: string): Promise<void> => {
     const params: DeleteObjectCommandInput = {
         Key: path,
-        Bucket: process.env.BUCKET_NAME!,
+        Bucket: BUCKET_NAME!,
     }
     const command: DeleteObjectCommand = new DeleteObjectCommand(params)
     await s3.send(command)
