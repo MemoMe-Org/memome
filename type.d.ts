@@ -8,3 +8,9 @@ interface ILimiter {
     timerArr: number[]
     msg?: string
 }
+
+interface IMail {
+    to: string
+    body: string
+    subject: string
+}
