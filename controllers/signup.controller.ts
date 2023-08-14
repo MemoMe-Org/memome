@@ -46,7 +46,7 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     if (!USER_REGEX.test(username) || usernameTaken) {
-        username = genRandomString().toLowerCase().trim()
+        username = genRandomString()
     }
 
     password = await bcrypt.hash(password, 10)
