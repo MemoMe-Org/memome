@@ -1,6 +1,9 @@
 import sendEmail from '../utils/sendEmai'
 
-const newLogin = async (username: string, email: string) => {
+const newLogin = async (
+    email: string, username: string,
+    userAgent: string, ipAddress: string
+) => {
     await sendEmail({
         to: email,
         subject: 'Login Notification',
