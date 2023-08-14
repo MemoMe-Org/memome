@@ -11,3 +11,5 @@ router.post('/login', limit({
     msg: 'Too many attempts. Try again later.'
 }), login)
 router.post('/signup', signup)
+
+export default router
