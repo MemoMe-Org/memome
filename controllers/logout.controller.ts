@@ -1,4 +1,5 @@
 import prisma from '../prisma'
+import getCookie from '../utils/getCookie'
 import { Request, Response } from 'express'
 import StatusCodes from '../utils/StatusCodes'
 const exoressAsyncHandler = require('express-async-handler')
@@ -14,7 +15,7 @@ const logout = exoressAsyncHandler(async (req: Request, res: Response) => {
 
     if (!authHeader) return clear(req, res)
 
-    const cookie = authHeader.split('; ').find((row: any) => row.startsWith('auth='))?.split('=')[1]
+    const cookie = getCookie(authHeader, 'auth')
     const user = await prisma.users.findFirst({
         where: {
             login_token: cookie
