@@ -1,4 +1,4 @@
-import sendEmail from '../utils/sendEmai'
+import sendEmail from '../utils/sendEmail'
 
 const newLogin = async (
     email: string, username: string,

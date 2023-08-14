@@ -4,7 +4,7 @@ import genToken from '../utils/genToken'
 import { Request, Response } from 'express'
 import { EMAIL_REGEX } from '../utils/RegExp'
 import StatusCodes from '../utils/StatusCodes'
-import newLogin from '../services/new-login.services'
+import newLogin from '../services/new-login.mail'
 import { sendError, sendSuccess } from '../utils/sendRes'
 const expressAsyncHandler = require('express-async-handler')
 
