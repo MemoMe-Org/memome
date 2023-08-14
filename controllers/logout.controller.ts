@@ -2,16 +2,21 @@ import prisma from '../prisma'
 import { Request, Response } from 'express'
 const exoressAsyncHandler = require('express-async-handler')
 
+const clear = (req: Request, res: Response) => {
+    req.destroy()
+    res.clearCookie('auth')
+    res.sendStatus(204)
+}
+
 const logout = exoressAsyncHandler(async (req: Request, res: Response) => {
     const authHeader = req.headers.cookie
 
     if (!authHeader) {
-        res.destroy()
-        res.clearCookie('auth')
-        return res.sendStatus(204)
+        clear(req, res)
+        return
     }
 
-    const cookie = authHeader.split(' ')[1]
+    const cookie = authHeader.split('; ').find((row: any) => row.startsWith('auth='))?.split('=')[1]
     const user = await prisma.users.findFirst({
         where: {
             login_token: cookie
@@ -19,9 +24,8 @@ const logout = exoressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     if (!user) {
-        res.destroy()
-        res.clearCookie('auth')
-        return res.sendStatus(204)
+        clear(req, res)
+        return
     }
 
     await prisma.users.update({
@@ -33,9 +37,7 @@ const logout = exoressAsyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    res.destroy()
-    res.clearCookie('auth')
-    res.sendStatus(204)
+    clear(req, res)
 })
 
 export { logout }

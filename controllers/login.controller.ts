@@ -55,7 +55,8 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     if (user.ipAddress !== ipAddress) {
-        await newLogin(user.email, user.username, userAgent!, ipAddress!)
+        process.env.NODE_ENV === "production" &&
+            await newLogin(user.email, user.username, userAgent!, ipAddress!)
     }
 
     res.cookie('auth', token, {

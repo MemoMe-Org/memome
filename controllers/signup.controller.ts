@@ -81,7 +81,8 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
         }
     }
 
-    await welcome(newUser.username, newUser.email)
+    process.env.NODE_ENV === "production" &&
+        await welcome(newUser.username, newUser.email)
 
     sendSuccess(res, StatusCodes.Created, {
         success: true,
