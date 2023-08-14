@@ -4,6 +4,7 @@ import genToken from '../utils/genToken'
 import { Request, Response } from 'express'
 import { EMAIL_REGEX } from '../utils/RegExp'
 import StatusCodes from '../utils/StatusCodes'
+import newLogin from '../services/new-login.services'
 import { sendError, sendSuccess } from '../utils/sendRes'
 const expressAsyncHandler = require('express-async-handler')
 
@@ -40,6 +41,8 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
 
     const token: string = genToken(user.username, user.email)
     const isProd: boolean = process.env.NODE_ENV === "production"
+
+    const userAgent = req.headers['user-agent']
     const ipAddress: string | undefined = req.socket.remoteAddress?.split(":")[3]
 
     await prisma.users.update({
@@ -50,6 +53,10 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
             last_login: `${new Date().toISOString()}`
         }
     })
+
+    if (user.ipAddress !== ipAddress) {
+        await newLogin(user.email, user.username, userAgent!, ipAddress!)
+    }
 
     res.cookie('auth', token, {
         maxAge: 60 * 24 * 60 * 60 * 1000,
