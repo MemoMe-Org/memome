@@ -12,6 +12,9 @@ import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import cors, { CorsOptions } from 'cors'
 
+// import routes
+import authRoute from './routes/auth.route'
+
 // initialize
 const app: Application = express()
 const allowedOrigins: string[] = []
@@ -59,5 +62,8 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
+
+// intialize routes
+app.use('/auth', authRoute)
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`))
