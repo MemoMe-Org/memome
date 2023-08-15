@@ -28,7 +28,8 @@ const logout = exoressAsyncHandler(async (req: Request, res: Response) => {
             username: user.username
         },
         data: {
-            login_token: ""
+            login_token: "",
+            last_logout: new Date().toISOString()
         }
     })
 
