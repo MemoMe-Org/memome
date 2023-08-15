@@ -1,5 +1,6 @@
 declare namespace NodeJS {
     interface ProcessEnv {
+        TEXT_KEY: string
         JWT_SECRET: string
         BUCKET_NAME: string
         DIST_DOMAIN: string
