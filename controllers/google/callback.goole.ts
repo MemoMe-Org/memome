@@ -31,4 +31,4 @@ passport.deserializeUser((user: any, done: any) => {
     }
 })
 
-export default passport
+export { passport }
