@@ -17,7 +17,9 @@ import authRoute from './routes/auth.route'
 
 // initialize
 const app: Application = express()
-const allowedOrigins: string[] = []
+const allowedOrigins: string[] = [
+    process.env.CLIENT_URL!,
+]
 const PORT: unknown = process.env.PORT || 2002
 const isProd: boolean = process.env.NODE_ENV === 'production'
 
