@@ -1,10 +1,10 @@
 import sharp from 'sharp'
 import bcrypt from 'bcrypt'
 import prisma from '../prisma'
-import { v4 as uuid } from 'uuid'
 import handleFile from '../utils/file'
 import { Request, Response } from 'express'
 import { uploadS3, getS3 } from '../utils/s3'
+import genFileName from '../utils/genFileName'
 import StatusCodes from '../utils/StatusCodes'
 import welcome from '../services/welcome.mail'
 import genRandomString from '../utils/genRandomString'
@@ -67,7 +67,7 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
             const buffer: Buffer = await sharp(file.buffer)
                 .resize({ width: 600, height: 600, fit: 'cover' })
                 .toBuffer()
-            const path: string = `Avatars/${newUser.id}/${uuid()}.${file.extension}`
+            const path: string = `Avatars/${newUser.id}/${genFileName()}.${file.extension}`
             const url = await getS3(path)
             await uploadS3(buffer, path, file.mimetype)
             await prisma.users.update({
