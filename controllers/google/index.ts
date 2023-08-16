@@ -3,9 +3,10 @@ import { Request } from 'express'
 import { Profile } from 'passport'
 import genToken from '../../utils/genToken'
 import { USER_REGEX } from '../../utils/RegExp'
+import welcome from '../../services/welcome.mail'
 import newLogin from '../../services/new-login.mail'
+import { enc_decrypt } from '../../utils/enc_decrypt'
 import genRandomString from '../../utils/genRandomString'
-import { encrypt, decrypt } from '../../utils/enc_decrypt'
 
 const googleAuth = async (
     req: Request, refreshToken: string,
@@ -18,13 +19,17 @@ const googleAuth = async (
             }
         })
 
+        const email: string = profile.emails![0].value
+        let username: string = email.split('@')[0]
+
+        let token: string = ""
+
+        const isProd = process.env.NODE_ENV === 'production'
+
         const userAgent = req.headers['user-agent']
         const ipAddress: string | undefined = req.socket.remoteAddress?.split(":")[3]
 
         if (!user) {
-            const email: string = profile.emails![0].value
-            let username: string = email.split('@')[0]
-
             const usernameTaken = await prisma.users.findUnique({
                 where: { username }
             })
@@ -33,25 +38,26 @@ const googleAuth = async (
                 username = genRandomString()
             }
 
+            token = genToken(email, username)
+
             user = await prisma.users.create({
                 data: {
                     email: email,
                     username: username,
+                    login_token: token,
                     email_verified: true,
                     auth_method: "google",
                     provider_id: profile.id,
+                    last_login: new Date().toISOString(),
+                    ipAddress: await enc_decrypt(ipAddress!, 'e'),
                     avatar: { url: profile.photos![0].value, path: '' },
                 }
             })
+
+            isProd && await welcome(username, email)
         }
 
-        const token = genToken(user.email, user.username)
-        const isProd = process.env.NODE_ENV === 'production'
-
-        if (await decrypt(user.ipAddress!) !== ipAddress) {
-            process.env.NODE_ENV === "production" &&
-                await newLogin(user.email, user.username, userAgent!, ipAddress!)
-        }
+        token = genToken(user.username, user.email)
 
         await prisma.users.update({
             where: {
@@ -59,7 +65,8 @@ const googleAuth = async (
             },
             data: {
                 login_token: token,
-                ipAddress: await encrypt(ipAddress!),
+                last_login: new Date().toISOString(),
+                ipAddress: await enc_decrypt(ipAddress!, 'e'),
             }
         })
 
@@ -69,6 +76,10 @@ const googleAuth = async (
             httpOnly: true,
             secure: isProd,
         })
+
+        if (await enc_decrypt(user.ipAddress!, 'd') !== ipAddress) {
+            isProd && await newLogin(user.email, user.username, userAgent!, ipAddress!)
+        }
 
         return done(null, user)
     } catch (err) {
