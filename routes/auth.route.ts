@@ -1,5 +1,4 @@
 import { Router } from 'express'
-import upload from '../middlewares/upload.middleware'
 import limit from '../middlewares/limiter.middleware'
 import { login } from '../controllers/login.controller'
 import { signup } from '../controllers/signup.controller'
@@ -15,7 +14,7 @@ router.post('/login', limit({
     timerArr: [90, 60, 45, 75],
     msg: 'Too many attempts. Try again later.'
 }), login)
-router.post('/signup', upload.single('avatar'), signup)
+router.post('/signup', signup)
 router.get('/logout', logout)
 
 router.get(
