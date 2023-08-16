@@ -5,7 +5,7 @@ import { Request, Response } from 'express'
 import { EMAIL_REGEX } from '../utils/RegExp'
 import StatusCodes from '../utils/StatusCodes'
 import newLogin from '../services/new-login.mail'
-import { encrypt, decrypt } from '../utils/enc_decrypt'
+import { enc_decrypt } from '../utils/enc_decrypt'
 import { sendError, sendSuccess } from '../utils/sendRes'
 const expressAsyncHandler = require('express-async-handler')
 
@@ -50,12 +50,12 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
         where: { id: user.id },
         data: {
             login_token: token,
-            ipAddress: await encrypt(ipAddress!),
+            ipAddress: await enc_decrypt(ipAddress!, 'e'),
             last_login: new Date().toISOString()
         }
     })
 
-    if (await decrypt(user.ipAddress!) !== ipAddress) {
+    if (await enc_decrypt(user.ipAddress!, 'd') !== ipAddress) {
         process.env.NODE_ENV === "production" &&
             await newLogin(user.email, user.username, userAgent!, ipAddress!)
     }
