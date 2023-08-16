@@ -1,17 +1,18 @@
+import { CipherAction } from '../type'
 const cipher = require('text-encryption')
 
 const { TEXT_KEY } = process.env
 
-const encrypt = async (text: string) => {
+const enc_decrypt = async (text: string, action: CipherAction) => {
     if (!text) return
 
-    return cipher.encrypt(text, TEXT_KEY)
+    if (action === 'e') {
+        return cipher.encrypt(text, TEXT_KEY)
+    } else if (action === 'd') {
+        return cipher.decrypt(text, TEXT_KEY)
+    } else {
+        return
+    }
 }
 
-const decrypt = async (text: string) => {
-    if (!text) return
-
-    return cipher.decrypt(text, TEXT_KEY)
-}
-
-export { decrypt, encrypt }
+export { enc_decrypt }
