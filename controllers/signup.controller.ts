@@ -1,10 +1,6 @@
-import sharp from 'sharp'
 import bcrypt from 'bcrypt'
 import prisma from '../prisma'
-import handleFile from '../utils/file'
 import { Request, Response } from 'express'
-import { uploadS3, getS3 } from '../utils/s3'
-import genFileName from '../utils/genFileName'
 import StatusCodes from '../utils/StatusCodes'
 import welcome from '../services/welcome.mail'
 import genRandomString from '../utils/genRandomString'
@@ -23,6 +19,11 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
 
     if (password !== password2) {
         sendError(res, StatusCodes.BadRequest, 'Passwords not match.')
+        return
+    }
+
+    if (password.length < 8) {
+        sendError(res, StatusCodes.BadRequest, 'Your password must be at least 8 characters.')
         return
     }
 
@@ -60,27 +61,6 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
             auth_method: 'local'
         }
     })
-
-    if (req.file) {
-        const file = handleFile(res, req.file)
-        try {
-            const buffer: Buffer = await sharp(file.buffer)
-                .resize({ width: 600, height: 600, fit: 'cover' })
-                .toBuffer()
-            const path: string = `Avatars/${newUser.id}/${genFileName()}.${file.extension}`
-            const url = await getS3(path)
-            await uploadS3(buffer, path, file.mimetype)
-            await prisma.users.update({
-                where: { id: newUser.id },
-                data: {
-                    avatar: { url, path }
-                }
-            })
-        } catch {
-            sendError(res, StatusCodes.BadRequest, 'Failed to upload profile picture.')
-            // but continue with account creation
-        }
-    }
 
     process.env.NODE_ENV === "production" &&
         await welcome(newUser.username, newUser.email)
