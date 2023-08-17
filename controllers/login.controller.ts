@@ -56,18 +56,18 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     if (await enc_decrypt(user.ipAddress!, 'd') !== ipAddress) {
-        process.env.NODE_ENV === "production" &&
-            await newLogin(user.email, user.username, userAgent!, ipAddress!)
+        isProd && await newLogin(user.email, user.username, userAgent!, ipAddress!)
     }
 
     res.cookie('auth', token, {
-        maxAge: 60 * 24 * 60 * 60 * 1000,
-        sameSite: isProd ? 'none' : 'strict',
-        httpOnly: true,
+        domain: isProd ? '' : undefined,
         secure: isProd,
+        sameSite: isProd ? 'none' : 'strict',
+        maxAge: 60 * 24 * 60 * 60 * 1000,
     })
     sendSuccess(res, StatusCodes.OK, {
-        success: true
+        success: true,
+        msg: 'Login successful.'
     })
 })
 
