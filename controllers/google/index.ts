@@ -43,7 +43,13 @@ const googleAuth = async (
                     email_verified: true,
                     auth_method: "google",
                     provider_id: profile.id,
+                }
+            })
+
+            await prisma.profiles.create({
+                data: {
                     avatar: { url: profile.photos![0].value, path: '' },
+                    userId: user.id
                 }
             })
 
