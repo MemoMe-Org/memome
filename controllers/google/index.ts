@@ -13,13 +13,12 @@ const googleAuth = async (
     accessToken: string, profile: Profile, done: any
 ) => {
     try {
+        const email: string = profile.emails![0].value
+
         let user = await prisma.users.findUnique({
-            where: {
-                provider_id: profile.id
-            }
+            where: { email }
         })
 
-        const email: string = profile.emails![0].value
         let username: string = email.split('@')[0]
 
         let token: string = ""
@@ -38,26 +37,31 @@ const googleAuth = async (
                 username = genRandomString()
             }
 
-            token = genToken(email, username)
-
             user = await prisma.users.create({
                 data: {
-                    email: email,
-                    username: username,
-                    login_token: token,
+                    email, username,
                     email_verified: true,
                     auth_method: "google",
                     provider_id: profile.id,
-                    last_login: new Date().toISOString(),
-                    ipAddress: await enc_decrypt(ipAddress!, 'e'),
                     avatar: { url: profile.photos![0].value, path: '' },
+                }
+            })
+
+            token = genToken(user.id, email, username)
+
+            await prisma.users.update({
+                where: { email },
+                data: {
+                    login_token: token,
+                    last_login: new Date().toISOString(),
+                    ipAddress: await enc_decrypt(ipAddress!, 'e')
                 }
             })
 
             isProd && await welcome(username, email)
         }
 
-        token = genToken(user.username, user.email)
+        token = genToken(user.id, user.username, user.email)
 
         await prisma.users.update({
             where: {
