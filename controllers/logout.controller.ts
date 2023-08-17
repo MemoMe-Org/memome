@@ -4,15 +4,18 @@ import { Request, Response } from 'express'
 import StatusCodes from '../utils/StatusCodes'
 const exoressAsyncHandler = require('express-async-handler')
 
-const clear = (res: Response) => {
-    res.clearCookie('auth')
+const clear = (req: Request, res: Response) => {
+    const cookieNames = Object.keys(req.cookies)
+    cookieNames.forEach((cookie: string) => {
+        res.clearCookie(cookie)
+    })
+
     res.sendStatus(StatusCodes.NoContent)
 }
 
 const logout = exoressAsyncHandler(async (req: Request, res: Response) => {
     const authHeader = req.headers.cookie
-
-    if (!authHeader) return clear(res)
+    if (!authHeader) return clear(req, res)
 
     const cookie = getCookie(authHeader, 'auth')
     const user = await prisma.users.findFirst({
@@ -21,7 +24,7 @@ const logout = exoressAsyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    if (!user) return clear(res)
+    if (!user) return clear(req, res)
 
     await prisma.users.update({
         where: {
@@ -33,7 +36,7 @@ const logout = exoressAsyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    clear(res)
+    clear(req, res)
 })
 
 export { logout }
