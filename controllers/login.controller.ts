@@ -40,8 +40,8 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    const token: string = genToken(user.username, user.email)
     const isProd: boolean = process.env.NODE_ENV === "production"
+    const token: string = genToken(user.id, user.username, user.email)
 
     const userAgent = req.headers['user-agent']
     const ipAddress: string | undefined = req.socket.remoteAddress?.split(":")[3]
