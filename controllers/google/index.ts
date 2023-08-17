@@ -75,10 +75,10 @@ const googleAuth = async (
         })
 
         req?.res?.cookie('auth', token, {
-            maxAge: 60 * 24 * 60 * 60 * 1000,
-            sameSite: isProd ? 'none' : 'strict',
-            httpOnly: true,
+            domain: isProd ? '' : undefined,
             secure: isProd,
+            sameSite: isProd ? 'none' : 'strict',
+            maxAge: 60 * 24 * 60 * 60 * 1000,
         })
 
         if (await enc_decrypt(user.ipAddress!, 'd') !== ipAddress) {
