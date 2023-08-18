@@ -21,7 +21,7 @@ model Users {
     updated_at     DateTime   @updatedAt
     last_login     String?
     last_logout    String?
-    ipAddress      String?
+    ip_address     String?
     login_token    String?
     auth_method    AuthMethod
     Profile        Profiles?
