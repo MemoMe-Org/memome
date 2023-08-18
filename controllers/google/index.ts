@@ -26,7 +26,7 @@ const googleAuth = async (
         const isProd = process.env.NODE_ENV === 'production'
 
         const userAgent = req.headers['user-agent']
-        const ipAddress: string | undefined = req.socket.remoteAddress?.split(":")[3]
+        const ipAddress = req.socket.remoteAddress?.split(":")[3]
 
         if (!user) {
             const usernameTaken = await prisma.users.findUnique({
@@ -41,7 +41,7 @@ const googleAuth = async (
                 data: {
                     email, username,
                     email_verified: true,
-                    auth_method: "google",
+                    auth_method: 'google',
                     provider_id: profile.id,
                 }
             })
@@ -60,7 +60,7 @@ const googleAuth = async (
                 data: {
                     login_token: token,
                     last_login: new Date().toISOString(),
-                    ipAddress: await enc_decrypt(ipAddress!, 'e')
+                    ip_address: await enc_decrypt(ipAddress!, 'e')
                 }
             })
 
@@ -76,7 +76,7 @@ const googleAuth = async (
             data: {
                 login_token: token,
                 last_login: new Date().toISOString(),
-                ipAddress: await enc_decrypt(ipAddress!, 'e'),
+                ip_address: await enc_decrypt(ipAddress!, 'e'),
             }
         })
 
@@ -87,7 +87,7 @@ const googleAuth = async (
             maxAge: 60 * 24 * 60 * 60 * 1000,
         })
 
-        if (await enc_decrypt(user.ipAddress!, 'd') !== ipAddress) {
+        if (await enc_decrypt(user.ip_address!, 'd') !== ipAddress) {
             isProd && await newLogin(user.email, user.username, userAgent!, ipAddress!)
         }
 
