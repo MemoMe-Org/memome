@@ -50,12 +50,12 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
         where: { id: user.id },
         data: {
             login_token: token,
-            ipAddress: await enc_decrypt(ipAddress!, 'e'),
+            ip_address: await enc_decrypt(ipAddress!, 'e'),
             last_login: new Date().toISOString()
         }
     })
 
-    if (await enc_decrypt(user.ipAddress!, 'd') !== ipAddress) {
+    if (await enc_decrypt(user.ip_address!, 'd') !== ipAddress) {
         isProd && await newLogin(user.email, user.username, userAgent!, ipAddress!)
     }
 
