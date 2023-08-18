@@ -31,7 +31,7 @@ const logout = expressAsyncHandler(async (req: Request, res: Response) => {
             username: user.username
         },
         data: {
-            login_token: "",
+            login_token: null,
             last_logout: new Date().toISOString()
         }
     })
