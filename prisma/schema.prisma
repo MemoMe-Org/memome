@@ -30,7 +30,7 @@ model Users {
 
 model Profiles {
     id           String @id @default(auto()) @map("_id") @db.ObjectId
-    avatar       Json?
+    avatar       Media
     profileViews Int    @default(0)
     user         Users  @relation(fields: [userId], references: [id])
     userId       String @unique @db.ObjectId
@@ -57,10 +57,10 @@ type Body {
 }
 
 type Media {
-    idx  String
+    idx  String?
     url  String
     path String
-    type String
+    type String?
 }
 
 enum AuthMethod {
