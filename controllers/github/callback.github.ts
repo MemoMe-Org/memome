@@ -42,7 +42,7 @@ const githubAuthCallback = expressAsyncHanlder(async (req: Request, res: Respons
     const email = emailsResonse.data[0].email
 
     let token: string = ""
-    let username = userData.login
+    let username = userData.login?.toLowerCase() || ''
 
     const isProd = process.env.NODE_ENV === 'production'
 
