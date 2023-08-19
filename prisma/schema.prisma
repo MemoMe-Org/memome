@@ -53,7 +53,7 @@ model Messages {
 
 type Content {
     idx      String
-    texts String
+    texts String?
     Medias   Media[]
 }
 
