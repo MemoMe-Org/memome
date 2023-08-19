@@ -29,11 +29,12 @@ model Users {
 }
 
 model Profiles {
-    id           String @id @default(auto()) @map("_id") @db.ObjectId
-    avatar       Media
-    profileViews Int    @default(0)
-    user         Users  @relation(fields: [userId], references: [id])
-    userId       String @unique @db.ObjectId
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    avatar Media
+    views  Int    @default(0)
+    points Point
+    user   Users  @relation(fields: [userId], references: [id])
+    userId String @unique @db.ObjectId
 }
 
 model Accounts {
@@ -61,6 +62,12 @@ type Media {
     url  String
     path String
     type String?
+}
+
+type Point {
+    poll    Int @default(0)
+    msg     Int @default(0)
+    overall Int @default(5)
 }
 
 enum AuthMethod {
