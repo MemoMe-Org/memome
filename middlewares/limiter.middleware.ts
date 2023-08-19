@@ -12,9 +12,9 @@ export default function limit({
     const limiter: RateLimitRequestHandler = rateLimit({
         max, // max attempt
         windowMs: timerArr[Math.floor(Math.random() * timerArr.length)] * 1000, // throttle
-        message: { msg },
+        message: msg,
         handler: (req: Request, res: Response, next: NextFunction, options: Options) => {
-            sendError(res, options.statusCode, options.message?.msg)
+            sendError(res, options.statusCode, options.message)
         },
         legacyHeaders: false,
         standardHeaders: true,
