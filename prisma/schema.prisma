@@ -46,14 +46,14 @@ model Accounts {
 
 model Messages {
     id       String @id @default(auto()) @map("_id") @db.ObjectId
-    messages Body[]
+    contents Content[]
     user     Users  @relation(fields: [userId], references: [id])
     userId   String @unique @db.ObjectId
 }
 
-type Body {
+type Content {
     idx      String
-    contents String
+    texts String
     Medias   Media[]
 }
 
