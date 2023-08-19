@@ -3,10 +3,8 @@ import { Octokit } from 'octokit'
 import prisma from '../../prisma'
 import { Request, Response } from 'express'
 import genToken from '../../utils/genToken'
-import { sendError } from '../../utils/sendRes'
 import { USER_REGEX } from '../../utils/RegExp'
 import welcome from '../../services/welcome.mail'
-import StatusCodes from '../../utils/StatusCodes'
 import newLogin from '../../services/new-login.mail'
 import { enc_decrypt } from '../../utils/enc_decrypt'
 import genRandomString from '../../utils/genRandomString'
@@ -27,7 +25,7 @@ const githubAuthCallback = expressAsyncHanlder(async (req: Request, res: Respons
 
     const accessToken = new URLSearchParams(data).get('access_token')
     if (!accessToken) {
-        sendError(res, StatusCodes.NotFound, 'Failed to obtain access token.')
+        res.redirect(`${CLIENT_URL}/login`)
         return
     }
 
