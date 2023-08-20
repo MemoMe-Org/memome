@@ -26,7 +26,7 @@ model Users {
     Profile        Profiles?
     Account        Accounts?
     Message        Messages?
-    Poll           Polls?
+    Polls          Poll[]
 }
 
 model Profiles {
@@ -52,7 +52,7 @@ model Messages {
     userId   String    @unique @db.ObjectId
 }
 
-model Polls {
+model Poll {
     id       String   @id @default(auto()) @map("_id") @db.ObjectId
     question String
     options  Option[]
