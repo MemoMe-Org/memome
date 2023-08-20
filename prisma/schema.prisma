@@ -26,6 +26,7 @@ model Users {
     Profile        Profiles?
     Account        Accounts?
     Message        Messages?
+    Poll           Polls?
 }
 
 model Profiles {
@@ -45,16 +46,24 @@ model Accounts {
 }
 
 model Messages {
-    id       String @id @default(auto()) @map("_id") @db.ObjectId
+    id       String    @id @default(auto()) @map("_id") @db.ObjectId
     contents Content[]
-    user     Users  @relation(fields: [userId], references: [id])
-    userId   String @unique @db.ObjectId
+    user     Users     @relation(fields: [userId], references: [id])
+    userId   String    @unique @db.ObjectId
+}
+
+model Polls {
+    id       String   @id @default(auto()) @map("_id") @db.ObjectId
+    question String
+    options  Option[]
+    user     Users    @relation(fields: [userId], references: [id])
+    userId   String   @unique @db.ObjectId
 }
 
 type Content {
-    idx      String
-    texts String?
-    Medias   Media[]
+    idx    String  @default(uuid())
+    texts  String?
+    Medias Media[]
 }
 
 type Media {
@@ -68,6 +77,12 @@ type Point {
     poll    Int @default(0)
     msg     Int @default(0)
     overall Int @default(5)
+}
+
+type Option {
+    idx    String @default(uuid())
+    option String
+    votes  Int    @default(0)
 }
 
 enum AuthMethod {
