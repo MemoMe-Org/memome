@@ -55,12 +55,6 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     secret: process.env.SESSION_SECRET!,
-    cookie: {
-        domain: isProd ? '' : undefined,
-        secure: isProd,
-        sameSite: isProd ? 'none' : 'strict',
-        maxAge: 60 * 24 * 60 * 60 * 1000,
-    }
 }))
 app.use(passport.initialize())
 app.use(passport.session())
