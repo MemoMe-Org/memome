@@ -56,10 +56,10 @@ app.use(session({
     saveUninitialized: false,
     secret: process.env.SESSION_SECRET!,
     cookie: {
-        httpOnly: true,
+        domain: isProd ? '' : undefined,
         secure: isProd,
-        maxAge: 60 * 24 * 60 * 60 * 1000,
         sameSite: isProd ? 'none' : 'strict',
+        maxAge: 60 * 24 * 60 * 60 * 1000,
     }
 }))
 app.use(passport.initialize())
