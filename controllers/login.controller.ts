@@ -67,7 +67,7 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
     })
     sendSuccess(res, StatusCodes.OK, {
         success: true,
-        msg: 'Login successful.'
+        msg: 'Login successful.',
     })
 })
 
