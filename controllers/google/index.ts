@@ -48,8 +48,12 @@ const googleAuth = async (
 
             await prisma.profiles.create({
                 data: {
+                    user: {
+                        connect: {
+                            id: user.id
+                        }
+                    },
                     avatar: { url: profile.photos![0].value, path: '' },
-                    userId: user.id
                 }
             })
 
