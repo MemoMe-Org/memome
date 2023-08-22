@@ -14,6 +14,7 @@ import cors, { CorsOptions } from 'cors'
 
 // import routes
 import authRoute from './routes/auth.route'
+import authApiRoute from './routes/api/auth.api.route'
 
 // initialize
 const app: Application = express()
@@ -61,5 +62,6 @@ app.use(passport.session())
 
 // intialize routes
 app.use('/auth', authRoute)
+app.use('/api', authApiRoute)
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`))
