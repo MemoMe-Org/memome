@@ -71,8 +71,12 @@ const githubAuthCallback = expressAsyncHanlder(async (req: Request, res: Respons
 
         await prisma.profiles.create({
             data: {
+                user: {
+                    connect: {
+                        id: user.id
+                    }
+                },
                 avatar: { url: userData.avatar_url, path: '' },
-                userId: user.id
             }
         })
 
