@@ -40,7 +40,6 @@ const githubAuthCallback = expressAsyncHanlder(async (req: Request, res: Respons
     const userData = userResponse.data
     const email = emailsResonse.data[0].email
 
-    let token: string = ""
     let username = userData.login?.toLowerCase() || ''
 
     const isProd = process.env.NODE_ENV === 'production'
@@ -86,7 +85,7 @@ const githubAuthCallback = expressAsyncHanlder(async (req: Request, res: Respons
         isProd && await welcome(username, email)
     }
 
-    token = genToken(user.id, user.username, user.email)
+    const token = genToken(user.id, user.username, user.email)
 
     await prisma.users.update({
         where: {
