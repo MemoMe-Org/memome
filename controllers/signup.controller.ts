@@ -3,6 +3,7 @@ import prisma from '../prisma'
 import { Request, Response } from 'express'
 import StatusCodes from '../utils/StatusCodes'
 import welcome from '../services/welcome.mail'
+import connectModels from '../utils/connect-models'
 import genRandomString from '../utils/genRandomString'
 import { USER_REGEX, EMAIL_REGEX } from '../utils/RegExp'
 import { sendError, sendSuccess } from '../utils/sendRes'
@@ -71,6 +72,8 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
             }
         }
     })
+
+    await connectModels(newUser.id)
 
     process.env.NODE_ENV === "production" &&
         await welcome(newUser.username, newUser.email)
