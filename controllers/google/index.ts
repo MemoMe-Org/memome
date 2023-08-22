@@ -22,8 +22,6 @@ const googleAuth = async (
 
         let username: string = email.split('@')[0]
 
-        let token: string = ""
-
         const isProd = process.env.NODE_ENV === 'production'
 
         const userAgent = req.headers['user-agent']
@@ -60,21 +58,10 @@ const googleAuth = async (
 
             await connectModels(user.id)
 
-            token = genToken(user.id, email, username)
-
-            await prisma.users.update({
-                where: { email },
-                data: {
-                    login_token: token,
-                    last_login: new Date().toISOString(),
-                    ip_address: await enc_decrypt(ipAddress!, 'e')
-                }
-            })
-
             isProd && await welcome(username, email)
         }
 
-        token = genToken(user.id, user.username, user.email)
+        const token = genToken(user.id, user.username, user.email)
 
         await prisma.users.update({
             where: {
