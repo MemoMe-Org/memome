@@ -62,6 +62,16 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
         }
     })
 
+    await prisma.profiles.create({
+        data: {
+            user: {
+                connect: {
+                    id: newUser.id
+                }
+            }
+        }
+    })
+
     process.env.NODE_ENV === "production" &&
         await welcome(newUser.username, newUser.email)
 
