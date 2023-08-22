@@ -6,6 +6,7 @@ import { USER_REGEX } from '../../utils/RegExp'
 import welcome from '../../services/welcome.mail'
 import newLogin from '../../services/new-login.mail'
 import { enc_decrypt } from '../../utils/enc_decrypt'
+import connectModels from '../../utils/connect-models'
 import genRandomString from '../../utils/genRandomString'
 
 const googleAuth = async (
@@ -56,6 +57,8 @@ const googleAuth = async (
                     avatar: { url: profile.photos![0].value, path: '' },
                 }
             })
+
+            await connectModels(user.id)
 
             token = genToken(user.id, email, username)
 
