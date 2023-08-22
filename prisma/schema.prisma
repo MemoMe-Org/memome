@@ -25,6 +25,7 @@ model Users {
     auth_method    AuthMethod
     Profile        Profiles?
     Account        Accounts?
+    Settings       Settings?
     Message        Messages?
     Polls          Poll[]
 }
@@ -42,9 +43,18 @@ model Profiles {
 
 model Accounts {
     id       String  @id @default(auto()) @map("_id") @db.ObjectId
+    disabled Boolean @default(false)
     verified Boolean @default(false)
     user     Users   @relation(fields: [userId], references: [id])
     userId   String  @unique @db.ObjectId
+}
+
+model Settings {
+    id         String  @id @default(auto()) @map("_id") @db.ObjectId
+    allowTexts Boolean @default(false)
+    allowFiles Boolean @default(false)
+    user       Users   @relation(fields: [userId], references: [id])
+    userId     String  @unique @db.ObjectId
 }
 
 model Messages {
