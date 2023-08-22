@@ -15,9 +15,12 @@ const profile = expressAsyncHandler(async (req: Request, res: Response) => {
         select: {
             id: true,
             email: true,
+            Profile: true,
             username: true,
             provider_id: true,
             email_verified: true,
+            Settings: true,
+            Account: true,
         },
     })
 
@@ -26,16 +29,9 @@ const profile = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    let profile = await prisma.profiles.findUnique({
-        where: { userId },
-    })
-
     sendSuccess(res, StatusCodes.OK, {
+        user,
         success: true,
-        data: {
-            user,
-            profile
-        }
     })
 })
 
