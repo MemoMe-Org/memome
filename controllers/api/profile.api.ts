@@ -1,7 +1,7 @@
-import { Request, Response } from 'express'
 import prisma from '../../prisma'
-import { sendError, sendSuccess } from '../../utils/sendRes'
+import { Request, Response } from 'express'
 import StatusCodes from '../../utils/StatusCodes'
+import { sendError, sendSuccess } from '../../utils/sendRes'
 const expressAsyncHandler = require('express-async-handler')
 
 const profile = expressAsyncHandler(async (req: Request, res: Response) => {
@@ -16,16 +16,14 @@ const profile = expressAsyncHandler(async (req: Request, res: Response) => {
             id: true,
             email: true,
             Profile: true,
-            username: true,
-            provider_id: true,
-            email_verified: true,
-            Settings: true,
             Account: true,
+            username: true,
+            email_verified: true,
         },
     })
 
     if (!user) {
-        sendError(res, StatusCodes.NotFound, 'User not found')
+        sendError(res, StatusCodes.NotFound, 'Something went wrong.')
         return
     }
 
