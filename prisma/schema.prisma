@@ -69,7 +69,7 @@ model Message {
 model Poll {
     id          String   @id @default(auto()) @map("_id") @db.ObjectId
     title       String?
-    option      Option[]
+    options     Option[]
     active      Boolean  @default(true)
     totalVotes  Int
     createdBy   Users    @relation(fields: [createdById], references: [id])
