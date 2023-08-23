@@ -51,8 +51,8 @@ model Accounts {
 
 model Settings {
     id         String  @id @default(auto()) @map("_id") @db.ObjectId
-    allowTexts Boolean @default(false)
-    allowFiles Boolean @default(false)
+    allowTexts Boolean @default(true)
+    allowFiles Boolean @default(true)
     user       Users   @relation(fields: [userId], references: [id])
     userId     String  @unique @db.ObjectId
 }
