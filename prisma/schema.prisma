@@ -26,13 +26,14 @@ model Users {
     Profile        Profiles?
     Account        Accounts?
     Settings       Settings?
-    Message        Messages?
     Polls          Poll[]
+    Polled         Polled?
+    Messages       Message[]
 }
 
 model Profiles {
     id           String @id @default(auto()) @map("_id") @db.ObjectId
-    avatar       Media?
+    avatar       File?
     views        Int    @default(0)
     msgPoint     Int    @default(0)
     pollPoint    Int    @default(0)
@@ -57,38 +58,49 @@ model Settings {
     userId     String  @unique @db.ObjectId
 }
 
-model Messages {
-    id       String    @id @default(auto()) @map("_id") @db.ObjectId
-    contents Content[]
-    user     Users     @relation(fields: [userId], references: [id])
-    userId   String    @unique @db.ObjectId
+model Message {
+    id     String  @id @default(auto()) @map("_id") @db.ObjectId
+    texts  String?
+    file   File?
+    user   Users   @relation(fields: [userId], references: [id])
+    userId String  @unique @db.ObjectId
 }
 
 model Poll {
-    id       String   @id @default(auto()) @map("_id") @db.ObjectId
-    question String
-    options  Option[]
-    user     Users    @relation(fields: [userId], references: [id])
-    userId   String   @unique @db.ObjectId
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    title       String?
+    option      Option[]
+    active      Boolean  @default(true)
+    totalVotes  Int
+    createdBy   Users    @relation(fields: [createdById], references: [id])
+    createdById String   @unique @db.ObjectId
+    Polled      Polled?
 }
 
-type Content {
-    idx    String  @default(uuid())
-    texts  String?
-    Medias Media[]
+model Option {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    texts      String
+    poll       Poll     @relation(fields: [pollId], references: [id])
+    pollId     String   @unique @db.ObjectId
+    votes      Polled[]
+    totalVotes Int
 }
 
-type Media {
+model Polled {
+    id       String @id @default(auto()) @map("_id") @db.ObjectId
+    userId   String @unique @db.ObjectId
+    user     Users  @relation(fields: [userId], references: [id])
+    optionId String @unique @db.ObjectId
+    option   Option @relation(fields: [optionId], references: [id])
+    pollId   String @unique @db.ObjectId
+    poll     Poll   @relation(fields: [pollId], references: [id])
+}
+
+type File {
     idx  String  @default(uuid())
     url  String
     path String
     type String?
-}
-
-type Option {
-    idx    String @default(uuid())
-    option String
-    votes  Int    @default(0)
 }
 
 enum AuthMethod {
