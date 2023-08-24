@@ -23,8 +23,8 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    if (password.length < 8) {
-        sendError(res, StatusCodes.BadRequest, 'Your password must be at least 8 characters.')
+    if (password.length < 7) {
+        sendError(res, StatusCodes.BadRequest, 'Your password must be at least 7 characters.')
         return
     }
 
