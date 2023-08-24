@@ -5,6 +5,7 @@ import StatusCodes from '../../utils/StatusCodes'
 const expressAsyncHandler = require('express-async-handler')
 
 const anonUser = expressAsyncHandler(async (req: Request, res: Response) => {
+    const { token } = req.query
     const { username } = req.params
 
     const user = await prisma.users.findUnique({
@@ -28,21 +29,47 @@ const anonUser = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    await prisma.users.update({
-        where: { username },
-        data: {
-            Profile: {
-                update: {
-                    views: {
-                        increment: 1
-                    },
-                    msgPoint: {
-                        increment: 0.5
+    if (token) {
+        const isUser = await prisma.users.findFirst({
+            where: {
+                login_token: token as any
+            }
+        })
+
+        if (isUser?.username !== username) {
+            await prisma.users.update({
+                where: { username },
+                data: {
+                    Profile: {
+                        update: {
+                            views: {
+                                increment: 1
+                            },
+                            msgPoint: {
+                                increment: 1
+                            }
+                        }
+                    }
+                }
+            })
+        }
+    } else {
+        await prisma.users.update({
+            where: { username },
+            data: {
+                Profile: {
+                    update: {
+                        views: {
+                            increment: 1
+                        },
+                        msgPoint: {
+                            increment: 1
+                        }
                     }
                 }
             }
-        }
-    })
+        })
+    }
 
     sendSuccess(res, StatusCodes.OK, { user })
 })
