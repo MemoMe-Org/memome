@@ -49,10 +49,10 @@ router.get('/github/callback', githubAuthCallback)
 
 // OTP
 router.post('/verify', limit({
-    max: 3,
+    max: 5,
     timerArr: [30 * 60],
     msg: 'Too many attempts! Try again in 30mins..'
 }), verify)
-router.post('/req-otp', limit({ max: 1, timerArr: [20, 30, 45] }), sendOtp)
+router.post('/req-otp', limit({ max: 2, timerArr: [5, 9] }), sendOtp)
 
 export default router
