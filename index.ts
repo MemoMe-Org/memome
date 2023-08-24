@@ -15,6 +15,7 @@ import cors, { CorsOptions } from 'cors'
 // import routes
 import authRoute from './routes/auth.route'
 import authApiRoute from './routes/api/auth.api.route'
+import userApiRoute from './routes/api/user.api.route'
 
 // initialize
 const app: Application = express()
@@ -22,7 +23,6 @@ const allowedOrigins: string[] = [
     process.env.CLIENT_URL!,
 ]
 const PORT: unknown = process.env.PORT || 2002
-const isProd: boolean = process.env.NODE_ENV === 'production'
 
 // set middlewares
 app.use(express.json({ limit: '10mb' }))
@@ -63,5 +63,6 @@ app.use(passport.session())
 // intialize routes
 app.use('/auth', authRoute)
 app.use('/api', authApiRoute)
+app.use('/api/user', userApiRoute)
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`))
