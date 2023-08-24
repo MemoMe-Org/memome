@@ -27,7 +27,7 @@ model Users {
     Account        Accounts?
     Settings       Settings?
     Polls          Poll[]
-    votes          PollVote?
+    Vote           PollVote?
     Messages       Message[]
 }
 
@@ -58,11 +58,13 @@ model Settings {
 }
 
 model Message {
-    id     String  @id @default(auto()) @map("_id") @db.ObjectId
-    texts  String?
-    file   File?
-    user   Users   @relation(fields: [userId], references: [id])
-    userId String  @unique @db.ObjectId
+    id      String  @id @default(auto()) @map("_id") @db.ObjectId
+    texts   String?
+    file    File?
+    date    String
+    private Boolean @default(false)
+    user    Users   @relation(fields: [userId], references: [id])
+    userId  String  @unique @db.ObjectId
 }
 
 model Poll {
