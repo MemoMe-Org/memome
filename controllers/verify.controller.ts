@@ -1,7 +1,7 @@
+import bcrypt from 'bcrypt'
 import prisma from '../prisma'
 import { OTPAction } from '../type'
 import { Request, Response } from 'express'
-import { EMAIL_REGEX } from '../utils/RegExp'
 import StatusCodes from '../utils/StatusCodes'
 import { sendError, sendSuccess } from '../utils/sendRes'
 const expressAsyncHandler = require('express-async-handler')
@@ -19,20 +19,26 @@ const resetOTP = async (email: string, action: OTPAction) => {
 }
 
 const verify = expressAsyncHandler(async (req: Request, res: Response) => {
-    let { email, otp } = req.body
-    email = email?.toLowerCase()?.trim()
+    const { otp, password, password2 } = req.body
 
-    if (!email || !EMAIL_REGEX.test(email) || !otp) {
+    if (!otp || !password || !password2) {
         sendError(res, StatusCodes.BadRequest, 'Invalid credentials provided.')
         return
     }
 
-    const user = await prisma.users.findUnique({
-        where: { email }
+    if (password !== password2) {
+        sendError(res, StatusCodes.BadRequest, 'Passwords not match.')
+        return
+    }
+
+    const user = await prisma.users.findFirst({
+        where: {
+            totp: otp
+        }
     })
 
-    if (!user) {
-        sendError(res, StatusCodes.NotFound, 'Account does not exist.')
+    if (!user || otp !== user?.totp) {
+        sendError(res, StatusCodes.Unauthorized, 'Incorrect OTP.')
         return
     }
 
@@ -40,17 +46,20 @@ const verify = expressAsyncHandler(async (req: Request, res: Response) => {
     const totp_expiry = user.totp_expiry || 0
 
     if (now > totp_expiry) {
-        await resetOTP(email, 'denied')
+        await resetOTP(user.email, 'denied')
         sendError(res, StatusCodes.BadRequest, 'The OTP you provided has expired.')
         return
     }
 
-    if (otp !== user.totp) {
-        sendError(res, StatusCodes.Unauthorized, 'Incorrect OTP.')
-        return
-    }
-
-    await resetOTP(email, 'granted')
+    await prisma.users.update({
+        where: {
+            email: user.email
+        },
+        data: {
+            password: await bcrypt.hash(password, 10)
+        }
+    })
+    await resetOTP(user.email, 'granted')
     sendSuccess(res, StatusCodes.OK, {
         success: true,
         msg: 'Verification was successful.'
