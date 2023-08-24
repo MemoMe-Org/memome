@@ -26,11 +26,6 @@ const verify = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    if (password !== password2) {
-        sendError(res, StatusCodes.BadRequest, 'Passwords not match.')
-        return
-    }
-
     const user = await prisma.users.findFirst({
         where: {
             totp: otp
@@ -39,6 +34,21 @@ const verify = expressAsyncHandler(async (req: Request, res: Response) => {
 
     if (!user || otp !== user?.totp) {
         sendError(res, StatusCodes.Unauthorized, 'Incorrect OTP.')
+        return
+    }
+
+    if (user.auth_method !== "local") {
+        sendError(res, StatusCodes.Unauthorized, 'Login with other providers.')
+        return
+    }
+
+    if (password !== password2) {
+        sendError(res, StatusCodes.BadRequest, 'Passwords not match.')
+        return
+    }
+
+    if (password.length < 5) {
+        sendError(res, StatusCodes.BadRequest, 'Password too short.')
         return
     }
 
@@ -62,7 +72,7 @@ const verify = expressAsyncHandler(async (req: Request, res: Response) => {
     await resetOTP(user.email, 'granted')
     sendSuccess(res, StatusCodes.OK, {
         success: true,
-        msg: 'Verification was successful.'
+        msg: 'Password reset was successful.'
     })
 })
 
