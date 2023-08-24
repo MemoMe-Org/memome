@@ -27,7 +27,7 @@ model Users {
     Account        Accounts?
     Settings       Settings?
     Polls          Poll[]
-    Polled         Polled?
+    votes          PollVote?
     Messages       Message[]
 }
 
@@ -66,26 +66,26 @@ model Message {
 }
 
 model Poll {
-    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    id          String    @id @default(auto()) @map("_id") @db.ObjectId
     title       String?
     options     Option[]
-    active      Boolean  @default(true)
+    active      Boolean   @default(true)
     totalVotes  Int
-    createdBy   Users    @relation(fields: [createdById], references: [id])
-    createdById String   @unique @db.ObjectId
-    Polled      Polled?
+    createdBy   Users     @relation(fields: [createdById], references: [id])
+    createdById String    @unique @db.ObjectId
+    votes       PollVote?
 }
 
 model Option {
-    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    id         String     @id @default(auto()) @map("_id") @db.ObjectId
     texts      String
-    poll       Poll     @relation(fields: [pollId], references: [id])
-    pollId     String   @unique @db.ObjectId
-    votes      Polled[]
+    poll       Poll       @relation(fields: [pollId], references: [id])
+    pollId     String     @unique @db.ObjectId
+    votes      PollVote[]
     totalVotes Int
 }
 
-model Polled {
+model PollVote {
     id       String @id @default(auto()) @map("_id") @db.ObjectId
     userId   String @unique @db.ObjectId
     user     Users  @relation(fields: [userId], references: [id])
