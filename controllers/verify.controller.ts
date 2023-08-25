@@ -71,7 +71,6 @@ const verify = expressAsyncHandler(async (req: Request, res: Response) => {
     })
     await resetOTP(user.email, 'granted')
     sendSuccess(res, StatusCodes.OK, {
-        success: true,
         msg: 'Password reset was successful.'
     })
 })

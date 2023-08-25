@@ -66,7 +66,6 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
         maxAge: 60 * 24 * 60 * 60 * 1000,
     })
     sendSuccess(res, StatusCodes.OK, {
-        success: true,
         msg: 'Login successful.',
     })
 })

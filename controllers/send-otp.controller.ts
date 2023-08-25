@@ -35,7 +35,6 @@ const sendOtp = expressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     sendSuccess(res, StatusCodes.OK, {
-        success: true,
         msg: 'An OTP code has been sent to your email.'
     })
 })

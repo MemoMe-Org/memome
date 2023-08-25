@@ -19,10 +19,7 @@ const settings = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    sendSuccess(res, StatusCodes.OK, {
-        user,
-        success: true,
-    })
+    sendSuccess(res, StatusCodes.OK, { user })
 })
 
 export default settings

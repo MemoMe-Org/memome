@@ -79,7 +79,6 @@ const signup = expressAsyncHandler(async (req: Request, res: Response) => {
         await welcome(newUser.username, newUser.email)
 
     sendSuccess(res, StatusCodes.Created, {
-        success: true,
         msg: 'Account creation was successful.'
     })
 })
