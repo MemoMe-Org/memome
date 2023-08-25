@@ -47,7 +47,7 @@ const verify = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    if (password.length < 5) {
+    if (password.length < 7) {
         sendError(res, StatusCodes.BadRequest, 'Password too short.')
         return
     }
