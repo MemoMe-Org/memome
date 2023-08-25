@@ -72,6 +72,7 @@ model Poll {
     title       String?
     options     Option[]
     active      Boolean   @default(true)
+    expiry      String
     totalVotes  Int
     createdBy   Users     @relation(fields: [createdById], references: [id])
     createdById String    @unique @db.ObjectId
