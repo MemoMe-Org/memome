@@ -29,7 +29,7 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    if (user.auth_method !== "local") {
+    if (!user.password) {
         sendError(res, StatusCodes.NotFound, 'Sign in with other Providers.')
         return
     }
