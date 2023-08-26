@@ -62,7 +62,7 @@ model Settings {
 model Message {
     id      String  @id @default(auto()) @map("_id") @db.ObjectId
     texts   String?
-    file    File[]
+    files   File[]
     date    String
     private Boolean @default(false)
     user    Users   @relation(fields: [userId], references: [id])
