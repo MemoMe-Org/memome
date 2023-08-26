@@ -37,6 +37,7 @@ model Profiles {
     views     Int    @default(0)
     msgPoint  Int    @default(1)
     pollPoint Int    @default(1)
+    bio       String @default("What's on your mind?")
     user      Users  @relation(fields: [userId], references: [id])
     userId    String @unique @db.ObjectId
 }
@@ -53,6 +54,7 @@ model Settings {
     id         String  @id @default(auto()) @map("_id") @db.ObjectId
     allowTexts Boolean @default(true)
     allowFiles Boolean @default(true)
+    msgType    String  @default("normal")
     user       Users   @relation(fields: [userId], references: [id])
     userId     String  @unique @db.ObjectId
 }
