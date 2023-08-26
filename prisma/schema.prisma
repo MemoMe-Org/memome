@@ -62,7 +62,7 @@ model Settings {
 model Message {
     id      String  @id @default(auto()) @map("_id") @db.ObjectId
     texts   String?
-    file    File?
+    file    File[]
     date    String
     private Boolean @default(false)
     user    Users   @relation(fields: [userId], references: [id])
@@ -101,7 +101,7 @@ model PollVote {
 }
 
 type File {
-    idx  String  @default(uuid())
+    idx  String
     url  String
     path String
     type String?
