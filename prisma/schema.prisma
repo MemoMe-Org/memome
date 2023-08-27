@@ -73,6 +73,7 @@ model Message {
 model Poll {
     id          String    @id @default(auto()) @map("_id") @db.ObjectId
     title       String?
+    files       File[]
     options     Option[]
     active      Boolean   @default(true)
     expiry      String
