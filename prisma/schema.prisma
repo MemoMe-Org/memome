@@ -33,13 +33,13 @@ model Users {
 
 model Profiles {
     id        String @id @default(auto()) @map("_id") @db.ObjectId
-    avatar    File?
-    views     Int    @default(0)
-    msgPoint  Int    @default(1)
-    pollPoint Int    @default(1)
-    bio       String @default("What's on your mind?")
-    user      Users  @relation(fields: [userId], references: [id])
-    userId    String @unique @db.ObjectId
+    avatar     File?
+    views      Int    @default(0)
+    msg_point  Int    @default(1)
+    poll_point Int    @default(1)
+    bio        String @default("What's on your mind?")
+    user       Users  @relation(fields: [userId], references: [id])
+    userId     String @unique @db.ObjectId
 }
 
 model Accounts {
@@ -52,12 +52,12 @@ model Accounts {
 
 model Settings {
     id         String  @id @default(auto()) @map("_id") @db.ObjectId
-    allowTexts Boolean @default(true)
-    allowFiles Boolean @default(true)
-    showLevels Boolean @default(true)
-    genMsgType String  @default("normal")
-    user       Users   @relation(fields: [userId], references: [id])
-    userId     String  @unique @db.ObjectId
+    allow_texts  Boolean @default(true)
+    allow_files  Boolean @default(true)
+    show_levels  Boolean @default(true)
+    gen_msg_type String  @default("normal")
+    user         Users   @relation(fields: [userId], references: [id])
+    userId       String  @unique @db.ObjectId
 }
 
 model Message {
