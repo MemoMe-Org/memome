@@ -54,6 +54,7 @@ model Settings {
     id         String  @id @default(auto()) @map("_id") @db.ObjectId
     allowTexts Boolean @default(true)
     allowFiles Boolean @default(true)
+    showLevels Boolean @default(true)
     genMsgType String  @default("normal")
     user       Users   @relation(fields: [userId], references: [id])
     userId     String  @unique @db.ObjectId
