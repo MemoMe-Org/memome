@@ -32,7 +32,7 @@ model Users {
 }
 
 model Profiles {
-    id        String @id @default(auto()) @map("_id") @db.ObjectId
+    id         String @id @default(auto()) @map("_id") @db.ObjectId
     avatar     File?
     views      Int    @default(0)
     msg_point  Int    @default(1)
@@ -51,7 +51,7 @@ model Accounts {
 }
 
 model Settings {
-    id         String  @id @default(auto()) @map("_id") @db.ObjectId
+    id           String  @id @default(auto()) @map("_id") @db.ObjectId
     allow_texts  Boolean @default(true)
     allow_files  Boolean @default(true)
     show_levels  Boolean @default(true)
