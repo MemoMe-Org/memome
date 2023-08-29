@@ -1,7 +1,6 @@
 import prisma from '../prisma'
-import getCookie from '../utils/getCookie'
 import { Request, Response } from 'express'
-import StatusCodes from '../utils/StatusCodes'
+import StatusCodes from '../enums/StatusCodes'
 const expressAsyncHandler = require('express-async-handler')
 
 const clear = (req: Request, res: Response) => {
