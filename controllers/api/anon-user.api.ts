@@ -4,6 +4,24 @@ import { sendError, sendSuccess } from '../../utils/sendRes'
 import StatusCodes from '../../utils/StatusCodes'
 const expressAsyncHandler = require('express-async-handler')
 
+const increment = async (username: string) => {
+    await prisma.users.update({
+        where: { username },
+        data: {
+            Profile: {
+                update: {
+                    views: {
+                        increment: 1
+                    },
+                    msg_point: {
+                        increment: 1
+                    }
+                }
+            }
+        }
+    })
+}
+
 const anonUser = expressAsyncHandler(async (req: Request, res: Response) => {
     const { token } = req.query
     const { username } = req.params
@@ -14,7 +32,6 @@ const anonUser = expressAsyncHandler(async (req: Request, res: Response) => {
             id: true,
             email: true,
             username: true,
-            Account: true,
             Settings: true,
         }
     })
@@ -24,7 +41,13 @@ const anonUser = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    if (user.Account?.disabled) {
+    const account = await prisma.accounts.findUnique({
+        where: {
+            userId: user.id
+        }
+    })
+
+    if (account?.disabled) {
         sendError(res, StatusCodes.Unauthorized, 'Account has been disbled by user.')
         return
     }
@@ -37,38 +60,10 @@ const anonUser = expressAsyncHandler(async (req: Request, res: Response) => {
         })
 
         if (isUser?.username !== username) {
-            await prisma.users.update({
-                where: { username },
-                data: {
-                    Profile: {
-                        update: {
-                            views: {
-                                increment: 1
-                            },
-                            msgPoint: {
-                                increment: 1
-                            }
-                        }
-                    }
-                }
-            })
+            await increment(username)
         }
     } else {
-        await prisma.users.update({
-            where: { username },
-            data: {
-                Profile: {
-                    update: {
-                        views: {
-                            increment: 1
-                        },
-                        msgPoint: {
-                            increment: 1
-                        }
-                    }
-                }
-            }
-        })
+        await increment(username)
     }
 
     sendSuccess(res, StatusCodes.OK, { user })
