@@ -6,3 +6,5 @@ const sortByDates = (array: any[]): any => {
         return dateA - dateB;
     })
 }
+
+export default sortByDates
