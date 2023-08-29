@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import prisma from '../prisma'
 import { OTPAction } from '../type'
 import { Request, Response } from 'express'
-import StatusCodes from '../utils/StatusCodes'
+import StatusCodes from '../enums/StatusCodes'
 import { sendError, sendSuccess } from '../utils/sendRes'
 const expressAsyncHandler = require('express-async-handler')
 
