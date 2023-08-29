@@ -2,7 +2,7 @@ import prisma from '../prisma'
 import generateOTP from '../utils/genOTP'
 import { Request, Response } from 'express'
 import { EMAIL_REGEX } from '../utils/RegExp'
-import StatusCodes from '../utils/StatusCodes'
+import StatusCodes from '../enums/StatusCodes'
 import sendOTP from '../services/send-otp.mail'
 import { sendError, sendSuccess } from '../utils/sendRes'
 const expressAsyncHandler = require('express-async-handler')
