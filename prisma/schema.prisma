@@ -51,13 +51,13 @@ model Accounts {
 }
 
 model Settings {
-    id           String  @id @default(auto()) @map("_id") @db.ObjectId
-    allow_texts  Boolean @default(true)
-    allow_files  Boolean @default(true)
-    show_levels  Boolean @default(true)
-    gen_msg_type String  @default("normal")
-    user         Users   @relation(fields: [userId], references: [id])
-    userId       String  @unique @db.ObjectId
+    id           String       @id @default(auto()) @map("_id") @db.ObjectId
+    allow_texts  Boolean      @default(true)
+    allow_files  Boolean      @default(true)
+    show_levels  Boolean      @default(true)
+    gen_msg_type QuestionType @default(normal)
+    user         Users        @relation(fields: [userId], references: [id])
+    userId       String       @unique @db.ObjectId
 }
 
 model Message {
@@ -114,4 +114,11 @@ enum AuthMethod {
     google
     github
     local
+}
+
+enum QuestionType {
+    all
+    nasty
+    normal
+    relationship
 }
