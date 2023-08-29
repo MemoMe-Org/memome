@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import prisma from '../prisma'
 import { Request, Response } from 'express'
-import StatusCodes from '../utils/StatusCodes'
+import StatusCodes from '../enums/StatusCodes'
 import welcome from '../services/welcome.mail'
 import connectModels from '../utils/connect-models'
 import genRandomString from '../utils/genRandomString'
