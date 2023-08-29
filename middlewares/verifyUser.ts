@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import prisma from '../prisma'
 import { sendError } from '../utils/sendRes'
-import StatusCodes from '../utils/StatusCodes'
+import StatusCodes from '../enums/StatusCodes'
 import { Request, Response, NextFunction } from 'express'
 const expressAsyncHandler = require('express-async-handler')
 
