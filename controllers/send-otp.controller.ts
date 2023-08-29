@@ -25,9 +25,16 @@ const sendOtp = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
+    if (user.totp_expiry) {
+        if (Date.now() > user.totp_expiry) {
+            sendError(res, StatusCodes.BadRequest, 'Request after 30 minutes.')
+            return
+        }
+    }
+
     const { totp, totp_expiry } = generateOTP()
 
-    await sendOTP(totp, email)
+    process.env.NODE_ENV === 'production' && await sendOTP(totp, email)
 
     await prisma.users.update({
         where: { email },
