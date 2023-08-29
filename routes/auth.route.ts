@@ -4,10 +4,10 @@ import limit from '../middlewares/limiter.middleware'
 import { login } from '../controllers/login.controller'
 import { signup } from '../controllers/signup.controller'
 import { logout } from '../controllers/logout.controller'
+import { verify } from '../controllers/verify.controller'
 import { sendOtp } from '../controllers/send-otp.controller'
 import { passport } from '../controllers/google/callback.google'
 import { githubAuthCallback } from '../controllers/github/callback.github'
-import { verify } from '../controllers/verify.controller'
 
 const router: Router = Router()
 
@@ -49,10 +49,14 @@ router.get('/github/callback', githubAuthCallback)
 
 // OTP
 router.post('/verify', limit({
-    max: 5,
+    max: 4,
     timerArr: [30 * 60],
     msg: 'Too many attempts! Try again in 30mins..'
 }), verify)
-router.post('/req-otp', limit({ max: 2, timerArr: [5, 9] }), sendOtp)
+router.post('/req-otp', limit({
+    max: 2,
+    timerArr: [30 * 60],
+    msg: 'Try again later..'
+}), sendOtp)
 
 export default router
