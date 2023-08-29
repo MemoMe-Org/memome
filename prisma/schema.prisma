@@ -65,7 +65,7 @@ model Message {
     texts   String?
     files   File[]
     date    String
-    private Boolean @default(false)
+    private Boolean @default(true)
     user    Users   @relation(fields: [userId], references: [id])
     userId  String  @unique @db.ObjectId
 }
