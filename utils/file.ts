@@ -1,15 +1,24 @@
 import { Response } from 'express'
 import { sendError } from './sendRes'
-import StatusCodes from './StatusCodes'
+import MaxSize from '../enums/fileMaxSizes'
+import StatusCodes from '../enums/StatusCodes'
 
-const handleFile = (res: Response, file: any): any => {
-    const maxSize: number = 5242880
+/*
+mb - megabit * 1000
+MB - megabyte * 1024
+*/
+
+const handleFile = (res: Response, file: any, maxSize: MaxSize): any => {
     const size: number = file.size
     if (size < maxSize) {
         const extension = file.originalname.split('.').pop()
         return { ...file, extension }
     } else {
-        sendError(res, StatusCodes.PayloadTooLarge, 'Image size is too large > 5MB.')
+        sendError(
+            res,
+            StatusCodes.PayloadTooLarge,
+            `${file.originalname} is too large. > ${maxSize} bytes.`
+        )
         return
     }
 }
