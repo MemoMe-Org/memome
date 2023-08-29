@@ -14,7 +14,7 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     const { username } = req.params
 
     let filesArr: any[] = []
-    const sentFiles = req.files as any[] || []
+    const files = req.files as any[] || []
 
     const user = await prisma.users.findUnique({
         where: { username },
@@ -39,26 +39,22 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     }
 
     if (!user.Account?.disabled) {
-        sendError(res, StatusCodes.Unauthorized, 'Account is disabled by user.')
+        sendError(res, StatusCodes.Unauthorized, 'Account has been disabled by user.')
         return
     }
 
-    if (sentFiles.length === 0 && !texts) {
+    if (files.length === 0 && !texts) {
         sendError(res, StatusCodes.BadRequest, 'Blank Message.')
         return
     }
 
-    if (texts) {
-        texts = await enc_decrypt(texts, 'e')
-    }
-
-    if (sentFiles.length > 4) {
+    if (files.length > 4) {
         sendError(res, StatusCodes.PayloadTooLarge, 'Only maximum of four (4) files is allowed.')
         return
     }
 
     try {
-        const uploadPromises = sentFiles.map(async (file: File) => {
+        const uploadPromises = files.map(async (file: File) => {
             const tempFile = await handleFile(res, file, MaxSize['10MB'])
             const type = tempFile.type
             const path = `Message/${user.id}/${genFileName()}.${tempFile.extension}`
@@ -84,9 +80,9 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
 
     await prisma.message.create({
         data: {
-            texts,
             files: filesArr,
             date: new Date().toISOString(),
+            texts: await enc_decrypt(texts, 'e'),
             user: {
                 connect: {
                     id: user.id
