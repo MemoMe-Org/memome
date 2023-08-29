@@ -8,7 +8,7 @@ const expressAsyncHandler = require('express-async-handler')
 
 const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     const { userId } = req.params
-    let isMain = false
+    let isAuthenticated = false
     let token = ''
 
     const authHeader = req.headers?.authorization
@@ -38,12 +38,12 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
         process.env.JWT_SECRET!,
         (err: any, decoded: any) => {
             if (decoded?.user === user?.username) {
-                isMain = true
+                isAuthenticated = true
             }
         }
     )
 
-    if (isMain === false) {
+    if (isAuthenticated === false) {
         messages = await prisma.message.findMany({
             where: {
                 userId: user.id,
