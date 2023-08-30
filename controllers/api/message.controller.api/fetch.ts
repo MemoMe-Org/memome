@@ -53,7 +53,7 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
         })
     }
 
-    const decrytedMsgs = messages.map(async (message) => {
+    const decrytedMsgs = await Promise.all(messages.map(async (message) => {
         if (message.texts) {
             return {
                 ...message,
@@ -61,10 +61,11 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
             }
         }
         return message
-    })
+    }))
 
     sendSuccess(res, StatusCodes.OK, {
-        messages: sortByDates(await Promise.all(decrytedMsgs))
+        messages: sortByDates(decrytedMsgs),
+        length: decrytedMsgs.length
     })
 })
 
