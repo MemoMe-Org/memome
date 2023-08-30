@@ -29,7 +29,7 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
 
     let messages = await prisma.message.findMany({
         where: {
-            userId: user.id,
+            userId,
         }
     })
 
@@ -46,7 +46,7 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     if (isAuthenticated === false) {
         messages = await prisma.message.findMany({
             where: {
-                userId: user.id,
+                userId,
                 private: false
             }
         })
