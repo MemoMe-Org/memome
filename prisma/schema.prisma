@@ -63,7 +63,7 @@ model Settings {
 model Message {
     id      String  @id @default(auto()) @map("_id") @db.ObjectId
     texts   String?
-    files   File?
+    files   File[]
     date    String
     private Boolean @default(true)
     user    Users   @relation(fields: [userId], references: [id])
@@ -73,7 +73,7 @@ model Message {
 model Poll {
     id          String    @id @default(auto()) @map("_id") @db.ObjectId
     title       String?
-    files       File[]
+    file        File?
     options     Option[]
     active      Boolean   @default(true)
     expiry      String?
