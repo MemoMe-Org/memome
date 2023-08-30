@@ -91,6 +91,17 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
         },
     })
 
+    await prisma.profiles.update({
+        where: {
+            userId: user.id
+        },
+        data: {
+            msg_point: {
+                increment: 1
+            }
+        }
+    })
+
     sendSuccess(res, StatusCodes.OK, {
         msg: 'Message sent.'
     })
