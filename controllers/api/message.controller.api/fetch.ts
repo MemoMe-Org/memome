@@ -3,6 +3,7 @@ import prisma from '../../../prisma'
 import { Request, Response } from 'express'
 import sortByDates from '../../../utils/sort'
 import StatusCodes from '../../../enums/StatusCodes'
+import { enc_decrypt } from '../../../utils/enc_decrypt'
 import { sendError, sendSuccess } from '../../../utils/sendRes'
 const expressAsyncHandler = require('express-async-handler')
 
@@ -18,7 +19,7 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
 
     let user = await prisma.users.findUnique({
         where: {
-            id: userId,
+            username: userId,
         }
     })
 
@@ -29,7 +30,7 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
 
     let messages = await prisma.message.findMany({
         where: {
-            userId,
+            userId: user.id,
         }
     })
 
@@ -46,13 +47,25 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     if (isAuthenticated === false) {
         messages = await prisma.message.findMany({
             where: {
-                userId,
+                userId: user.id,
                 private: false
             }
         })
     }
 
-    sendSuccess(res, StatusCodes.OK, { messages: sortByDates(messages) })
+    const decrytedMsgs = messages.map(async (message) => {
+        if (message.texts) {
+            return {
+                ...message,
+                texts: await enc_decrypt(message.texts, 'd')
+            }
+        }
+        return message
+    })
+
+    sendSuccess(res, StatusCodes.OK, {
+        messages: sortByDates(await Promise.all(decrytedMsgs))
+    })
 })
 
 export default fetchMsg
