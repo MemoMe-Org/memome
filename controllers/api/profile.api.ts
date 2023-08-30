@@ -17,6 +17,7 @@ const profile = expressAsyncHandler(async (req: Request, res: Response) => {
             email: true,
             Profile: true,
             Account: true,
+            Settings: true,
             username: true,
             email_verified: true,
         },
