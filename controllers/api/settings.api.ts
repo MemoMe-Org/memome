@@ -83,7 +83,7 @@ const messageType = expressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     if (!user) {
-        sendError(res, StatusCodes.NotFound, 'Something is wrong.')
+        sendError(res, StatusCodes.NotFound, 'Something went wrong.')
         return
     }
 
@@ -91,7 +91,7 @@ const messageType = expressAsyncHandler(async (req: Request, res: Response) => {
         type !== 'normal' && type !== 'all' &&
         type !== 'nasty' && type !== 'relationship'
     ) {
-        sendError(res, StatusCodes.BadRequest, 'Something is wrong.')
+        sendError(res, StatusCodes.BadRequest, 'Something went wrong.')
         return
     }
 
