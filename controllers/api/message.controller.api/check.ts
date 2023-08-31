@@ -69,6 +69,7 @@ const checkUser = expressAsyncHandler(async (req: Request, res: Response) => {
     }
 
     const output = {
+        isAuthenticated,
         bio: user.Profile?.bio,
         username: user.username,
         avatar: user.Profile?.avatar,
