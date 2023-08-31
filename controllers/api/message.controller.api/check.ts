@@ -71,7 +71,7 @@ const checkUser = expressAsyncHandler(async (req: Request, res: Response) => {
         allowFiles: user.Settings?.allow_files,
     }
 
-    sendSuccess(res, StatusCodes.OK, { output })
+    sendSuccess(res, StatusCodes.OK, { user: output })
 })
 
 export default checkUser
