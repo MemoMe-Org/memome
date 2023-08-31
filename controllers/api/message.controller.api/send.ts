@@ -38,7 +38,7 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
         texts = undefined
     }
 
-    if (!user.Account?.disabled) {
+    if (user.Account?.disabled) {
         sendError(res, StatusCodes.Unauthorized, 'Account has been disabled by user.')
         return
     }
@@ -97,7 +97,7 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
         },
         data: {
             msg_point: {
-                increment: 1
+                increment: filesArr.length > 0 ? 0.5 : 0.3
             }
         }
     })
