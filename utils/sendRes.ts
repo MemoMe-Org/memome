@@ -1,6 +1,6 @@
 import { Response } from 'express'
 
-const sendError = (res: Response, statusCode: number, msg: string): void => {
+const sendError = (res: Response, statusCode: number, msg?: string): void => {
     res.status(statusCode).json({ success: false, msg })
 }
 
