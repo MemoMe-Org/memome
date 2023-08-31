@@ -48,8 +48,8 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    if (files.length > 4) {
-        sendError(res, StatusCodes.PayloadTooLarge, 'Only a maximum of four (4) files is allowed.')
+    if (files.length > 2) {
+        sendError(res, StatusCodes.PayloadTooLarge, 'Only a maximum of two (2) files is allowed.')
         return
     }
 
