@@ -19,7 +19,14 @@ router.route(
     }),
     anonUser
 ).post(
-    upload.array('anon_files', 4),
+    [
+        upload.array('anon_files', 4),
+        limit({
+            max: 1,
+            timerArr: [5, 9],
+            msg: 'Duplicate message detected.'
+        })
+    ],
     sendMsg
 )
 
