@@ -105,9 +105,7 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    sendSuccess(res, StatusCodes.Created, {
-        msg: 'Message sent.'
-    })
+    sendSuccess(res, StatusCodes.Created)
 })
 
 export default sendMsg
