@@ -14,7 +14,7 @@ const increment = async (username: string) => {
                         increment: 1
                     },
                     msg_point: {
-                        increment: 1
+                        increment: 0.2
                     }
                 }
             }
@@ -30,7 +30,8 @@ const checkUser = expressAsyncHandler(async (req: Request, res: Response) => {
         where: { username },
         select: {
             id: true,
-            email: true,
+            Profile: true,
+            Account: true,
             username: true,
             Settings: true,
         }
@@ -41,13 +42,7 @@ const checkUser = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    const account = await prisma.accounts.findUnique({
-        where: {
-            userId: user.id
-        }
-    })
-
-    if (account?.disabled) {
+    if (user.Account?.disabled) {
         sendError(res, StatusCodes.Unauthorized, 'Account has been disbled by user.')
         return
     }
@@ -66,7 +61,17 @@ const checkUser = expressAsyncHandler(async (req: Request, res: Response) => {
         await increment(username)
     }
 
-    sendSuccess(res, StatusCodes.OK, { user })
+    const output = {
+        bio: user.Profile?.bio,
+        username: user.username,
+        avatar: user.Profile?.avatar,
+        verified: user.Account?.verified,
+        msg_type: user.Settings?.gen_msg_type,
+        allowTexts: user.Settings?.allow_texts,
+        allowFiles: user.Settings?.allow_files,
+    }
+
+    sendSuccess(res, StatusCodes.OK, { output })
 })
 
 export default checkUser
