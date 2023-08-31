@@ -8,7 +8,12 @@ mb - megabit * 1000
 MB - megabyte * 1024
 */
 
-const handleFile = (res: Response, file: any, maxSize: MaxSize, ...extensions: string[]): any => {
+const handleFile = (
+    res: Response,
+    file: any,
+    maxSize: MaxSize,
+    ...extensions: string[]
+): any => {
     const size: number = file.size
     const extension = file.originalname.split('.').pop()
     const isAllowedExtension = extensions.includes(extension)
@@ -16,7 +21,7 @@ const handleFile = (res: Response, file: any, maxSize: MaxSize, ...extensions: s
     if (!isAllowedExtension) {
         sendError(
             res,
-            StatusCodes.PayloadTooLarge,
+            StatusCodes.BadRequest,
             `File extension is not allowed - ${file.originalname}`
         )
         return
