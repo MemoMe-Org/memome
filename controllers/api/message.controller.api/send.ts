@@ -55,7 +55,12 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
 
     try {
         const uploadPromises = files.map(async (file: File) => {
-            const tempFile = await handleFile(res, file, MaxSize['10MB'])
+            const tempFile = await handleFile(
+                res,
+                file,
+                MaxSize['6MB'],
+                'jpg', 'png', 'mp4'
+            )
             const type = tempFile.type
             const path = `Message/${user.id}/${genFileName()}.${tempFile.extension}`
             await uploadS3(tempFile.buffer, path, type)
