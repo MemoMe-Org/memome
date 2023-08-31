@@ -3,8 +3,8 @@ import verifyUser from '../../middlewares/verifyUser'
 import limit from '../../middlewares/limiter.middleware'
 import upload from '../../middlewares/upload.middleware'
 import sendMsg from '../../controllers/api/message.controller.api/send'
-import anonUser from '../../controllers/api/message.controller.api/check'
 import fetchMsg from '../../controllers/api/message.controller.api/fetch'
+import checkUser from '../../controllers/api/message.controller.api/check'
 import editMsgVisibility from '../../controllers/api/message.controller.api/edit'
 
 const router: Router = Router()
@@ -17,7 +17,7 @@ router.route(
         timerArr: [14, 9, 15],
         msg: 'Denied by Cheat System.'
     }),
-    anonUser
+    checkUser
 ).post(
     [
         upload.array('anon_files', 2),
