@@ -35,8 +35,8 @@ model Profiles {
     id         String @id @default(auto()) @map("_id") @db.ObjectId
     avatar     File?
     views      Int    @default(0)
-    msg_point  Int    @default(1)
-    poll_point Int    @default(1)
+    msg_point  Float  @default(0.5)
+    poll_point Float  @default(0.5)
     bio        String @default("What's on your mind?")
     user       Users  @relation(fields: [userId], references: [id])
     userId     String @unique @db.ObjectId
@@ -78,6 +78,7 @@ model Poll {
     active      Boolean   @default(true)
     expiry      String?
     totalVotes  Int
+    views       Int
     date        String
     createdBy   Users     @relation(fields: [createdById], references: [id])
     createdById String    @unique @db.ObjectId
