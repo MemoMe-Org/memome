@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken'
 import prisma from '../../../prisma'
 import { Request, Response } from 'express'
 import StatusCodes from '../../../enums/StatusCodes'
@@ -23,8 +24,14 @@ const increment = async (username: string) => {
 }
 
 const checkUser = expressAsyncHandler(async (req: Request, res: Response) => {
-    const { token } = req.query
     const { username } = req.params
+    let isAuthenticated = false
+    let token = ''
+
+    const authHeader = req.headers?.authorization
+    if (authHeader?.startsWith('Bearer ')) {
+        token = authHeader.split(' ')[1]
+    }
 
     const user = await prisma.users.findUnique({
         where: { username },
@@ -47,18 +54,18 @@ const checkUser = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    if (token) {
-        const isUser = await prisma.users.findFirst({
-            where: {
-                login_token: token as any
+    jwt.verify(
+        token,
+        process.env.JWT_SECRET!,
+        (err: any, decoded: any) => {
+            if (decoded?.user === user?.username) {
+                isAuthenticated = true
             }
-        })
-
-        if (isUser?.username !== username) {
-            await increment(username)
         }
-    } else {
-        await increment(username)
+    )
+
+    if (!isAuthenticated) {
+        await increment(user.username)
     }
 
     const output = {
