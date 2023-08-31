@@ -9,7 +9,7 @@ const verifyUser = expressAsyncHandler(async (req: Request, res: Response, next:
     const authHeader = req.headers.authorization
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        sendError(res, StatusCodes.Unauthorized, 'Access Denied')
+        sendError(res, StatusCodes.Unauthorized, 'Access Denied.')
         return
     }
 
@@ -36,8 +36,6 @@ const verifyUser = expressAsyncHandler(async (req: Request, res: Response, next:
                 return
             }
 
-            // @ts-ignore
-            req.email = decoded.email
             // @ts-ignore
             req.username = decoded.username
             // @ts-ignore
