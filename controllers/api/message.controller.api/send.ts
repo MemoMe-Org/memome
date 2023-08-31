@@ -54,7 +54,7 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     }
 
     try {
-        const uploadPromises = files.map(async (file: File) => {
+        filesArr = await Promise.all(files.map(async (file: File) => {
             const tempFile = await handleFile(
                 res,
                 file,
@@ -66,9 +66,7 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
             await uploadS3(tempFile.buffer, path, type)
             const url = await getS3(path)
             return { path, url, type }
-        })
-
-        filesArr = await Promise.all(uploadPromises)
+        }))
     } catch {
         try {
             if (filesArr.length > 0) {
