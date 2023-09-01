@@ -19,29 +19,33 @@ const verifyUser = expressAsyncHandler(async (req: Request, res: Response, next:
         token,
         process.env.JWT_SECRET!,
         async (err: any, decoded: any) => {
-
-            if (err) {
-                sendError(res, StatusCodes.Forbidden, 'Access Denied.')
-                return
-            }
-
-            const user = await prisma.users.findFirst({
-                where: {
-                    login_token: token
+            try {
+                if (err) {
+                    sendError(res, StatusCodes.Forbidden, 'Access Denied.')
+                    return
                 }
-            })
 
-            if (!user) {
-                sendError(res, StatusCodes.Forbidden, 'Access Denied.')
+                const user = await prisma.users.findFirst({
+                    where: {
+                        login_token: token
+                    }
+                })
+
+                if (!user) {
+                    sendError(res, StatusCodes.Forbidden, 'Access Denied.')
+                    return
+                }
+
+                // @ts-ignore
+                req.username = decoded.username
+                // @ts-ignore
+                req.userId = decoded.id
+
+                next()
+            } catch {
+                sendError(res, StatusCodes.BadRequest, 'Something went wrong.')
                 return
             }
-
-            // @ts-ignore
-            req.username = decoded.username
-            // @ts-ignore
-            req.userId = decoded.id
-
-            next()
         }
     )
 })
