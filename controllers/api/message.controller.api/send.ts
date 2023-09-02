@@ -58,7 +58,7 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
             const tempFile = await handleFile(
                 res,
                 file,
-                MaxSize['6MB'],
+                MaxSize['9MB'],
                 'jpg', 'png', 'mp4'
             )
             const type = tempFile.type
