@@ -1,7 +1,7 @@
 enum MaxSize {
-    "4MB" = 4_194_304,
-    "6MB" = 6_291_456,
-    "9MB" = 9_437_184,
+    "5MB" = 5_242_880, // avatars
+    "9MB" = 9_437_184, // messages
+    "14MB" = 14_680_064, // polls
 }
 
 export default MaxSize
