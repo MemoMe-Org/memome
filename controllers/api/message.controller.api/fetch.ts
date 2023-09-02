@@ -9,8 +9,14 @@ const expressAsyncHandler = require('express-async-handler')
 
 const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     const { userId } = req.params
-    let isAuthenticated = false
+    let { page = 1, limit = 10 } = req.query
+
     let token = ''
+    let isAuthenticated = false
+
+    page = Number(page)
+    limit = Number(limit)
+    const offset = (page - 1) * Number(limit)
 
     const authHeader = req.headers?.authorization
     if (authHeader?.startsWith('Bearer ')) {
@@ -31,7 +37,9 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     let messages = await prisma.message.findMany({
         where: {
             userId: user.id,
-        }
+        },
+        skip: offset,
+        take: limit
     })
 
     jwt.verify(
@@ -49,7 +57,9 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
             where: {
                 userId: user.id,
                 private: false
-            }
+            },
+            skip: offset,
+            take: limit
         })
     }
 
