@@ -20,7 +20,7 @@ router.route(
     checkUser
 ).post(
     [
-        upload.array('anon_files', 2),
+        upload.array('anon_files', 4),
         limit({
             max: 1,
             timerArr: [5, 9],
