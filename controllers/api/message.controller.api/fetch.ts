@@ -16,7 +16,7 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
 
     page = Number(page)
     limit = Number(limit)
-    const offset = (page - 1) * Number(limit)
+    const offset = (page - 1) * limit
 
     const authHeader = req.headers?.authorization
     if (authHeader?.startsWith('Bearer ')) {
