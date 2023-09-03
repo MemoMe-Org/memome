@@ -31,7 +31,7 @@ router.route(
 )
 
 router.get('/:userId', fetchMsg)
-router.get(
+router.put(
     '/edit/:msgId',
     verifyUser,
     editMsgVisibility
