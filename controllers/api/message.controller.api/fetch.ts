@@ -42,6 +42,12 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
         take: limit
     })
 
+    let totalMessagesCount = await prisma.message.count({
+        where: {
+            userId: user.id
+        }
+    })
+
     jwt.verify(
         token,
         process.env.JWT_SECRET!,
@@ -61,6 +67,13 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
             skip: offset,
             take: limit
         })
+
+        totalMessagesCount = await prisma.message.count({
+            where: {
+                userId: user.id,
+                private: false,
+            }
+        })
     }
 
     const decrytedMsgs = await Promise.all(messages.map(async (message) => {
@@ -75,7 +88,7 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
 
     sendSuccess(res, StatusCodes.OK, {
         messages: sortByDates(decrytedMsgs),
-        length: decrytedMsgs.length
+        length: totalMessagesCount
     })
 })
 
