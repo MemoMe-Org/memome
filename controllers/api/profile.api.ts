@@ -5,9 +5,9 @@ import { Request, Response } from 'express'
 import MaxSize from '../../enums/fileMaxSizes'
 import StatusCodes from '../../enums/StatusCodes'
 import genFileName from '../../utils/genFileName'
+import expressAsyncHandler from 'express-async-handler'
 import { deleteS3, getS3, uploadS3 } from '../../utils/s3'
 import { sendError, sendSuccess } from '../../utils/sendRes'
-const expressAsyncHandler = require('express-async-handler')
 
 const profile = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore

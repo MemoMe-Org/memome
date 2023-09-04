@@ -1,8 +1,8 @@
 import prisma from '../../../prisma'
 import { Request, Response } from 'express'
 import StatusCodes from '../../../enums/StatusCodes'
+import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../../../utils/sendRes'
-const expressAsyncHandler = require('express-async-handler')
 
 const editMsgVisibility = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore

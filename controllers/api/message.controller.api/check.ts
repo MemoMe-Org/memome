@@ -2,8 +2,8 @@ import jwt from 'jsonwebtoken'
 import prisma from '../../../prisma'
 import { Request, Response } from 'express'
 import StatusCodes from '../../../enums/StatusCodes'
+import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../../../utils/sendRes'
-const expressAsyncHandler = require('express-async-handler')
 
 const increment = async (username: string) => {
     await prisma.users.update({
