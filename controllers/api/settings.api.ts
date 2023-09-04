@@ -8,18 +8,16 @@ const settings = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
     const userId = req.userId
 
-    const user = await prisma.settings.findUnique({
-        where: {
-            id: userId
-        }
+    const settings = await prisma.settings.findUnique({
+        where: { userId }
     })
 
-    if (!user) {
+    if (!settings) {
         sendError(res, StatusCodes.NotFound, 'Something went wrong.')
         return
     }
 
-    sendSuccess(res, StatusCodes.OK, { user })
+    sendSuccess(res, StatusCodes.OK, { settings })
 })
 
 
@@ -29,14 +27,12 @@ const toggles = expressAsyncHandler(async (req: Request, res: Response) => {
     const { type } = req.params
     const { toggle } = req.body
 
-    const user = await prisma.users.findUnique({
-        where: {
-            id: userId
-        }
+    const settings = await prisma.settings.findUnique({
+        where: { userId }
     })
 
-    if (!user) {
-        sendError(res, StatusCodes.NotFound, 'Something went wrong.')
+    if (!settings) {
+        sendError(res, StatusCodes.Conflict, 'Something went wrong.')
         return
     }
 
