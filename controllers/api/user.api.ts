@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken'
 import prisma from '../../prisma'
 import { Request, Response } from 'express'
 import StatusCodes from '../../enums/StatusCodes'
@@ -6,6 +7,14 @@ import { sendError, sendSuccess } from '../../utils/sendRes'
 
 const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
     const { username } = req.params
+
+    let token = ''
+    let isAuthenticated = false
+
+    const authHeader = req.headers?.authorization
+    if (authHeader?.startsWith('Bearer ')) {
+        token = authHeader.split(' ')[1]
+    }
 
     const user = await prisma.users.findUnique({
         where: { username },
@@ -23,12 +32,25 @@ const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
+    jwt.verify(
+        token,
+        process.env.JWT_SECRET!,
+        (err: any, decoded: any) => {
+            if (decoded?.user === user.username) {
+                isAuthenticated = true
+            }
+        }
+    )
+
     if (user.Account?.disabled) {
         sendError(res, StatusCodes.Unauthorized)
         return
     }
 
-    sendSuccess(res, StatusCodes.OK)
+    sendSuccess(res, StatusCodes.OK, {
+        ...user,
+        isAuthenticated
+    })
 })
 
 export default userProfile
