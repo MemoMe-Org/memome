@@ -14,6 +14,7 @@ import cors, { CorsOptions } from 'cors'
 
 // import routes
 import authRoute from './routes/auth.route'
+import userApi from './routes/api/user.api.route'
 import msgApiRoute from './routes/api/msg.api.route'
 import authApiRoute from './routes/api/auth.api.route'
 
@@ -62,7 +63,8 @@ app.use(passport.session())
 
 // intialize routes
 app.use('/auth', authRoute)
-app.use('/auth/api', authApiRoute)
 app.use('/api/msg', msgApiRoute)
+app.use('/auth/api', authApiRoute)
+app.use('/api/user/', msgApiRoute)
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`))
