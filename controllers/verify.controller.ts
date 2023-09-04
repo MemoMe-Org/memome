@@ -3,8 +3,8 @@ import prisma from '../prisma'
 import { OTPAction } from '../type'
 import { Request, Response } from 'express'
 import StatusCodes from '../enums/StatusCodes'
+import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../utils/sendRes'
-const expressAsyncHandler = require('express-async-handler')
 
 const resetOTP = async (email: string, action: OTPAction) => {
     await prisma.users.update({

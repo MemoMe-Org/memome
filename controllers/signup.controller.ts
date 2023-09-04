@@ -5,9 +5,9 @@ import StatusCodes from '../enums/StatusCodes'
 import welcome from '../services/welcome.mail'
 import connectModels from '../utils/connect-models'
 import genRandomString from '../utils/genRandomString'
+import expressAsyncHandler from 'express-async-handler'
 import { USER_REGEX, EMAIL_REGEX } from '../utils/RegExp'
 import { sendError, sendSuccess } from '../utils/sendRes'
-const expressAsyncHandler = require('express-async-handler')
 
 const signup = expressAsyncHandler(async (req: Request, res: Response) => {
     let { email, password, password2 } = req.body

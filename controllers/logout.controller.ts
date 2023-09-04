@@ -1,7 +1,7 @@
 import prisma from '../prisma'
 import { Request, Response } from 'express'
 import StatusCodes from '../enums/StatusCodes'
-const expressAsyncHandler = require('express-async-handler')
+import expressAsyncHandler from 'express-async-handler'
 
 const clear = (req: Request, res: Response) => {
     const cookieNames = Object.keys(req.cookies)

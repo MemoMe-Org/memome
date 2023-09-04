@@ -6,8 +6,8 @@ import { EMAIL_REGEX } from '../utils/RegExp'
 import StatusCodes from '../enums/StatusCodes'
 import newLogin from '../services/new-login.mail'
 import { enc_decrypt } from '../utils/enc_decrypt'
+import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../utils/sendRes'
-const expressAsyncHandler = require('express-async-handler')
 
 const login = expressAsyncHandler(async (req: Request, res: Response) => {
     let { userId, password } = req.body

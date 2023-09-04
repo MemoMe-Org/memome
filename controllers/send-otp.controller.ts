@@ -4,8 +4,8 @@ import { Request, Response } from 'express'
 import { EMAIL_REGEX } from '../utils/RegExp'
 import StatusCodes from '../enums/StatusCodes'
 import sendOTP from '../services/send-otp.mail'
+import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../utils/sendRes'
-const expressAsyncHandler = require('express-async-handler')
 
 const sendOtp = expressAsyncHandler(async (req: Request, res: Response) => {
     let { email } = req.body
