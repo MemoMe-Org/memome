@@ -102,7 +102,7 @@ const changeAvatar = expressAsyncHandler(async (req: Request, res: Response) => 
             MaxSize['5MB'],
             'jpg', 'png',
         )
-        const path = `Avatar/${user.id}/${genFileName()}.${file.extension}`
+        const path = `Avatar/${userId}/${genFileName()}.${file.extension}`
         const url = await getS3(path)
         const type = file.mimetype
 
