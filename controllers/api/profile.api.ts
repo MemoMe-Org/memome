@@ -113,9 +113,7 @@ const changeAvatar = expressAsyncHandler(async (req: Request, res: Response) => 
         await prisma.profiles.update({
             where: { userId },
             data: {
-                avatar: {
-                    url, path, type
-                }
+                avatar: { url, path, type }
             }
         })
     } catch {
