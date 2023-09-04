@@ -40,17 +40,6 @@ const deleteAvatar = expressAsyncHandler(async (req: Request, res: Response) => 
     // @ts-ignore
     const userId = req.userId
 
-    const user = await prisma.users.findUnique({
-        where: {
-            id: userId
-        }
-    })
-
-    if (!user) {
-        sendError(res, StatusCodes.NotFound, 'User not found.')
-        return
-    }
-
     const profile = await prisma.profiles.findUnique({
         where: { userId }
     })
