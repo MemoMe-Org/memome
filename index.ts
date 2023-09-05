@@ -63,8 +63,8 @@ app.use(passport.session())
 
 // intialize routes
 app.use('/auth', authRoute)
+app.use('/api/user/', userApi)
 app.use('/api/msg', msgApiRoute)
 app.use('/auth/api', authApiRoute)
-app.use('/api/user/', msgApiRoute)
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`))
