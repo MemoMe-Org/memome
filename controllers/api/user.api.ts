@@ -58,7 +58,7 @@ const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
                     })
                     isAuthenticated = true
                 } catch {
-                        isAuthenticated = false
+                    isAuthenticated = false
                 }
             }
         }
