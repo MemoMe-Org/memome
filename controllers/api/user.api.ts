@@ -19,6 +19,7 @@ const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
     const user = await prisma.users.findUnique({
         where: { username },
         select: {
+            id: true,
             Profile: true,
             Account: true,
             Settings: true,
@@ -36,7 +37,7 @@ const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
         token,
         process.env.JWT_SECRET!,
         (err: any, decoded: any) => {
-            if (decoded?.user === user.username) {
+            if (decoded?.username === user.username) {
                 isAuthenticated = true
             }
         }
@@ -47,9 +48,19 @@ const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
+    await prisma.profiles.update({
+        where: {
+            userId: user.id
+        },
+        data: {
+            views: {
+                increment: 1
+            }
+        }
+    })
+
     sendSuccess(res, StatusCodes.OK, {
-        ...user,
-        isAuthenticated
+        user: { ...user, isAuthenticated }
     })
 })
 
