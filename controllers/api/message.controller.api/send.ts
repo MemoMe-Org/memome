@@ -35,7 +35,7 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     }
 
     if (!user.Settings?.allow_texts) {
-        texts = undefined
+        texts = null
     }
 
     if (user.Account?.disabled) {
