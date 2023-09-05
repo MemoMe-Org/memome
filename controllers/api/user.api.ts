@@ -46,21 +46,19 @@ const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
             if (err) {
                 isAuthenticated = false
             } else {
-                if (decoded?.user) {
-                    try {
-                        authUser = await prisma.users.findUnique({
-                            where: {
-                                username: decoded?.user
-                            },
-                            select: {
-                                Profile: true,
-                                username: true,
-                            }
-                        })
-                        isAuthenticated = true
-                    } catch {
+                try {
+                    authUser = await prisma.users.findUnique({
+                        where: {
+                            username: decoded?.user
+                        },
+                        select: {
+                            Profile: true,
+                            username: true,
+                        }
+                    })
+                    isAuthenticated = true
+                } catch {
                         isAuthenticated = false
-                    }
                 }
             }
         }
