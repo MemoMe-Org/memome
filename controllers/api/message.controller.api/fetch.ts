@@ -52,7 +52,7 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
         token,
         process.env.JWT_SECRET!,
         (err: any, decoded: any) => {
-            if (decoded?.username === user?.username) {
+            if (decoded?.user === user?.username) {
                 isAuthenticated = true
             }
         }
