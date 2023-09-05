@@ -9,6 +9,7 @@ const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
     const { username } = req.params
 
     let token = ''
+    let authUser: any
     let isAuthenticated = false
 
     const authHeader = req.headers?.authorization
@@ -33,20 +34,37 @@ const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    jwt.verify(
-        token,
-        process.env.JWT_SECRET!,
-        (err: any, decoded: any) => {
-            if (decoded?.username === user.username) {
-                isAuthenticated = true
-            }
-        }
-    )
-
     if (user.Account?.disabled) {
         sendError(res, StatusCodes.Unauthorized)
         return
     }
+
+    jwt.verify(
+        token,
+        process.env.JWT_SECRET!,
+        async (err: any, decoded: any) => {
+            if (err) {
+                isAuthenticated = false
+            } else {
+                if (decoded?.user) {
+                    try {
+                        authUser = await prisma.users.findUnique({
+                            where: {
+                                username: decoded?.user
+                            },
+                            select: {
+                                Profile: true,
+                                username: true,
+                            }
+                        })
+                        isAuthenticated = true
+                    } catch {
+                        isAuthenticated = false
+                    }
+                }
+            }
+        }
+    )
 
     await prisma.profiles.update({
         where: {
@@ -60,7 +78,7 @@ const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     sendSuccess(res, StatusCodes.OK, {
-        user: { ...user, isAuthenticated }
+        user: { ...user, authUser, isAuthenticated }
     })
 })
 
