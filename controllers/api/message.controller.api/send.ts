@@ -61,7 +61,7 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
                 MaxSize['9MB'],
                 'jpg', 'png', 'mp4'
             )
-            const type = tempFile.type
+            const type = tempFile.mimetype
             const path = `Message/${user.id}/${genFileName()}.${tempFile.extension}`
             await uploadS3(tempFile.buffer, path, type)
             const url = await getS3(path)
