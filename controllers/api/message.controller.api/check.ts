@@ -58,7 +58,7 @@ const checkUser = expressAsyncHandler(async (req: Request, res: Response) => {
         token,
         process.env.JWT_SECRET!,
         (err: any, decoded: any) => {
-            if (decoded?.user === user.username) {
+            if (decoded?.user === username) {
                 isAuthenticated = true
             }
         }
