@@ -64,27 +64,27 @@ const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
                         }
                     })
                 }
-                try {
-                    authUser = await prisma.users.findUnique({
-                        where: {
-                            username: decoded?.user
-                        },
-                        select: {
-                            Profile: true,
-                            username: true,
-                        }
-                    })
+                authUser = await prisma.users.findUnique({
+                    where: {
+                        username: decoded?.user
+                    },
+                    select: {
+                        Profile: true,
+                        username: true,
+                    }
+                })
+
+                if (authUser) {
                     isAuthenticated = true
-                } catch {
-                    isAuthenticated = false
                 }
+
+                sendSuccess(res, StatusCodes.OK, {
+                    user,
+                    authUser: { ...authUser, isAuthenticated }
+                })
             }
         }
     )
-
-    sendSuccess(res, StatusCodes.OK, {
-        user: { ...user, authUser, isAuthenticated }
-    })
 })
 
 export default userProfile
