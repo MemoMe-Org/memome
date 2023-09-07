@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import verifyUser from '../../middlewares/verifyUser'
 import limit from '../../middlewares/limiter.middleware'
 import upload from '../../middlewares/upload.middleware'
+import verifyUser from '../../middlewares/verifyUser.middleware'
 import sendMsg from '../../controllers/api/message.controller.api/send'
 import fetchMsg from '../../controllers/api/message.controller.api/fetch'
 import checkUser from '../../controllers/api/message.controller.api/check'

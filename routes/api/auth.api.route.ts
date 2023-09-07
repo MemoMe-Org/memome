@@ -3,8 +3,8 @@ import profile, {
     changeAvatar, deleteAvatar
 } from '../../controllers/api/profile.api'
 import settingsRoutes from './settings.api.route'
-import verifyUser from '../../middlewares/verifyUser'
 import upload from '../../middlewares/upload.middleware'
+import verifyUser from '../../middlewares/verifyUser.middleware'
 
 const router: Router = Router()
 
