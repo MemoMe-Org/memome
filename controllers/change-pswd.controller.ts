@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt'
 import prisma from '../prisma'
 import { Request, Response } from 'express'
-import { sendError } from '../utils/sendRes'
 import StatusCodes from '../enums/StatusCodes'
 import expressAsyncHandler from 'express-async-handler'
+import { sendError, sendSuccess } from '../utils/sendRes'
 
 const editPswd = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
@@ -51,6 +51,8 @@ const editPswd = expressAsyncHandler(async (req: Request, res: Response) => {
             password: await bcrypt.hash(pswd, 10)
         }
     })
+
+    sendSuccess(res, StatusCodes.OK, { msg: 'Password successfully updated.' })
 })
 
 export { editPswd }
