@@ -5,6 +5,30 @@ import StatusCodes from '../../enums/StatusCodes'
 import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../../utils/sendRes'
 
+
+const account = expressAsyncHandler(async (req: Request, res: Response) => {
+    // @ts-ignore
+    const userId = req.userId
+
+    const user = await prisma.users.findUnique({
+        where: {
+            id: userId
+        },
+        select: {
+            Profile: true,
+            Account: true,
+            username: true,
+        }
+    })
+
+    if (!user) {
+        sendError(res, StatusCodes.NotFound, 'Something went wrong.')
+        return
+    }
+
+    sendSuccess(res, StatusCodes.OK, { user })
+})
+
 const editUsername = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
     const user = req.userId
@@ -50,4 +74,5 @@ const editDisability = expressAsyncHandler(async (req: Request, res: Response) =
     sendSuccess(res, StatusCodes.OK, { msg: 'Successful.' })
 })
 
+export default account
 export { editUsername, editDisability }
