@@ -8,16 +8,23 @@ const settings = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
     const userId = req.userId
 
-    const settings = await prisma.settings.findUnique({
-        where: { userId }
+    const user = await prisma.users.findUnique({
+        where: {
+            id: userId
+        },
+        select: {
+            Profile: true,
+            Settings: true,
+            username: true,
+        }
     })
 
-    if (!settings) {
+    if (!user) {
         sendError(res, StatusCodes.NotFound, 'Something went wrong.')
         return
     }
 
-    sendSuccess(res, StatusCodes.OK, { settings })
+    sendSuccess(res, StatusCodes.OK, { user })
 })
 
 
