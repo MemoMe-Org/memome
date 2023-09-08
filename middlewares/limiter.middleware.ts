@@ -1,8 +1,9 @@
-import { ILimiter } from '../interfaces'
+import { ILimiter } from '../type'
+import rateLimit, {
+    RateLimitRequestHandler, Options
+} from 'express-rate-limit'
 import { sendError } from '../utils/sendRes'
 import { Request, Response, NextFunction } from 'express'
-import rateLimit,
-{ RateLimitRequestHandler, Options } from 'express-rate-limit'
 
 export default function limit({
     max,

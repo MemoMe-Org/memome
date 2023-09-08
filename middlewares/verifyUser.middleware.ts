@@ -5,7 +5,11 @@ import StatusCodes from '../enums/StatusCodes'
 import { Request, Response, NextFunction } from 'express'
 const expressAsyncHandler = require('express-async-handler')
 
-const verifyUser = expressAsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+const verifyUser = expressAsyncHandler(async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const authHeader = req.headers.authorization
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
