@@ -5,7 +5,7 @@ import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../../../utils/sendRes'
 import { deleteS3 } from '../../../utils/s3'
 
-const editMsgVisibility = expressAsyncHandler(async (req: Request, res: Response) => {
+const deleteMessage = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
     const userId = req.userId
     const { msgId } = req.params
@@ -53,8 +53,8 @@ const editMsgVisibility = expressAsyncHandler(async (req: Request, res: Response
     })
 
     sendSuccess(res, StatusCodes.OK, {
-        msg: 'Message visibility changed.'
+        msg: 'Message deleted successfully.'
     })
 })
 
-export default editMsgVisibility
+export default deleteMessage
