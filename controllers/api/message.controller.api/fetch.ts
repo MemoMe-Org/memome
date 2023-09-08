@@ -88,7 +88,8 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
 
     sendSuccess(res, StatusCodes.OK, {
         messages: sortByDates(decrytedMsgs),
-        length: totalMessagesCount
+        length: totalMessagesCount,
+        isAuthenticated
     })
 })
 
