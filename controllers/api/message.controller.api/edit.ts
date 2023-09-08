@@ -8,7 +8,6 @@ const editMsgVisibility = expressAsyncHandler(async (req: Request, res: Response
     // @ts-ignore
     const userId = req.userId
     const { msgId } = req.params
-    const { visibility } = req.query
 
     const user = await prisma.users.findUnique({
         where: {
@@ -21,30 +20,27 @@ const editMsgVisibility = expressAsyncHandler(async (req: Request, res: Response
         return
     }
 
-    switch (visibility) {
-        case 'public':
-            await prisma.message.update({
-                where: {
-                    userId,
-                    id: msgId
-                },
-                data: {
-                    private: false
-                }
-            })
-            break
-        case 'private':
-            await prisma.message.update({
-                where: {
-                    userId,
-                    id: msgId
-                },
-                data: {
-                    private: true
-                }
-            })
-            break
+    const message = await prisma.message.findUnique({
+        where: {
+            userId,
+            id: msgId
+        },
+    })
+
+    if (!message) {
+        sendError(res, StatusCodes.NotFound, 'Message not found.')
+        return
     }
+
+    await prisma.message.update({
+        where: {
+            userId,
+            id: msgId
+        },
+        data: {
+            private: !message.private
+        }
+    })
 
     sendSuccess(res, StatusCodes.OK, {
         msg: 'Message visibility changed.'
