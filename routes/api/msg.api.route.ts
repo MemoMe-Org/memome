@@ -5,6 +5,7 @@ import verifyUser from '../../middlewares/verifyUser.middleware'
 import sendMsg from '../../controllers/api/message.controller.api/send'
 import fetchMsg from '../../controllers/api/message.controller.api/fetch'
 import checkUser from '../../controllers/api/message.controller.api/check'
+import deleteMessage from '../../controllers/api/message.controller.api/delete'
 import editMsgVisibility from '../../controllers/api/message.controller.api/edit'
 
 const router: Router = Router()
@@ -31,10 +32,17 @@ router.route(
 )
 
 router.get('/:userId', fetchMsg)
-router.put(
+
+router.get(
     '/edit/:msgId',
     verifyUser,
     editMsgVisibility
+)
+
+router.delete(
+    '/delete/:msgId',
+    verifyUser,
+    deleteMessage
 )
 
 export default router
