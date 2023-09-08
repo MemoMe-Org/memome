@@ -6,7 +6,9 @@ import { signup } from '../controllers/signup.controller'
 import { logout } from '../controllers/logout.controller'
 import { sendOtp } from '../controllers/send-otp.controller'
 import { verify } from '../controllers/reset-pswd.controller'
+import verifyUser from '../middlewares/verifyUser.middleware'
 import { passport } from '../controllers/google/callback.google'
+import { editPswd } from '../controllers/change-pswd.controller'
 import { githubAuthCallback } from '../controllers/github/callback.github'
 
 const router: Router = Router()
@@ -47,7 +49,7 @@ router.get('/github', githubAuth)
 router.get('/github/callback', githubAuthCallback)
 
 
-// OTP
+// Password reset
 router.post('/verify', limit({
     max: 4,
     timerArr: [30 * 60],
@@ -58,5 +60,10 @@ router.post('/req-otp', limit({
     timerArr: [30 * 60],
     msg: 'Try again later..'
 }), sendOtp)
+router.post(
+    '/edit-pswd',
+    verifyUser,
+    editPswd,
+)
 
 export default router
