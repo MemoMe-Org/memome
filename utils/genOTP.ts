@@ -1,4 +1,4 @@
-import { IGenOTP } from '../interfaces'
+import { IGenOTP } from '../type'
 
 export default function generateOTP(length: number = 5): IGenOTP {
     let totp: string = ''
