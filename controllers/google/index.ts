@@ -1,7 +1,7 @@
 import prisma from '../../prisma'
 import { Request } from 'express'
 import { Profile } from 'passport'
-import genToken from '../../utils/genToken'
+import genTokens from '../../utils/genTokens'
 import { USER_REGEX } from '../../utils/RegExp'
 import welcome from '../../services/welcome.mail'
 import newLogin from '../../services/new-login.mail'
@@ -45,41 +45,22 @@ const googleAuth = async (
                 }
             })
 
-            await prisma.profiles.create({
-                data: {
-                    user: {
-                        connect: {
-                            id: user.id
-                        }
-                    },
-                    avatar: { url: profile.photos![0].value, path: '' },
-                }
-            })
-
-            await connectModels(user.id)
+            await connectModels(user.id, profile.photos![0].value)
 
             isProd && await welcome(username, email)
         }
-
-        const token = genToken(user.id, user.username, user.email)
 
         await prisma.users.update({
             where: {
                 username: user.username
             },
             data: {
-                login_token: token,
                 last_login: new Date().toISOString(),
                 ip_address: await enc_decrypt(ipAddress!, 'e'),
             }
         })
 
-        req?.res?.cookie('auth', token, {
-            domain: isProd ? '' : undefined,
-            secure: isProd,
-            sameSite: isProd ? 'none' : 'strict',
-            maxAge: 60 * 24 * 60 * 60 * 1000,
-        })
+        await genTokens(req?.res!, user.id, user.username)
 
         if (await enc_decrypt(user.ip_address!, 'd') !== ipAddress) {
             isProd && await newLogin(user.email, user.username, userAgent!, ipAddress!)
