@@ -12,7 +12,7 @@ const resetOTP = async (email: string, action: OTPAction) => {
         data: {
             totp: null,
             totp_expiry: null,
-            login_token: action === 'denied' ? undefined : '',
+            refresh_token: action === 'denied' ? undefined : '',
             email_verified: action === 'granted' ? true : undefined
         }
     })
