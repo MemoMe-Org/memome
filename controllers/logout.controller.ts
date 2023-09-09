@@ -13,12 +13,11 @@ const clear = (req: Request, res: Response) => {
 }
 
 const logout = expressAsyncHandler(async (req: Request, res: Response) => {
-    const cookies = req.cookies
-    if (!cookies?.refresh_token) {
+    const refresh_token = req.cookies?.refresh_token
+    if (!refresh_token) {
         return clear(req, res)
     }
 
-    const refresh_token = cookies.refresh_token
     const user = await prisma.users.findFirst({
         where: { refresh_token }
     })
@@ -30,7 +29,6 @@ const logout = expressAsyncHandler(async (req: Request, res: Response) => {
             username: user.username
         },
         data: {
-            access_token: null,
             refresh_token: null,
             last_logout: new Date().toISOString()
         }
