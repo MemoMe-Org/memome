@@ -1,6 +1,6 @@
 import prisma from '../prisma'
 
-const connectModels = async (id: string) => {
+const connectModels = async (id: string, url?: string) => {
     await prisma.accounts.create({
         data: {
             user: {
@@ -13,6 +13,18 @@ const connectModels = async (id: string) => {
         data: {
             user: {
                 connect: { id }
+            }
+        }
+    })
+
+    await prisma.profiles.create({
+        data: {
+            user: {
+                connect: { id }
+            },
+            avatar: {
+                url: url || '',
+                path: ''
             }
         }
     })
