@@ -6,45 +6,61 @@ import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../utils/sendRes'
 
 const refreshToken = expressAsyncHandler(async (req: Request, res: Response) => {
-    const refreshToken = req.cookies?.refresh_token
+    const refresh_token = req.cookies?.refresh_token
     if (!refreshToken) {
         sendError(res, StatusCodes.Unauthorized, 'Access Denied.')
         return
     }
 
-    try {
-        const isProd = process.env.NODE_ENV === 'production'
+    verify(
+        refresh_token,
+        process.env.JWT_SECRET!,
+        async (err: any, decoded: any) => {
+            try {
+                const isProd = process.env.NODE_ENV === 'production'
 
-        const decoded: any = verify(
-            refreshToken,
-            process.env.JWT_SECRET!
-        )
+                if (err) {
+                    sendError(res, StatusCodes.Forbidden, 'Access Denied.')
+                    return
+                }
 
-        const id = decoded.id
+                const id = decoded.id
+                const expiry = decoded.exp
 
-        const access_token = sign(
-            { id },
-            process.env.JWT_SECRET!,
-            { expiresIn: '20m' }
-        )
+                const user = await prisma.users.findFirst({
+                    where: { refresh_token }
+                })
 
-        await prisma.users.update({
-            where: { id },
-            data: { access_token }
-        })
+                if (!user) {
+                    sendError(res, StatusCodes.Forbidden, 'Invalid refresh token.')
+                    return
+                }
 
-        res.cookie('access_token', access_token, {
-            domain: isProd ? '' : undefined,
-            secure: isProd,
-            sameSite: isProd ? 'none' : 'strict',
-            maxAge: 20 * 60 * 1000,
-        })
+                if (Date.now() > expiry) {
+                    sendError(res, StatusCodes.Unauthorized, 'Access token expired.')
+                    return
+                }
 
-        sendSuccess(res, StatusCodes.OK)
-    } catch {
-        sendError(res, StatusCodes.Forbidden, 'Access Denied.')
-        return
-    }
+                const access_token = sign(
+                    { id },
+                    process.env.JWT_SECRET!,
+                    { expiresIn: '20m' }
+                )
+
+                res.cookie('access_token', access_token, {
+                    domain: isProd ? '' : undefined,
+                    secure: isProd,
+                    sameSite: isProd ? 'none' : 'strict',
+                    maxAge: 20 * 60 * 1000,
+                })
+
+                sendSuccess(res, StatusCodes.OK, { access_token })
+            } catch {
+                sendError(res, StatusCodes.Forbidden, 'Something went wrong.')
+                return
+            }
+        }
+    )
 })
 
 export default refreshToken
