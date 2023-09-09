@@ -15,7 +15,7 @@ const increment = async (username: string) => {
                         increment: 1
                     },
                     msg_point: {
-                        increment: 0.2
+                        increment: 0.3
                     }
                 }
             }
