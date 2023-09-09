@@ -100,7 +100,7 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
         },
         data: {
             msg_point: {
-                increment: filesArr.length > 0 ? 0.5 : 0.3
+                increment: filesArr.length > 0 ? 0.5 : 0.4
             }
         }
     })
