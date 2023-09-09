@@ -5,18 +5,17 @@ import prisma from '../prisma'
 const genTokens = async (
     res: Response,
     id: string,
-    user: string,
 ) => {
     const isProd = process.env.NODE_ENV === 'production'
 
     const access_token: Secret = jwt.sign(
-        { id, user },
+        { id },
         process.env.JWT_SECRET!,
         { expiresIn: '20m' }
     )
 
     const refresh_token: Secret = jwt.sign(
-        { id, user },
+        { id },
         process.env.JWT_SECRET!,
         { expiresIn: '90d' }
     )

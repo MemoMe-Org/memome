@@ -53,7 +53,7 @@ const login = expressAsyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    await genTokens(res, user.id, user.username)
+    await genTokens(res, user.id)
 
     if (await enc_decrypt(user.ip_address!, 'd') !== ipAddress) {
         isProd && await newLogin(user.email, user.username, userAgent!, ipAddress!)

@@ -60,7 +60,7 @@ const googleAuth = async (
             }
         })
 
-        await genTokens(req?.res!, user.id, user.username)
+        await genTokens(req?.res!, user.id)
 
         if (await enc_decrypt(user.ip_address!, 'd') !== ipAddress) {
             isProd && await newLogin(user.email, user.username, userAgent!, ipAddress!)
