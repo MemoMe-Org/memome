@@ -22,10 +22,7 @@ const genTokens = async (
 
     await prisma.users.update({
         where: { id },
-        data: {
-            access_token,
-            refresh_token,
-        }
+        data: { refresh_token }
     })
 
     res.cookie('access_token', access_token, {
