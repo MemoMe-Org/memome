@@ -5,6 +5,7 @@ import { login } from '../controllers/login.controller'
 import { signup } from '../controllers/signup.controller'
 import { logout } from '../controllers/logout.controller'
 import { sendOtp } from '../controllers/send-otp.controller'
+import refreshToken from '../controllers/refresh.controller'
 import { verify } from '../controllers/reset-pswd.controller'
 import verifyUser from '../middlewares/verifyUser.middleware'
 import { passport } from '../controllers/google/callback.google'
@@ -25,6 +26,7 @@ router.post('/login', limit({
 router.post('/signup', signup)
 
 router.get('/logout', logout)
+router.post('/refresh', refreshToken)
 
 
 // Google sign in
