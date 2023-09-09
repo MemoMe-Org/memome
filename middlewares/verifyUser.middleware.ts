@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import prisma from '../prisma'
 import { sendError } from '../utils/sendRes'
 import StatusCodes from '../enums/StatusCodes'
 import { Request, Response, NextFunction } from 'express'
@@ -24,15 +23,6 @@ const verifyUser = expressAsyncHandler(async (
         async (err: any, decoded: any) => {
             try {
                 if (err) {
-                    sendError(res, StatusCodes.Forbidden, 'Access Denied.')
-                    return
-                }
-
-                const user = await prisma.users.findFirst({
-                    where: { access_token }
-                })
-
-                if (!user) {
                     sendError(res, StatusCodes.Forbidden, 'Access Denied.')
                     return
                 }
