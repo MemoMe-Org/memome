@@ -10,17 +10,16 @@ const verifyUser = expressAsyncHandler(async (
     res: Response,
     next: NextFunction
 ) => {
-    const authHeader = req.headers.authorization
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const cookies = req.cookies
+    if (!cookies?.access_token) {
         sendError(res, StatusCodes.Unauthorized, 'Access Denied.')
         return
     }
 
-    const token = authHeader.split(' ')[1]
+    const access_token = cookies.access_token
 
     jwt.verify(
-        token,
+        access_token,
         process.env.JWT_SECRET!,
         async (err: any, decoded: any) => {
             try {
@@ -30,9 +29,7 @@ const verifyUser = expressAsyncHandler(async (
                 }
 
                 const user = await prisma.users.findFirst({
-                    where: {
-                        login_token: token
-                    }
+                    where: { access_token }
                 })
 
                 if (!user) {
@@ -40,8 +37,6 @@ const verifyUser = expressAsyncHandler(async (
                     return
                 }
 
-                // @ts-ignore
-                req.username = decoded.username
                 // @ts-ignore
                 req.userId = decoded.id
 
