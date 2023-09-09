@@ -2,8 +2,8 @@
 const EMAIL_REGEX: RegExp = /^[^\s@]+@(gmail\.com|yahoo\.com|outlook\.com|icloud\.com|fastmail\.com)$/i
 
 const restrictedUser: string[] = [
-    "profile", "admin", "account", "api", "root", "wp-admin", "user",
-    "signup", "login", "edit", "password", "reset", "logout", "memome"
+    "profile", "admin", "account", "api", "root", "user",
+    "signup", "login", "edit", "password", "reset", "logout", "memome", "account", "anon", "home", "reset", "auth", "main", "poll", "vote"
 ]
 
 const USER_REGEX = new RegExp(`^(?!(?:${restrictedUser.join('|')}))[a-zA-Z][a-zA-Z0-9-_]{2,32}$`)
