@@ -45,6 +45,15 @@ const deleteMessage = expressAsyncHandler(async (req: Request, res: Response) =>
         })
     }
 
+    await prisma.profiles.update({
+        where: { userId },
+        data: {
+            msg_point: {
+                decrement: files.length > 0 ? 0.5 : 0.4
+            }
+        }
+    })
+
     await prisma.message.delete({
         where: {
             userId,
