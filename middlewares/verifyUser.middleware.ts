@@ -10,13 +10,13 @@ const verifyUser = expressAsyncHandler(async (
     res: Response,
     next: NextFunction
 ) => {
-    const cookies = req.cookies
-    if (!cookies?.access_token) {
+    const authHeader = req.headers?.authorization
+    if (!authHeader || !authHeader?.startsWith('Bearer ')) {
         sendError(res, StatusCodes.Unauthorized, 'Access Denied.')
         return
     }
 
-    const access_token = cookies.access_token
+    const access_token = authHeader.split(' ')[1]
 
     jwt.verify(
         access_token,
