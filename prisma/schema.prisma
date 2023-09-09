@@ -21,7 +21,8 @@ model Users {
     last_login     String?
     last_logout    String?
     ip_address     String?
-    login_token    String?
+    refresh_token  String?
+    access_token   String?
     auth_method    AuthMethod
     Profile        Profiles?
     Account        Accounts?
