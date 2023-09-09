@@ -13,16 +13,14 @@ const clear = (req: Request, res: Response) => {
 }
 
 const logout = expressAsyncHandler(async (req: Request, res: Response) => {
-    const authHeader = req.headers.authorization
-    if (!authHeader || !authHeader.startsWith('Bearer')) {
+    const cookies = req.cookies
+    if (!cookies?.refresh_token) {
         return clear(req, res)
     }
 
-    const token = authHeader.split(' ')[1]
+    const refresh_token = cookies.refresh_token
     const user = await prisma.users.findFirst({
-        where: {
-            login_token: token
-        }
+        where: { refresh_token }
     })
 
     if (!user) return clear(req, res)
@@ -32,7 +30,8 @@ const logout = expressAsyncHandler(async (req: Request, res: Response) => {
             username: user.username
         },
         data: {
-            login_token: null,
+            access_token: null,
+            refresh_token: null,
             last_logout: new Date().toISOString()
         }
     })
