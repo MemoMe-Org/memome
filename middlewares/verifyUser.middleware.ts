@@ -27,6 +27,11 @@ const verifyUser = expressAsyncHandler(async (
                     return
                 }
 
+                if (Date.now() > decoded.exp) {
+                    sendError(res, StatusCodes.Unauthorized, 'Access token expired.')
+                    return
+                }
+
                 // @ts-ignore
                 req.userId = decoded.id
 
