@@ -32,7 +32,7 @@ const genTokens = async (
         maxAge: 20 * 60 * 1000,
     })
 
-    res.cookie('access_token', refresh_token, {
+    res.cookie('refresh_token', refresh_token, {
         domain: isProd ? '' : undefined,
         secure: isProd,
         sameSite: isProd ? 'none' : 'strict',
