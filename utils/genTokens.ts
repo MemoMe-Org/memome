@@ -1,6 +1,6 @@
+import prisma from '../prisma'
 import { Response } from 'express'
 import jwt, { Secret } from 'jsonwebtoken'
-import prisma from '../prisma'
 
 const genTokens = async (
     res: Response,
