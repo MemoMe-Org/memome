@@ -10,7 +10,7 @@ const verifyUser = expressAsyncHandler(async (
     next: NextFunction
 ) => {
     const authHeader = req.headers?.authorization
-    if (!authHeader || !authHeader?.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader?.startsWith('Bearer')) {
         sendError(res, StatusCodes.Unauthorized, 'Access Denied.')
         return
     }
@@ -32,7 +32,7 @@ const verifyUser = expressAsyncHandler(async (
 
                 next()
             } catch {
-                sendError(res, StatusCodes.BadRequest, 'Something went wrong.')
+                sendError(res, StatusCodes.Forbidden, 'Something went wrong.')
                 return
             }
         }
