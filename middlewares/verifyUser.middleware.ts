@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import { sendError } from '../utils/sendRes'
 import StatusCodes from '../enums/StatusCodes'
 import { Request, Response, NextFunction } from 'express'
+import prisma from '../prisma'
 const expressAsyncHandler = require('express-async-handler')
 
 const verifyUser = expressAsyncHandler(async (
@@ -27,13 +28,27 @@ const verifyUser = expressAsyncHandler(async (
                     return
                 }
 
-                if (Date.now() > decoded.exp) {
+                if ((Date.now() / 1000) > decoded.exp) {
                     sendError(res, StatusCodes.Unauthorized, 'Access token expired.')
                     return
                 }
 
+                const user = await prisma.users.findUnique({
+                    where: {
+                        id: decoded.id
+                    },
+                    select: {
+                        id: true
+                    }
+                })
+
+                if (!user) {
+                    sendError(res, StatusCodes.Forbidden, 'Access Denied.')
+                    return
+                }
+
                 // @ts-ignore
-                req.userId = decoded.id
+                req.userId = user.id
 
                 next()
             } catch {
