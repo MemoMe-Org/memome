@@ -14,7 +14,7 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     const { username } = req.params
 
     let filesArr: any[] = []
-    const files = req.files as any[] || []
+    let files = req.files as any[] || []
 
     const user = await prisma.users.findUnique({
         where: { username },
@@ -31,7 +31,7 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     }
 
     if (!user.Settings?.allow_files) {
-        filesArr = []
+        files = []
     }
 
     if (!user.Settings?.allow_texts) {
