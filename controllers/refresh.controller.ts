@@ -36,7 +36,7 @@ const refreshToken = expressAsyncHandler(async (req: Request, res: Response) => 
                     return
                 }
 
-                if (Date.now() > expiry) {
+                if ((Date.now() / 1000) > expiry) {
                     sendError(res, StatusCodes.Unauthorized, 'Refresh token expired.')
                     return
                 }
