@@ -1,6 +1,6 @@
 import prisma from '../prisma'
 import { Response } from 'express'
-import jwt, { Secret } from 'jsonwebtoken'
+import { Secret, sign } from 'jsonwebtoken'
 
 const genTokens = async (
     res: Response,
@@ -8,13 +8,13 @@ const genTokens = async (
 ) => {
     const isProd = process.env.NODE_ENV === 'production'
 
-    const access_token: Secret = jwt.sign(
+    const access_token: Secret = sign(
         { id },
         process.env.JWT_SECRET!,
         { expiresIn: '20m' }
     )
 
-    const refresh_token: Secret = jwt.sign(
+    const refresh_token: Secret = sign(
         { id },
         process.env.JWT_SECRET!,
         { expiresIn: '90d' }
