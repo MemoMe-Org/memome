@@ -26,14 +26,14 @@ const genTokens = async (
     })
 
     res.cookie('access_token', access_token, {
-        domain: isProd ? '' : undefined,
+        domain: isProd ? 'memome.one' : undefined,
         secure: isProd,
         sameSite: isProd ? 'none' : 'strict',
         maxAge: 20 * 60 * 1000,
     })
 
     res.cookie('refresh_token', refresh_token, {
-        domain: isProd ? '' : undefined,
+        domain: isProd ? 'memome.one' : undefined,
         secure: isProd,
         sameSite: isProd ? 'none' : 'strict',
         maxAge: 90 * 24 * 60 * 60 * 1000,
