@@ -30,12 +30,12 @@ const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     if (!user) {
-        sendError(res, StatusCodes.NotFound)
+        sendError(res, StatusCodes.NotFound, 'User not found.')
         return
     }
 
     if (user.Account?.disabled) {
-        sendError(res, StatusCodes.Unauthorized)
+        sendError(res, StatusCodes.Unauthorized, 'Account has been disabled.')
         return
     }
 
