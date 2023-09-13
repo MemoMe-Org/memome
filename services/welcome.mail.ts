@@ -1,7 +1,7 @@
-import sendEmail from '../utils/sendEmail'
+import { sendNodeEmail } from '../utils/sendEmail'
 
 const welcome = async (username: string, email: string) => {
-    await sendEmail({
+    await sendNodeEmail({
         to: email,
         subject: 'Welcome to MemoMe',
         body: `.. coming back`
