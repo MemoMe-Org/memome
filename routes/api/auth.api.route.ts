@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import profile, {
-    changeAvatar, deleteAvatar
+    changeAvatar, deleteAvatar, editBio
 } from '../../controllers/api/profile.api'
 import accountRoutes from './account.api.route'
 import settingsRoutes from './settings.api.route'
@@ -22,5 +22,7 @@ router.route(
     upload.single('avatar'),
     changeAvatar
 ).delete(deleteAvatar)
+
+router.patch('/bio', editBio)
 
 export default router
