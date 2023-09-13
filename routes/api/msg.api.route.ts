@@ -33,7 +33,7 @@ router.route(
 
 router.get('/:userId', fetchMsg)
 
-router.patch(
+router.get(
     '/edit/:msgId',
     verifyUser,
     editMsgVisibility
