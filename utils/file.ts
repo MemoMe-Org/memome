@@ -22,7 +22,7 @@ const handleFile = (
         sendError(
             res,
             StatusCodes.BadRequest,
-            `File extension is not allowed - ${file.originalname}`
+            `Invalid file format - ${file.originalname}`
         )
         return
     }
