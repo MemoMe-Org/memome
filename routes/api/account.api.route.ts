@@ -6,8 +6,8 @@ import account, {
 const router: Router = Router()
 
 router.get('/', account)
-router.put('/reset-pswd', editPswd)
-router.put('/username', editUsername)
-router.put('/disable', editDisability)
+router.patch('/reset-pswd', editPswd)
+router.patch('/username', editUsername)
+router.patch('/disable', editDisability)
 
 export default router
