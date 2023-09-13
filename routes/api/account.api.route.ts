@@ -1,12 +1,13 @@
 import { Router } from 'express'
 import account, {
-    editDisability, editUsername
+    editDisability, editUsername, editPswd
 } from '../../controllers/api/account.api'
 
 const router: Router = Router()
 
 router.get('/', account)
-router.post('/username', editUsername)
-router.post('/disable', editDisability)
+router.put('/reset-pswd', editPswd)
+router.put('/username', editUsername)
+router.put('/disable', editDisability)
 
 export default router
