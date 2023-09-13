@@ -70,18 +70,21 @@ const editUsername = expressAsyncHandler(async (req: Request, res: Response) => 
 const editDisability = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
     const userId = req.userId
-    const { toggle } = req.body
 
-    const account = await prisma.accounts.update({
+    const account = await prisma.accounts.findUnique({
+        where: { userId },
+    })
+
+    await prisma.accounts.update({
         where: { userId },
         data: {
-            disabled: toggle
+            disabled: !account?.disabled
         }
     })
 
     sendSuccess(res, StatusCodes.OK, {
         msg: 'Successful.',
-        disabled: account?.disabled
+        disabled: !account?.disabled
     })
 })
 
