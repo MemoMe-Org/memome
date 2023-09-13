@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt'
 import prisma from '../../prisma'
 import { Request, Response } from 'express'
 import { USER_REGEX } from '../../utils/RegExp'
@@ -74,5 +75,59 @@ const editDisability = expressAsyncHandler(async (req: Request, res: Response) =
     sendSuccess(res, StatusCodes.OK, { msg: 'Successful.' })
 })
 
+const editPswd = expressAsyncHandler(async (req: Request, res: Response) => {
+    // @ts-ignore
+    const userId = req.userId
+    const { pswd, password, password2 } = req.body
+
+    if (!pswd || !password || !password2) {
+        sendError(res, StatusCodes.BadRequest, 'All fields are required.')
+        return
+    }
+
+    if (password !== password2) {
+        sendError(res, StatusCodes.BadRequest, 'Passwords not match.')
+        return
+    }
+
+    const user = await prisma.users.findUnique({
+        where: {
+            id: userId
+        }
+    })
+
+    if (!user) {
+        sendError(res, StatusCodes.NotFound, 'Account not found.')
+        return
+    }
+
+    const authMethod = user.auth_method
+    if (!user.password) {
+        sendError(
+            res,
+            StatusCodes.BadRequest,
+            `Password cannot be edited. You signed in with ${authMethod}.`
+        )
+        return
+    }
+
+    const isMatch: boolean = await bcrypt.compare(pswd, user.password)
+    if (!isMatch) {
+        sendError(res, StatusCodes.Unauthorized, 'Current password is incorrect.')
+        return
+    }
+
+    await prisma.users.update({
+        where: {
+            id: userId
+        },
+        data: {
+            password: await bcrypt.hash(password, 10)
+        }
+    })
+
+    sendSuccess(res, StatusCodes.OK, { msg: 'Password successfully updated.' })
+})
+
 export default account
-export { editUsername, editDisability }
+export { editUsername, editDisability, editPswd }
