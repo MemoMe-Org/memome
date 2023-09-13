@@ -70,7 +70,7 @@ const editUsername = expressAsyncHandler(async (req: Request, res: Response) => 
 const editDisability = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
     const userId = req.userId
-    const toggle = Boolean(req.body?.toogle)
+    const { toggle } = req.body
 
     try {
         await prisma.accounts.update({
