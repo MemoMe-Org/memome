@@ -1,7 +1,7 @@
-import sendEmail from '../utils/sendEmail'
+import { sendPlunkEmail } from '../utils/sendEmail'
 
 const sendOTP = async (otp: string, email: string) => {
-    await sendEmail({
+    await sendPlunkEmail({
         to: email,
         subject: 'One-time password.',
         body: `.. coming back`
