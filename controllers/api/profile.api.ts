@@ -124,5 +124,23 @@ const changeAvatar = expressAsyncHandler(async (req: Request, res: Response) => 
     sendSuccess(res, StatusCodes.OK, { msg: 'Successfully changed.' })
 })
 
+const editBio = expressAsyncHandler(async (req: Request, res: Response) => {
+    // @ts-ignore
+    const userId = req.userId
+    const { bio } = req.body
+
+    if (bio?.length > 150) {
+        sendError(res, StatusCodes.PayloadTooLarge, 'Maximum is 150 chars.')
+        return
+    }
+
+    await prisma.profiles.update({
+        where: { userId },
+        data: {
+            bio: bio || ''
+        }
+    })
+})
+
 export default profile
-export { deleteAvatar, changeAvatar }
+export { deleteAvatar, changeAvatar, editBio }
