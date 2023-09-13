@@ -11,13 +11,13 @@ const genTokens = async (
     const access_token: Secret = sign(
         { id },
         process.env.JWT_SECRET!,
-        { expiresIn: '20m' }
+        { expiresIn: '2h' }
     )
 
     const refresh_token: Secret = sign(
         { id },
         process.env.JWT_SECRET!,
-        { expiresIn: '90d' }
+        { expiresIn: '120d' }
     )
 
     await prisma.users.update({
@@ -29,14 +29,14 @@ const genTokens = async (
         domain: isProd ? 'memome.one' : undefined,
         secure: isProd,
         sameSite: isProd ? 'none' : 'strict',
-        maxAge: 20 * 60 * 1000,
+        maxAge: 2 * 60 * 60 * 1000,
     })
 
     res.cookie('refresh_token', refresh_token, {
         domain: isProd ? 'memome.one' : undefined,
         secure: isProd,
         sameSite: isProd ? 'none' : 'strict',
-        maxAge: 90 * 24 * 60 * 60 * 1000,
+        maxAge: 120 * 24 * 60 * 60 * 1000,
     })
 }
 
