@@ -32,7 +32,6 @@ const toggles = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
     const userId = req.userId
     const { type } = req.params
-    const { toggle } = req.body
 
     const settings = await prisma.settings.findUnique({
         where: { userId }
@@ -43,34 +42,38 @@ const toggles = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
+    let updatedSettings
+
     switch (type) {
         case 'files':
-            await prisma.settings.update({
+            updatedSettings = await prisma.settings.update({
                 where: { userId },
                 data: {
-                    allow_files: toggle
+                    allow_files: !settings.allow_files
                 }
             })
             break
         case 'texts':
-            await prisma.settings.update({
+            updatedSettings = await prisma.settings.update({
                 where: { userId },
                 data: {
-                    allow_texts: toggle
+                    allow_texts: !settings.allow_texts
                 }
             })
             break
         case 'levels':
-            await prisma.settings.update({
+            updatedSettings = await prisma.settings.update({
                 where: { userId },
                 data: {
-                    show_levels: toggle
+                    show_levels: !settings.show_levels
                 }
             })
             break
+        default:
+            break
     }
 
-    sendSuccess(res, StatusCodes.OK)
+    sendSuccess(res, StatusCodes.OK, { settings: updatedSettings })
 })
 
 
