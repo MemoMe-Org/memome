@@ -44,14 +44,14 @@ const refreshToken = expressAsyncHandler(async (req: Request, res: Response) => 
                 const access_token = sign(
                     { id },
                     process.env.JWT_SECRET!,
-                    { expiresIn: '20m' }
+                    { expiresIn: '2h' }
                 )
 
                 res.cookie('access_token', access_token, {
                     domain: isProd ? 'memome.one' : undefined,
                     secure: isProd,
                     sameSite: isProd ? 'none' : 'strict',
-                    maxAge: 20 * 60 * 1000,
+                    maxAge: 2 * 60 * 60 * 1000,
                 })
 
                 sendSuccess(res, StatusCodes.OK, { access_token })
