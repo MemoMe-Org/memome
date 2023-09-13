@@ -40,6 +40,15 @@ const editUsername = expressAsyncHandler(async (req: Request, res: Response) => 
         return
     }
 
+    const userExists = await prisma.users.findUnique({
+        where: { username }
+    })
+
+    if (userExists) {
+        sendError(res, StatusCodes.BadRequest, 'Username has been taken.')
+        return
+    }
+
     try {
         await prisma.users.update({
             where: {
