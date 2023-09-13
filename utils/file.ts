@@ -31,7 +31,7 @@ const handleFile = (
         sendError(
             res,
             StatusCodes.PayloadTooLarge,
-            `${file.originalname} is too large. > ${maxSize / (1024 * 1024)}MB.`
+            `File too large. > ${maxSize / (1024 * 1024)}MB - ${file.originalname}`
         )
         return
     }
