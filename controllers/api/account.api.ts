@@ -52,7 +52,10 @@ const editUsername = expressAsyncHandler(async (req: Request, res: Response) => 
         return
     }
 
-    sendSuccess(res, StatusCodes.OK, { msg: 'Successful.' })
+    sendSuccess(res, StatusCodes.OK, {
+        msg: 'Successful.',
+        username
+    })
 })
 
 const editDisability = expressAsyncHandler(async (req: Request, res: Response) => {
