@@ -1,10 +1,10 @@
-import sendEmail from '../utils/sendEmail'
+import { sendNodeEmail } from '../utils/sendEmail'
 
 const newLogin = async (
     email: string, username: string,
     userAgent: string, ipAddress: string
 ) => {
-    await sendEmail({
+    await sendNodeEmail({
         to: email,
         subject: 'Login Notification',
         body: `.. coming back`
