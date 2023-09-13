@@ -7,7 +7,7 @@ const router: Router = Router()
 
 router.get('/', account)
 router.patch('/reset-pswd', editPswd)
+router.get('/disable', editDisability)
 router.patch('/username', editUsername)
-router.patch('/disable', editDisability)
 
 export default router
