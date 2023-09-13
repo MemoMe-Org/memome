@@ -6,7 +6,7 @@ import settings, {
 const router: Router = Router()
 
 router.get('/', settings)
-router.put('/toggle/:type', toggles)
-router.get('/msg-type', messageType) // takes query
+router.get('/msg-type', messageType)
+router.patch('/toggle/:type', toggles)
 
 export default router
