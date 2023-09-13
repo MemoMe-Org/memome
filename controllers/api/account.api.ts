@@ -72,19 +72,17 @@ const editDisability = expressAsyncHandler(async (req: Request, res: Response) =
     const userId = req.userId
     const { toggle } = req.body
 
-    try {
-        await prisma.accounts.update({
-            where: { userId },
-            data: {
-                disabled: toggle
-            }
-        })
-    } catch {
-        sendError(res, StatusCodes.BadRequest, 'Something went wrong.')
-        return
-    }
+    const user = await prisma.accounts.update({
+        where: { userId },
+        data: {
+            disabled: toggle
+        }
+    })
 
-    sendSuccess(res, StatusCodes.OK, { msg: 'Successful.' })
+    sendSuccess(res, StatusCodes.OK, {
+        msg: 'Successful.',
+        disabled: user?.disabled
+    })
 })
 
 const editPswd = expressAsyncHandler(async (req: Request, res: Response) => {
