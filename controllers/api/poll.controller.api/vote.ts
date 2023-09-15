@@ -12,14 +12,13 @@ import { sendError, sendSuccess } from '../../../utils/sendRes'
 const vote = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
     const userId = req.userId
-    const { optionId } = req.query
-    const { pollId, username } = req.params
+    const { pollId, optionId } = req.params
 
     const voted = await prisma.pollVote.findUnique({
         where: {
             userId,
             pollId,
-            optionId: optionId as string,
+            optionId
         }
     })
 
@@ -31,7 +30,9 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
     const newVote = await prisma.pollVote.create({
         where: {
             userId_optionId_pollId: {
-
+                userId,
+                pollId,
+                optionId
             }
         }
     })
@@ -51,7 +52,7 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
     const option = await prisma.option.update({
         where: {
             pollId,
-            id: optionId as string,
+            id: optionId
         },
         data: {
             totalVotes: {
