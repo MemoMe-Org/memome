@@ -1,11 +1,7 @@
 import prisma from '../../../prisma'
 import { Request, Response } from 'express'
-import handleFile from '../../../utils/file'
-import MaxSize from '../../../enums/fileMaxSizes'
-import genFileName from '../../../utils/genFileName'
 import StatusCodes from '../../../enums/StatusCodes'
 import expressAsyncHandler from 'express-async-handler'
-import { deleteS3, getS3, uploadS3 } from '../../../utils/s3'
 import { sendError, sendSuccess } from '../../../utils/sendRes'
 
 
@@ -13,6 +9,24 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
     const userId = req.userId
     const { pollId, optionId } = req.params
+
+    const poll = await prisma.poll.findUnique({
+        where: {
+            id: pollId,
+        }
+    })
+
+    const option = await prisma.option.findUnique({
+        where: {
+            pollId,
+            id: optionId
+        }
+    })
+
+    if (!poll || !option) {
+        sendError(res, StatusCodes.NotFound, 'Poll or option not found.')
+        return
+    }
 
     const voted = await prisma.pollVote.findUnique({
         where: {
@@ -27,20 +41,29 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    const newVote = await prisma.pollVote.create({
-        where: {
-            userId_optionId_pollId: {
-                userId,
-                pollId,
-                optionId
+    await prisma.pollVote.create({
+        data: {
+            user: {
+                connect: {
+                    id: userId
+                }
+            },
+            poll: {
+                connect: {
+                    id: pollId
+                }
+            },
+            option: {
+                connect: {
+                    id: optionId
+                }
             }
         }
     })
 
-    const poll = await prisma.poll.update({
+    await prisma.poll.update({
         where: {
             id: pollId,
-            createdById: userId,
         },
         data: {
             totalVotes: {
@@ -49,7 +72,7 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    const option = await prisma.option.update({
+    await prisma.option.update({
         where: {
             pollId,
             id: optionId
@@ -60,6 +83,8 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
             }
         }
     })
+
+    sendSuccess(res, StatusCodes.OK, 'Successfully voted.')
 })
 
 export { vote }
