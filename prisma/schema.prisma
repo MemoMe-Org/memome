@@ -72,14 +72,15 @@ model Message {
 
 model Poll {
     id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    date        String
     title       String?
     files       File[]
     options     Option[]
     active      Boolean   @default(true)
+    private     Boolean   @default(false)
     expiry      String?
     totalVotes  Int
     views       Int
-    date        String
     createdBy   Users     @relation(fields: [createdById], references: [id])
     createdById String    @unique @db.ObjectId
     votes       PollVote?
