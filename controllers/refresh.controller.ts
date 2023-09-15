@@ -54,7 +54,7 @@ const refreshToken = expressAsyncHandler(async (req: Request, res: Response) => 
                     maxAge: 2 * 60 * 60 * 1000,
                 })
 
-                sendSuccess(res, StatusCodes.OK, { access_token })
+                sendSuccess(res, StatusCodes.OK)
             } catch {
                 sendError(res, StatusCodes.Forbidden, 'Something went wrong.')
                 return
