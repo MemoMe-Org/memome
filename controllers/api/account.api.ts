@@ -19,6 +19,7 @@ const account = expressAsyncHandler(async (req: Request, res: Response) => {
             Profile: true,
             Account: true,
             username: true,
+            auth_method: true,
         }
     })
 
