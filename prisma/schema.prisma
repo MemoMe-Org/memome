@@ -79,8 +79,8 @@ model Poll {
     active      Boolean   @default(true)
     private     Boolean   @default(false)
     expiry      String?
-    totalVotes  Int
-    views       Int
+    totalVotes  Int       @default(0)
+    views       Int       @default(0)
     createdBy   Users     @relation(fields: [createdById], references: [id])
     createdById String    @unique @db.ObjectId
     votes       PollVote?
@@ -92,7 +92,7 @@ model Option {
     poll       Poll       @relation(fields: [pollId], references: [id])
     pollId     String     @unique @db.ObjectId
     votes      PollVote[]
-    totalVotes Int
+    totalVotes Int        @default(0)
 }
 
 model PollVote {
