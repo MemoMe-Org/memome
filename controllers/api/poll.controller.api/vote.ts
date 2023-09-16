@@ -41,7 +41,7 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    await prisma.pollVote.create({
+    const newVote = await prisma.pollVote.create({
         data: {
             user: {
                 connect: {
@@ -80,6 +80,11 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         data: {
             totalVotes: {
                 increment: 1
+            },
+            votes: {
+                connect: {
+                    id: newVote.id
+                }
             }
         }
     })
