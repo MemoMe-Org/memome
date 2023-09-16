@@ -43,7 +43,7 @@ const create = expressAsyncHandler(async (req: Request, res: Response) => {
 
     const poll = await prisma.poll.create({
         data: {
-            title,
+            title: title || null,
             date: new Date().toISOString(),
             createdBy: {
                 connect: {
