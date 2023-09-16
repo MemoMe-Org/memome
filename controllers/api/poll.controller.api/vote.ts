@@ -8,7 +8,7 @@ import { sendError, sendSuccess } from '../../../utils/sendRes'
 const vote = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
     const voterId = req.userId
-    const { pollId, optionId, userId } = req.params
+    const { pollId, optionId, createdById } = req.params
 
     const poll = await prisma.poll.findUnique({
         where: {
@@ -85,7 +85,9 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     await prisma.profiles.update({
-        where: { userId },
+        where: {
+            userId: createdById
+        },
         data: {
             poll_point: {
                 increment: 0.05
