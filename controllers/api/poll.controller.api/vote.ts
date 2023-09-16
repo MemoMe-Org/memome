@@ -106,8 +106,28 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         }
     })
 
+    const updatedPoll = await prisma.poll.findUnique({
+        where: {
+            id: poll.id,
+            createdById
+        },
+        select: {
+            id: true,
+            title: true,
+            totalVotes: true,
+            options: {
+                select: {
+                    id: true,
+                    texts: true,
+                    totalVotes: true,
+                },
+            },
+        },
+    })
+
     sendSuccess(res, StatusCodes.OK, {
         msg: 'Successfully voted.'
+        poll: updatedPoll
     })
 })
 
