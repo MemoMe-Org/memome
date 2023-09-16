@@ -28,11 +28,13 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    const voted = await prisma.pollVote.findUnique({
+    const voted = await prisma.vote.findUnique({
         where: {
-            pollId,
-            optionId,
-            userId: voterId,
+            userId_pollId_optionId: {
+                pollId,
+                optionId,
+                userId: voterId,
+            }
         }
     })
 
@@ -41,7 +43,7 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    const newVote = await prisma.pollVote.create({
+    const newVote = await prisma.vote.create({
         data: {
             user: {
                 connect: {
