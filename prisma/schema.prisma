@@ -26,9 +26,9 @@ model Users {
     Profile        Profiles?
     Account        Accounts?
     Settings       Settings?
+    Messages       Message[]
     Polls          Poll[]
     Votes          PollVote[]
-    Messages       Message[]
 }
 
 model Profiles {
@@ -83,7 +83,7 @@ model Poll {
     views       Int       @default(0)
     createdBy   Users     @relation(fields: [createdById], references: [id])
     createdById String    @unique @db.ObjectId
-    votes       PollVote?
+    votes       PollVote[]
 }
 
 model Option {
