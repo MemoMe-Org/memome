@@ -107,7 +107,7 @@ const create = expressAsyncHandler(async (req: Request, res: Response) => {
         where: { userId },
         data: {
             poll_point: {
-                increment: filesArr.length > 0 ? 0.65 : 0.55
+                increment: filesArr.length > 0 ? 0.75 : 0.6
             }
         }
     })
