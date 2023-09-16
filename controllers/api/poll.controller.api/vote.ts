@@ -111,10 +111,7 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
             id: poll.id,
             createdById
         },
-        select: {
-            id: true,
-            title: true,
-            totalVotes: true,
+        include: {
             options: {
                 select: {
                     id: true,
