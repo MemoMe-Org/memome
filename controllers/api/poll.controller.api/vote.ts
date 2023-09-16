@@ -123,7 +123,6 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     sendSuccess(res, StatusCodes.OK, {
-        msg: 'Successfully voted.'
         poll: updatedPoll
     })
 })
