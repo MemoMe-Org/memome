@@ -113,7 +113,7 @@ const create = expressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     sendSuccess(res, StatusCodes.Created, {
-        url: `https://memome.one/poll/${user.username}/${poll.id}`
+        url: `https://memome.one/poll/${user.id}/${poll.id}`
     })
 })
 
