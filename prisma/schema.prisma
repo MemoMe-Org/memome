@@ -27,7 +27,7 @@ model Users {
     Account        Accounts?
     Settings       Settings?
     Polls          Poll[]
-    Vote           PollVote?
+    Votes          PollVote[]
     Messages       Message[]
 }
 
