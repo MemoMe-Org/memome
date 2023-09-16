@@ -7,8 +7,8 @@ import { sendError, sendSuccess } from '../../../utils/sendRes'
 
 const vote = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
-    const userId = req.userId
-    const { pollId, optionId } = req.params
+    const voterId = req.userId
+    const { pollId, optionId, userId } = req.params
 
     const poll = await prisma.poll.findUnique({
         where: {
@@ -30,9 +30,9 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
 
     const voted = await prisma.pollVote.findUnique({
         where: {
-            userId,
             pollId,
-            optionId
+            optionId,
+            userId: voterId,
         }
     })
 
@@ -45,7 +45,7 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         data: {
             user: {
                 connect: {
-                    id: userId
+                    id: voterId
                 }
             },
             poll: {
@@ -80,6 +80,26 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         data: {
             totalVotes: {
                 increment: 1
+            }
+        }
+    })
+
+    await prisma.profiles.update({
+        where: { userId },
+        data: {
+            poll_point: {
+                increment: 0.05
+            }
+        }
+    })
+
+    await prisma.profiles.update({
+        where: {
+            userId: voterId
+        },
+        data: {
+            poll_point: {
+                increment: 0.1
             }
         }
     })
