@@ -106,7 +106,9 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    sendSuccess(res, StatusCodes.OK, 'Successfully voted.')
+    sendSuccess(res, StatusCodes.OK, {
+        msg: 'Successfully voted.'
+    })
 })
 
 export { vote }
