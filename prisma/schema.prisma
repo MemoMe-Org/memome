@@ -26,9 +26,9 @@ model Users {
     Profile        Profiles?
     Account        Accounts?
     Settings       Settings?
-    Messages       Message[]
     Polls          Poll[]
-    Votes          PollVote[]
+    Votes          Vote[]
+    Messages       Message[]
 }
 
 model Profiles {
@@ -71,38 +71,40 @@ model Message {
 }
 
 model Poll {
-    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
     date        String
     title       String?
     files       File[]
     options     Option[]
-    active      Boolean   @default(true)
-    private     Boolean   @default(false)
+    active      Boolean  @default(true)
+    private     Boolean  @default(false)
     expiry      String?
-    totalVotes  Int       @default(0)
-    views       Int       @default(0)
-    createdBy   Users     @relation(fields: [createdById], references: [id])
-    createdById String    @unique @db.ObjectId
-    votes       PollVote[]
+    totalVotes  Int      @default(0)
+    views       Int      @default(0)
+    createdBy   Users    @relation(fields: [createdById], references: [id])
+    createdById String   @unique @db.ObjectId
+    votes       Vote[]
 }
 
 model Option {
-    id         String     @id @default(auto()) @map("_id") @db.ObjectId
+    id         String @id @default(auto()) @map("_id") @db.ObjectId
     texts      String
-    poll       Poll       @relation(fields: [pollId], references: [id])
-    pollId     String     @unique @db.ObjectId
-    votes      PollVote[]
-    totalVotes Int        @default(0)
+    totalVotes Int    @default(0)
+    votes      Vote[]
+    poll       Poll   @relation(fields: [pollId], references: [id])
+    pollId     String @unique @db.ObjectId
 }
 
-model PollVote {
+model Vote {
     id       String @id @default(auto()) @map("_id") @db.ObjectId
-    userId   String @unique @db.ObjectId
+    userId   String @db.ObjectId
     user     Users  @relation(fields: [userId], references: [id])
-    optionId String @unique @db.ObjectId
-    option   Option @relation(fields: [optionId], references: [id])
-    pollId   String @unique @db.ObjectId
+    pollId   String @db.ObjectId
     poll     Poll   @relation(fields: [pollId], references: [id])
+    optionId String @db.ObjectId
+    option   Option @relation(fields: [optionId], references: [id])
+
+    @@unique([userId, pollId, optionId])
 }
 
 type File {
