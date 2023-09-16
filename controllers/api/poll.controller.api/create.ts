@@ -84,7 +84,6 @@ const create = expressAsyncHandler(async (req: Request, res: Response) => {
     await prisma.poll.update({
         where: {
             id: poll.id,
-
         },
         data: {
             files: filesArr
