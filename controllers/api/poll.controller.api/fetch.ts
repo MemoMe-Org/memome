@@ -8,7 +8,7 @@ const fetchUserPolls = expressAsyncHandler(async (req: Request, res: Response) =
     // @ts-ignore
     const userId = req.userId
     const { username } = req.params
-    let { page = 1, limit = 10 } = req.query
+    let { page = 1, limit = 5 } = req.query
 
     page = Number(page)
     limit = Number(limit)
