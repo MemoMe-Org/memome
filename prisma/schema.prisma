@@ -104,7 +104,7 @@ model Vote {
     optionId String @db.ObjectId
     option   Option @relation(fields: [optionId], references: [id])
 
-    @@unique([userId, pollId, optionId])
+    @@unique([userId, pollId])
 }
 
 type File {
