@@ -35,6 +35,7 @@ const genTokens = async (
     res.cookie('refresh_token', refresh_token, {
         domain: isProd ? 'memome.one' : undefined,
         secure: isProd,
+        httpOnly: true,
         sameSite: isProd ? 'none' : 'strict',
         maxAge: 120 * 24 * 60 * 60 * 1000,
     })
