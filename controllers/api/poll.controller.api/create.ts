@@ -21,7 +21,12 @@ const create = expressAsyncHandler(async (req: Request, res: Response) => {
     let files = req.files as any[] || []
 
     if (options?.length < 2) {
-        sendError(res, StatusCodes.BadRequest, 'Add options to poll.')
+        sendError(res, StatusCodes.BadRequest, 'Poll requires a minimum of 2 options.')
+        return
+    }
+
+    if (options?.length > 10) {
+        sendError(res, StatusCodes.BadRequest, 'Poll requires a maximum of 10 options.')
         return
     }
 
