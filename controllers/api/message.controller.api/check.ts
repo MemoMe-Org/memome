@@ -37,10 +37,26 @@ const checkUser = expressAsyncHandler(async (req: Request, res: Response) => {
         where: { username },
         select: {
             id: true,
-            Profile: true,
-            Account: true,
             username: true,
-            Settings: true,
+            Profile: {
+                select: {
+                    bio: true,
+                    avatar: true,
+                },
+            },
+            Account: {
+                select: {
+                    verified: true,
+                    disabled: true,
+                }
+            },
+            Settings: {
+                select: {
+                    allow_files: true,
+                    allow_texts: true,
+                    gen_msg_type: true,
+                }
+            },
         }
     })
 
