@@ -30,12 +30,12 @@ const create = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    const optionsExceedMaxLength = options.some(option => option.length > 42)
+    const optionsExceedMaxLength = options.some((option: string) => option.length > 42)
 
     if (optionsExceedMaxLength) {
         sendError(res, StatusCodes.BadRequest, 'Some options exceed the maximum length of 42 characters.')
         return
-}
+    }
 
     if (title && title.length > 267) {
         sendError(res, StatusCodes.BadRequest, 'Poll title exceeds the maximum length of 267 characters.')
