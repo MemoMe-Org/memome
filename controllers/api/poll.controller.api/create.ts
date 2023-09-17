@@ -75,7 +75,7 @@ const create = expressAsyncHandler(async (req: Request, res: Response) => {
             const tempFile = await handleFile(
                 res,
                 file,
-                MaxSize['14MB'],
+                MaxSize['9MB'],
                 'jpg', 'png', 'mp4'
             )
             const type = tempFile.mimetype
