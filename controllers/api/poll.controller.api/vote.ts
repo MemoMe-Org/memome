@@ -28,20 +28,19 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    const voted = await prisma.vote.findUnique({
-        where: {
-            userId_pollId_optionId: {
-                pollId,
-                optionId,
-                userId: voterId,
-            }
-        }
-    })
-
     if (!poll.active) {
         sendError(res, StatusCodes.Unauthorized, 'Poll is inactive.')
         return
     }
+
+    const voted = await prisma.vote.findUnique({
+        where: {
+            userId_pollId: {
+                pollId,
+                userId: voterId
+            }
+        }
+    })
 
     if (voted) {
         sendError(res, StatusCodes.BadRequest, 'Already voted.')
@@ -135,7 +134,10 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     sendSuccess(res, StatusCodes.OK, {
-        poll: updatedPoll
+        poll: {
+            ...updatedPoll,
+            hasVoted: voted
+        }
     })
 })
 
