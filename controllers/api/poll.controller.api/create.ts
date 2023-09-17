@@ -25,6 +25,11 @@ const create = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
+    if (title && title.length > 267) {
+        sendError(res, StatusCodes.BadRequest, 'Poll title exceeds the maximum length of 267 characters.')
+        return
+    }
+
     if (files.length > 2) {
         sendError(res, StatusCodes.PayloadTooLarge, 'Only a maximum of two (2) files is allowed.')
         return
