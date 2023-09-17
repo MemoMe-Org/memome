@@ -1,11 +1,11 @@
 import { Router } from 'express'
 import upload from '../../middlewares/upload.middleware'
+import limit from '../../middlewares/limiter.middleware'
 import verifyUser from '../../middlewares/verifyUser.middleware'
 import { vote } from '../../controllers/api/poll.controller.api/vote'
 import { poll } from '../../controllers/api/poll.controller.api/poll'
 import { create } from '../../controllers/api/poll.controller.api/create'
 import fetchUserPolls from '../../controllers/api/poll.controller.api/fetch'
-import limit from '../../middlewares/limiter.middleware'
 
 const router: Router = Router()
 
