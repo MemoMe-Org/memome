@@ -38,6 +38,11 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         }
     })
 
+    if (!poll.active) {
+        sendError(res, StatusCodes.Unauthorized, 'Poll is inactive.')
+        return
+    }
+
     if (voted) {
         sendError(res, StatusCodes.BadRequest, 'Already voted.')
         return
