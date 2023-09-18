@@ -14,7 +14,7 @@ const create = expressAsyncHandler(async (req: Request, res: Response) => {
     const userId = req.userId
     let { title, options } = req.body
 
-    title = title?.trim()
+    title = title?.trim() || ''
     options = options?.filter(String)
 
     let filesArr: any[] = []
@@ -60,7 +60,7 @@ const create = expressAsyncHandler(async (req: Request, res: Response) => {
 
     const poll = await prisma.poll.create({
         data: {
-            title: title || null,
+            title,
             date: new Date().toISOString(),
             createdBy: {
                 connect: {
