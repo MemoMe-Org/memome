@@ -48,13 +48,6 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
             id: pollId,
         },
         include: {
-            options: {
-                select: {
-                    id: true,
-                    texts: true,
-                    totalVotes: true,
-                },
-            },
             votes: {
                 where: { userId },
                 select: {
@@ -65,7 +58,22 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
         },
     })
 
-    if (!pollInfo) {
+    const outputPoll = await prisma.poll.findUnique({
+        where: {
+            id: pollId,
+        },
+        include: {
+            options: {
+                select: {
+                    id: true,
+                    texts: true,
+                    totalVotes: true,
+                },
+            },
+        },
+    })
+
+    if (!pollInfo || !outputPoll) {
         sendError(res, StatusCodes.NotFound, 'Poll not found.')
         return
     }
@@ -88,7 +96,7 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
     sendSuccess(res, StatusCodes.OK, {
         user,
         poll: {
-            ...pollInfo, hasVoted
+            ...outputPoll, hasVoted
         },
     })
 })
