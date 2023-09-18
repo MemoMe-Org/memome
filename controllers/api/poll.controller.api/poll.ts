@@ -43,6 +43,19 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
+    if (createdById !== userId) {
+        await prisma.poll.update({
+            where: {
+                id: pollId
+            },
+            data: {
+                views: {
+                    increment: 1
+                },
+            }
+        })
+    }
+
     const pollInfo = await prisma.poll.findUnique({
         where: {
             id: pollId,
