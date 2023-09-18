@@ -52,7 +52,6 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
                 where: { userId },
                 select: {
                     userId: true,
-                    optionId: true,
                 },
             },
         },
