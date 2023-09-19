@@ -16,6 +16,11 @@ const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     let filesArr: any[] = []
     let files = req.files as any[] || []
 
+    if (texts && texts?.length > 801) {
+        sendError(res, StatusCodes.BadRequest, 'Texts exceed the maximum length of characters.')
+        return
+    }
+
     const user = await prisma.users.findUnique({
         where: { username },
         select: {
