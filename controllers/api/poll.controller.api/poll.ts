@@ -105,13 +105,14 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
     }
 
     const hasVoted = pollInfo.votes.some((vote) => vote.userId === userId)
+    const optionVotedId = hasVoted ? pollInfo.votes[0].optionId : null
 
     sendSuccess(res, StatusCodes.OK, {
         user: {
             ...user, isAuthenticated
         },
         poll: {
-            ...outputPoll, hasVoted
+            ...outputPoll, hasVoted, optionVotedId
         },
     })
 })
