@@ -4,6 +4,7 @@ import StatusCodes from '../../../enums/StatusCodes'
 import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../../../utils/sendRes'
 
+
 const fetchUserPolls = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
     const userId = req.userId
