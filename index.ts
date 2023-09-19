@@ -52,7 +52,7 @@ app.use(cors({
     },
     credentials: true,
     optionsSuccessStatus: 200,
-    methods: "GET,PUT,DELETE,POST,PATCH"
+    methods: "GET,DELETE,POST,PATCH"
 } as CorsOptions))
 app.use(session({
     resave: false,
