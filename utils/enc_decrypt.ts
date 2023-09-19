@@ -7,9 +7,9 @@ const enc_decrypt = async (text: string, action: CipherAction) => {
     if (!text) return
 
     if (action === 'e') {
-        return cipher.encrypt(text, TEXT_KEY)
+        return await cipher.encrypt(text, TEXT_KEY)
     } else if (action === 'd') {
-        return cipher.decrypt(text, TEXT_KEY)
+        return await cipher.decrypt(text, TEXT_KEY)
     } else {
         return
     }
