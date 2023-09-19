@@ -39,9 +39,6 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
                 pollId,
                 userId: voterId
             },
-        },
-        select: {
-            optionId: true
         }
     })
 
@@ -139,7 +136,7 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
     sendSuccess(res, StatusCodes.OK, {
         poll: {
             ...updatedPoll,
-            hasVoted: !!voted,
+            hasVoted: newVote.optionId === optionId,
             votedOption: newVote ? newVote.optionId : null
         }
     })
