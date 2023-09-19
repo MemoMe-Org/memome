@@ -136,7 +136,8 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
     sendSuccess(res, StatusCodes.OK, {
         poll: {
             ...updatedPoll,
-            hasVoted: voted
+            hasVoted: !!voted,
+            optionVotedId: voted ? voted.optionId : null
         }
     })
 })
