@@ -47,6 +47,7 @@ const fetchUserPolls = expressAsyncHandler(async (req: Request, res: Response) =
                 select: {
                     id: true,
                     texts: true,
+                    totalVotes: true
                 }
             },
             votes: {
@@ -79,6 +80,7 @@ const fetchUserPolls = expressAsyncHandler(async (req: Request, res: Response) =
                     select: {
                         id: true,
                         texts: true,
+                        totalVotes: true,
                     }
                 },
                 votes: {
