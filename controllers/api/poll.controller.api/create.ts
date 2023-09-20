@@ -20,25 +20,29 @@ const create = expressAsyncHandler(async (req: Request, res: Response) => {
     let filesArr: any[] = []
     let files = req.files as any[] || []
 
+    const MAX_OPTION = 10 as const
+    const MAX_OPTION_LENGTH = 32 as const
+    const MAX_TITLE_LENGTH = 178 as const
+
     if (options?.length < 2) {
         sendError(res, StatusCodes.BadRequest, 'Poll requires a minimum of 2 options.')
         return
     }
 
-    if (options?.length > 10) {
-        sendError(res, StatusCodes.BadRequest, 'Poll requires a maximum of 10 options.')
+    if (options?.length > MAX_OPTION) {
+        sendError(res, StatusCodes.BadRequest, `Poll requires a maximum of ${MAX_OPTION} options.`)
         return
     }
 
-    const optionsExceedMaxLength = options.some((option: string) => option.length > 42)
+    const optionsExceedMaxLength = options.some((option: string) => option.length > MAX_OPTION_LENGTH)
 
     if (optionsExceedMaxLength) {
-        sendError(res, StatusCodes.BadRequest, 'Some options exceed the maximum length of 42 characters.')
+        sendError(res, StatusCodes.BadRequest, `Some options exceed the maximum length of ${MAX_OPTION_LENGTH} characters.`)
         return
     }
 
-    if (title && title.length > 267) {
-        sendError(res, StatusCodes.BadRequest, 'Poll title exceeds the maximum length of 267 characters.')
+    if (title && title.length > MAX_TITLE_LENGTH) {
+        sendError(res, StatusCodes.BadRequest, `Poll title exceeds the maximum length of ${MAX_TITLE_LENGTH} characters.`)
         return
     }
 
