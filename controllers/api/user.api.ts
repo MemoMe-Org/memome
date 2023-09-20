@@ -67,7 +67,7 @@ const userProfile = expressAsyncHandler(async (req: Request, res: Response) => {
 
                     authUser = await prisma.users.findUnique({
                         where: {
-                            username: decoded?.user
+                            id: decoded?.id
                         },
                         select: {
                             Profile: true,
