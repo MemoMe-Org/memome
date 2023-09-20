@@ -10,8 +10,8 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
     const userId = req.userId
     const { pollId, createdById } = req.params
 
+    let isAuthenticated = true
     const ids: string[] = [createdById, userId]
-    const isAuthenticated = createdById === userId
 
     const user = await prisma.users.findUnique({
         where: {
@@ -33,6 +33,24 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
             }
         }
     })
+
+    const voter = await prisma.users.findUnique({
+        where: {
+            id: userId
+        },
+        select: {
+            username: true,
+            Profile: {
+                select: {
+                    avatar: true
+                }
+            }
+        }
+    })
+
+    if (!voter) {
+        isAuthenticated = false
+    }
 
     if (!user) {
         sendError(res, StatusCodes.NotFound, 'User not found.')
@@ -109,12 +127,9 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
     const votedOption = hasVoted ? pollInfo.votes[0].optionId : null
 
     sendSuccess(res, StatusCodes.OK, {
-        user: {
-            ...user, isAuthenticated
-        },
-        poll: {
-            ...outputPoll, hasVoted, votedOption
-        },
+        user,
+        voter: { ...voter, isAuthenticated },
+        poll: { ...outputPoll, hasVoted, votedOption },
     })
 })
 
