@@ -78,7 +78,6 @@ model Poll {
     options     Option[]
     active      Boolean  @default(true)
     private     Boolean  @default(false)
-    expiry      String?
     totalVotes  Int      @default(0)
     views       Int      @default(0)
     createdBy   Users    @relation(fields: [createdById], references: [id])
