@@ -71,7 +71,7 @@ const githubAuthCallback = expressAsyncHanlder(async (req: Request, res: Respons
 
         await connectModels(user.id, userData.avatar_url)
 
-        isProd && await welcome(username, email)
+        await welcome(username, email)
     }
 
     await prisma.users.update({
