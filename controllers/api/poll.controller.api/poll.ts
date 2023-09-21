@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken'
 import prisma from '../../../prisma'
 import { Request, Response } from 'express'
 import StatusCodes from '../../../enums/StatusCodes'
@@ -6,12 +7,26 @@ import { sendError, sendSuccess } from '../../../utils/sendRes'
 
 
 const poll = expressAsyncHandler(async (req: Request, res: Response) => {
-    // @ts-ignore
-    const userId = req.userId
+    let voter
+    let token = ''
+    let decoded: any
+    let isAuthenticated = true
     const { pollId, createdById } = req.params
 
-    let isAuthenticated = true
-    const ids: string[] = [createdById, userId]
+    const authHeader = req.headers?.authorization
+    if (authHeader?.startsWith('Bearer ')) {
+        token = authHeader.split(' ')[1]
+    }
+
+    if (token) {
+        decoded = jwt.verify(token, process.env.JWT_SECRET!)
+    }
+
+    if (!decoded?.id) {
+        isAuthenticated = false
+    }
+
+    const userId = decoded?.id
 
     const user = await prisma.users.findUnique({
         where: {
@@ -34,19 +49,21 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    const voter = await prisma.users.findUnique({
-        where: {
-            id: userId
-        },
-        select: {
-            username: true,
-            Profile: {
-                select: {
-                    avatar: true
+    if (userId) {
+        voter = await prisma.users.findUnique({
+            where: {
+                id: userId
+            },
+            select: {
+                username: true,
+                Profile: {
+                    select: {
+                        avatar: true
+                    }
                 }
             }
-        }
-    })
+        })
+    }
 
     if (!voter) {
         isAuthenticated = false
@@ -62,7 +79,9 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    if (!isAuthenticated) {
+    const ids: string[] = [createdById, userId]
+
+    if (isAuthenticated === true && userId !== createdById) {
         await prisma.poll.update({
             where: {
                 id: pollId
