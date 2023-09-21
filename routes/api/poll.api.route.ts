@@ -9,11 +9,12 @@ import fetchUserPolls from '../../controllers/api/poll.controller.api/fetch'
 
 const router: Router = Router()
 
-router.use(verifyUser)
-
 router.post(
     '/create',
-    upload.array('poll_files', 4),
+    [
+        verifyUser,
+        upload.array('poll_files', 4),
+    ],
     create
 )
 router.get(
@@ -26,9 +27,9 @@ router.get(
     poll
 )
 
-router.get('/fetch/:username', fetchUserPolls)
+router.get('/fetch/:username', verifyUser, fetchUserPolls)
 
-router.post('/vote/:createdById/:pollId/:optionId', vote)
+router.post('/vote/:createdById/:pollId/:optionId', verifyUser, vote)
 
 
 export default router
