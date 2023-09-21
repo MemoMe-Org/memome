@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Welcome to MemoMe
+    </title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400&display=swap');
+
+        :root {
+            --clr-0: #fff;
+            --clr-1: rgb(251, 164, 45);
+            --clr-2: rgb(23, 23, 23);
+            --clr-3: #F1F5F8;
+            --padding: 2em;
+            --trans: all 0.3s linear;
+            --radius: 0.5em;
+            --spacing: 0.25em;
+            --shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        }
+
+        *,
+        ::after,
+        ::before {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--clr-0);
+            color: var(--clr-2);
+            display: grid;
+        }
+
+        p {
+            font-size: 1.05em;
+        }
+
+        h1 {
+            font-size: 1.25em;
+        }
+
+        h2 {
+            font-size: 1.15;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width: 100%; display: grid; margin-bottom: 5px;">
+        <img src='https://d15zb4m4p46ai4.cloudfront.net/Dist/logo-2.png' alt='logo' />
+    </div>
+    <h1 style="font-size: 1.25em;">
+        Dear <span>{{username}}</span>,
+    </h1>
+</body>
+
+</html>
