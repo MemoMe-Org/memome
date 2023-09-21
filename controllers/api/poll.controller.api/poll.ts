@@ -82,17 +82,6 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
     const ids: string[] = [createdById, userId]
 
     if (isAuthenticated === true && userId !== createdById) {
-        await prisma.poll.update({
-            where: {
-                id: pollId
-            },
-            data: {
-                views: {
-                    increment: 1
-                },
-            }
-        })
-
         for (const idx of ids) {
             await prisma.profiles.update({
                 where: {
@@ -106,6 +95,17 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
             })
         }
     }
+
+    await prisma.poll.update({
+        where: {
+            id: pollId
+        },
+        data: {
+            views: {
+                increment: 1
+            },
+        }
+    })
 
     const pollInfo = await prisma.poll.findUnique({
         where: {
