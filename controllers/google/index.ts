@@ -5,8 +5,8 @@ import genTokens from '../../utils/genTokens'
 import { USER_REGEX } from '../../utils/RegExp'
 import welcome from '../../services/welcome.mail'
 import newLogin from '../../services/new-login.mail'
-import { enc_decrypt } from '../../utils/enc_decrypt'
-import connectModels from '../../utils/connect-models'
+import { enc_decrypt } from '../../helpers/enc_decrypt'
+import connectModels from '../../helpers/connect-models'
 import genRandomString from '../../utils/genRandomString'
 
 const googleAuth = async (

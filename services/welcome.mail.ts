@@ -1,4 +1,4 @@
-import { sendNodeEmail } from '../utils/sendEmail'
+import { sendNodeEmail } from '../helpers/sendEmail'
 
 const welcome = async (username: string, email: string) => {
     await sendNodeEmail({

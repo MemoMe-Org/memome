@@ -1,9 +1,10 @@
 import prisma from '../../../prisma'
 import { Request, Response } from 'express'
-import { deleteS3 } from '../../../utils/s3'
+import { deleteS3 } from '../../../helpers/s3'
 import StatusCodes from '../../../enums/StatusCodes'
 import expressAsyncHandler from 'express-async-handler'
-import { sendError, sendSuccess } from '../../../utils/sendRes'
+import { sendError, sendSuccess } from '../../../helpers/sendRes'
+
 
 const deleteMessage = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore

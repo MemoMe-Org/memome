@@ -3,7 +3,8 @@ import prisma from '../../../prisma'
 import { Request, Response } from 'express'
 import StatusCodes from '../../../enums/StatusCodes'
 import expressAsyncHandler from 'express-async-handler'
-import { sendError, sendSuccess } from '../../../utils/sendRes'
+import { sendError, sendSuccess } from '../../../helpers/sendRes'
+
 
 const increment = async (username: string) => {
     await prisma.users.update({

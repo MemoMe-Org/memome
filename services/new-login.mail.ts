@@ -1,4 +1,4 @@
-import { sendNodeEmail } from '../utils/sendEmail'
+import { sendNodeEmail } from '../helpers/sendEmail'
 
 const newLogin = async (
     email: string, username: string,

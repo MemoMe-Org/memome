@@ -4,8 +4,9 @@ import { Request, Response } from 'express'
 import sortByDates from '../../../utils/sort'
 import StatusCodes from '../../../enums/StatusCodes'
 import expressAsyncHandler from 'express-async-handler'
-import { enc_decrypt } from '../../../utils/enc_decrypt'
-import { sendError, sendSuccess } from '../../../utils/sendRes'
+import { enc_decrypt } from '../../../helpers/enc_decrypt'
+import { sendError, sendSuccess } from '../../../helpers/sendRes'
+
 
 const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     const { userId } = req.params

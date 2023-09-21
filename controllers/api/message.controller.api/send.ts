@@ -5,9 +5,10 @@ import MaxSize from '../../../enums/fileMaxSizes'
 import StatusCodes from '../../../enums/StatusCodes'
 import genFileName from '../../../utils/genFileName'
 import expressAsyncHandler from 'express-async-handler'
-import { enc_decrypt } from '../../../utils/enc_decrypt'
-import { deleteS3, getS3, uploadS3 } from '../../../utils/s3'
-import { sendError, sendSuccess } from '../../../utils/sendRes'
+import { enc_decrypt } from '../../../helpers/enc_decrypt'
+import { deleteS3, getS3, uploadS3 } from '../../../helpers/s3'
+import { sendError, sendSuccess } from '../../../helpers/sendRes'
+
 
 const sendMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     let { texts } = req.body

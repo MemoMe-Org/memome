@@ -1,6 +1,6 @@
 import { Response } from 'express'
-import { sendError } from './sendRes'
 import MaxSize from '../enums/fileMaxSizes'
+import { sendError } from '../helpers/sendRes'
 import StatusCodes from '../enums/StatusCodes'
 
 /*

@@ -1,8 +1,8 @@
+import prisma from '../prisma'
 import jwt from 'jsonwebtoken'
-import { sendError } from '../utils/sendRes'
+import { sendError } from '../helpers/sendRes'
 import StatusCodes from '../enums/StatusCodes'
 import { Request, Response, NextFunction } from 'express'
-import prisma from '../prisma'
 const expressAsyncHandler = require('express-async-handler')
 
 const verifyUser = expressAsyncHandler(async (

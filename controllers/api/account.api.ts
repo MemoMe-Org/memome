@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 import { USER_REGEX } from '../../utils/RegExp'
 import StatusCodes from '../../enums/StatusCodes'
 import expressAsyncHandler from 'express-async-handler'
-import { sendError, sendSuccess } from '../../utils/sendRes'
+import { sendError, sendSuccess } from '../../helpers/sendRes'
 
 
 const account = expressAsyncHandler(async (req: Request, res: Response) => {
