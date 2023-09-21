@@ -15,10 +15,7 @@ const sendNodeEmail = async ({ to, subject, body }: IMail) => {
         from: `Muyiwa at Memome <memome.one>`,
         to,
         subject,
-        text: body,
-        headers: {
-            'Content-Type': 'application/text',
-        }
+        html: body,
     })
 }
 
