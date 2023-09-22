@@ -47,3 +47,6 @@ const edit = expressAsyncHandler(async (req: Request, res: Response) => {
 
     sendSuccess(res, StatusCodes.OK)
 })
+
+
+export { edit }
