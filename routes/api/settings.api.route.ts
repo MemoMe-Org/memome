@@ -7,6 +7,6 @@ const router: Router = Router()
 
 router.get('/', settings)
 router.get('/msg-type', messageType)
-router.patch('/toggle/:type', toggles)
+router.get('/toggle/:type', toggles)
 
 export default router
