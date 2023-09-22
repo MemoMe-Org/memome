@@ -111,7 +111,7 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
         where: {
             id: pollId,
         },
-        include: {
+        select: {
             votes: {
                 where: { userId },
                 select: {
