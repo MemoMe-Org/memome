@@ -12,8 +12,8 @@ const edit = expressAsyncHandler(async (req: Request, res: Response) => {
 
     const poll = await prisma.poll.findUnique({
         where: {
-            userId,
-            id: pollId
+            id: pollId,
+            createdById: userId
         },
     })
 
