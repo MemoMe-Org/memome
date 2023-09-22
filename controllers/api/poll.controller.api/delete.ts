@@ -25,7 +25,7 @@ const delete = expressAsyncHandler(async (req: Request, res: Response) => {
     })
 
     if (!user || !poll) {
-        sendError(res, StatusCodes.NotFound, 'Something went wrong.'
+        sendError(res, StatusCodes.NotFound, 'Poll not found.'
         return
     }
 
@@ -49,6 +49,15 @@ const delete = expressAsyncHandler(async (req: Request, res: Response) => {
         sendError(res, StatusCodes.BadRequest, 'Something went wrong.'
         return
     }
+
+    await prisma.poll.delete({
+        where: {
+            id: pollId,
+            createdById: userId,
+        }
+    })
+
+    sendSuccess(res, StatusCodes.OK)
 })
 
 export { delete }
