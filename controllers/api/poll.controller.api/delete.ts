@@ -19,13 +19,34 @@ const delete = expressAsyncHandler(async (req: Request, res: Response) => {
 
     const poll = await prisma.poll.findUnique({
         where: {
-            userId,
-            id: pollId
+            id: pollId,
+            createdById: userId,
         }
     })
 
     if (!user || !poll) {
         sendError(res, StatusCodes.NotFound, 'Something went wrong.'
+        return
+    }
+
+    const files = poll.files
+
+    try {
+        if (files.length > 0) {
+            for (const file of files) {
+                await deleteS3(file.path)
+            }
+        }
+
+        await prisma.option.deleteMany({
+            where: { pollId }
+        })
+
+        await prisma.votes.deleteMany({
+            where: { pollId }
+        })
+    } catch {
+        sendError(res, StatusCodes.BadRequest, 'Something went wrong.'
         return
     }
 })
