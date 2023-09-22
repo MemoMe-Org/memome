@@ -11,5 +11,23 @@ const delete = expressAsyncHandler(async (req: Request, res: Response) => {
     const userId = req.userId
     const { pollId } = req.params
 
-    const user
+    const user = await prisma.users.findUnique({
+        where: {
+            id: userId
+        }
+    })
+
+    const poll = await prisma.poll.findUnique({
+        where: {
+            userId,
+            id: pollId
+        }
+    })
+
+    if (!user || !poll) {
+        sendError(res, StatusCodes.NotFound, 'Something went wrong.'
+        return
+    }
 })
+
+export { delete }
