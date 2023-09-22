@@ -42,7 +42,7 @@ const delete = expressAsyncHandler(async (req: Request, res: Response) => {
             where: { pollId }
         })
 
-        await prisma.votes.deleteMany({
+        await prisma.vote.deleteMany({
             where: { pollId }
         })
     } catch {
