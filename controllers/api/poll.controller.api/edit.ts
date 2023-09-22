@@ -38,6 +38,8 @@ const edit = expressAsyncHandler(async (req: Request, res: Response) => {
                 }
             })
             break
+        default:
+            break
     }
 
     sendSuccess(res, StatusCodes.OK)
