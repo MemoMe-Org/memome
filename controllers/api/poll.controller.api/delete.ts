@@ -21,6 +21,10 @@ const delete = expressAsyncHandler(async (req: Request, res: Response) => {
         where: {
             id: pollId,
             createdById: userId,
+        },
+        include: {
+            votes: true,
+            options: true,
         }
     })
 
