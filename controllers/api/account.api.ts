@@ -83,10 +83,7 @@ const editDisability = expressAsyncHandler(async (req: Request, res: Response) =
         }
     })
 
-    sendSuccess(res, StatusCodes.OK, {
-        msg: 'Successful.',
-        disabled: !account?.disabled
-    })
+    sendSuccess(res, StatusCodes.OK)
 })
 
 const editPswd = expressAsyncHandler(async (req: Request, res: Response) => {
