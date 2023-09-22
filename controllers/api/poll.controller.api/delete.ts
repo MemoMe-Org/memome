@@ -50,6 +50,15 @@ const delete = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
+    await prisma.profiles.update({
+        where: { userId },
+        data: {
+            poll_point: {
+                decrement: files.length > 0 ? 0.75 : 0.6
+            }
+        }
+    })
+
     await prisma.poll.delete({
         where: {
             id: pollId,
