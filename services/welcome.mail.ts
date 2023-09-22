@@ -4,8 +4,7 @@ const welcome = async (username: string, email: string) => {
     await sendNodeEmail({
         to: email,
         subject: 'Welcome to MemoMe',
-        body: `
-        <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        body: `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 <!--[if gte mso 9]>
@@ -231,17 +230,6 @@ table, td { color: #000000; } @media (max-width: 480px) { #u_content_heading_2 .
   </div>
 </table>
 
-<table id="u_content_text_3" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
-        
-  <div class="v-text-align v-line-height v-font-size" style="font-family: 'Lato',sans-serif; font-size: 15px; line-height: 140%; text-align: left; word-wrap: break-word;">
-    <p style="line-height: 130%;"><strong>User-Friendly and Feature-Packed:</strong></p>
-<p style="line-height: 130%;">In summary, MemoMe offers a user-friendly interface combined with robust features. Whether you're here to host polls, utilize our message generator, or explore the array of communication options, MemoMe is your ideal choice.</p>
-  </div>
-</table>
-
 <table style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
   <tbody>
     <tr>
@@ -249,8 +237,6 @@ table, td { color: #000000; } @media (max-width: 480px) { #u_content_heading_2 .
         
   <div style="font-family: 'Lato',sans-serif; font-size: 15px; line-height: 130%; text-align: left; word-wrap: break-word;">
     <p style="line-height: 130%;">In summary, MemoMe offers a user-friendly interface combined with robust features. Whether you're here to host polls, utilize our message generator, or explore the array of communication options, MemoMe is your ideal choice.</p>
-<p style="line-height: 130%;"> </p>
-<p style="line-height: 130%;">We are committed to making your MemoMe experience exceptional. If you have any questions, encounter any issues, or simply want to share your thoughts and feedback, please don't hesitate to reach out to our support team. Your satisfaction is our top priority.</p>
 <p style="line-height: 130%;"> </p>
 <p style="line-height: 130%;">To get started, simply sign up today and unlock the full potential of MemoMe. We look forward to having you as an active member of our community and witnessing how you use the platform to host polls, gather opinions, and engage in anonymous voting.</p>
 <p style="line-height: 130%;"> </p>
@@ -310,7 +296,6 @@ table, td { color: #000000; } @media (max-width: 480px) { #u_content_heading_2 .
 </body>
 
 </html>
-
         `
     })
 }
