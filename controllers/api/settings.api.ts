@@ -43,11 +43,9 @@ const toggles = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
-    let updatedSettings
-
     switch (type) {
         case 'files':
-            updatedSettings = await prisma.settings.update({
+            await prisma.settings.update({
                 where: { userId },
                 data: {
                     allow_files: !settings.allow_files
@@ -55,7 +53,7 @@ const toggles = expressAsyncHandler(async (req: Request, res: Response) => {
             })
             break
         case 'texts':
-            updatedSettings = await prisma.settings.update({
+            await prisma.settings.update({
                 where: { userId },
                 data: {
                     allow_texts: !settings.allow_texts
@@ -63,7 +61,7 @@ const toggles = expressAsyncHandler(async (req: Request, res: Response) => {
             })
             break
         case 'levels':
-            updatedSettings = await prisma.settings.update({
+            await prisma.settings.update({
                 where: { userId },
                 data: {
                     show_levels: !settings.show_levels
@@ -74,7 +72,7 @@ const toggles = expressAsyncHandler(async (req: Request, res: Response) => {
             break
     }
 
-    sendSuccess(res, StatusCodes.OK, { settings: updatedSettings })
+    sendSuccess(res, StatusCodes.OK)
 })
 
 
