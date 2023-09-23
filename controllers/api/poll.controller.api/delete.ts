@@ -6,7 +6,7 @@ import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../../../helpers/sendRes'
 
 
-const delete = expressAsyncHandler(async (req: Request, res: Response) => {
+const deletePoll = expressAsyncHandler(async (req: Request, res: Response) => {
     // @ts-ignore
     const userId = req.userId
     const { pollId } = req.params
@@ -24,16 +24,21 @@ const delete = expressAsyncHandler(async (req: Request, res: Response) => {
         },
         include: {
             votes: true,
-            options: true,
+            options: {
+                include: {
+                    votes: true
+                }
+            },
         }
     })
 
     if (!user || !poll) {
-        sendError(res, StatusCodes.NotFound, 'Poll not found.'
+        sendError(res, StatusCodes.NotFound, 'Poll not found.')
         return
     }
 
     const files = poll.files
+    const options = poll.options
 
     try {
         if (files.length > 0) {
@@ -42,15 +47,20 @@ const delete = expressAsyncHandler(async (req: Request, res: Response) => {
             }
         }
 
+        for (const option of options) {
+            await prisma.vote.deleteMany({
+                where: {
+                    optionId: option.id
+                }
+            })
+        }
+
         await prisma.option.deleteMany({
             where: { pollId }
         })
-
-        await prisma.vote.deleteMany({
-            where: { pollId }
-        })
-    } catch {
-        sendError(res, StatusCodes.BadRequest, 'Something went wrong.'
+    } catch (err) {
+        console.log(err)
+        sendError(res, StatusCodes.BadRequest, 'Something went wrong.')
         return
     }
 
@@ -73,4 +83,4 @@ const delete = expressAsyncHandler(async (req: Request, res: Response) => {
     sendSuccess(res, StatusCodes.OK)
 })
 
-export { delete }
+export { deletePoll }
