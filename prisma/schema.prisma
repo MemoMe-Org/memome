@@ -74,6 +74,7 @@ model Poll {
     id          String   @id @default(auto()) @map("_id") @db.ObjectId
     date        String
     title       String?
+    expiry      String?
     files       File[]
     options     Option[]
     active      Boolean  @default(true)
