@@ -100,7 +100,7 @@ model Vote {
     user     Users  @relation(fields: [userId], references: [id])
     pollId   String @db.ObjectId
     poll     Poll   @relation(fields: [pollId], references: [id])
-    optionId String @db.ObjectId
+    optionId String @unique @db.ObjectId
     option   Option @relation(fields: [optionId], references: [id])
 
     @@unique([userId, pollId])
