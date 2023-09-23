@@ -25,7 +25,10 @@ const edit = expressAsyncHandler(async (req: Request, res: Response) => {
     switch (type) {
         case 'active':
             await prisma.poll.update({
-                where: { userId, pollId },
+                where: {
+                    id: pollId,
+                    createdById: userId
+                },
                 data: {
                     active: !poll.active
                 }
@@ -33,7 +36,10 @@ const edit = expressAsyncHandler(async (req: Request, res: Response) => {
             break
         case 'visiblity':
             await prisma.poll.update({
-                where: { userId, pollId },
+                where: {
+                    id: pollId,
+                    createdById: userId
+                },
                 data: {
                     private: !poll.private
                 }
