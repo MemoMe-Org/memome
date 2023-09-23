@@ -131,7 +131,7 @@ const editBio = expressAsyncHandler(async (req: Request, res: Response) => {
     const { bio } = req.body
 
     if (bio?.length > 150) {
-        sendError(res, StatusCodes.PayloadTooLarge, 'Maximum is 150 chars.')
+        sendError(res, StatusCodes.PayloadTooLarge, 'Please use 32 characters at maximum.')
         return
     }
 
@@ -141,6 +141,8 @@ const editBio = expressAsyncHandler(async (req: Request, res: Response) => {
             bio: bio || ''
         }
     })
+
+    sendSuccess(res, StatusCodes.OK)
 })
 
 export default profile
