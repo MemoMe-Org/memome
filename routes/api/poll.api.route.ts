@@ -4,8 +4,10 @@ import limit from '../../middlewares/limiter.middleware'
 import verifyUser from '../../middlewares/verifyUser.middleware'
 import { vote } from '../../controllers/api/poll.controller.api/vote'
 import { poll } from '../../controllers/api/poll.controller.api/poll'
+import { edit } from '../../controllers/api/poll.controller.api/edit'
 import { create } from '../../controllers/api/poll.controller.api/create'
 import fetchUserPolls from '../../controllers/api/poll.controller.api/fetch'
+import { deletePoll } from '../../controllers/api/poll.controller.api/delete'
 
 const router: Router = Router()
 
@@ -26,6 +28,10 @@ router.get(
     }),
     poll
 )
+
+router.patch('/edit/:pollId/:type', verifyUser, edit)
+
+router.delete('/delete/:pollId', verifyUser, deletePoll)
 
 router.get('/fetch/:username', verifyUser, fetchUserPolls)
 
