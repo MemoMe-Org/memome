@@ -89,7 +89,7 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
                 },
                 data: {
                     poll_point: {
-                        increment: 0.05
+                        increment: 0.015
                     }
                 }
             })
