@@ -23,7 +23,6 @@ const deletePoll = expressAsyncHandler(async (req: Request, res: Response) => {
             createdById: userId,
         },
         include: {
-            votes: true,
             options: {
                 include: {
                     votes: true
