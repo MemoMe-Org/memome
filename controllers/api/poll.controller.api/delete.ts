@@ -57,8 +57,7 @@ const deletePoll = expressAsyncHandler(async (req: Request, res: Response) => {
         await prisma.option.deleteMany({
             where: { pollId }
         })
-    } catch (err) {
-        console.log(err)
+    } catch {
         sendError(res, StatusCodes.BadRequest, 'Something went wrong.')
         return
     }
