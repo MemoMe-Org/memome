@@ -31,17 +31,41 @@ router.get(
     poll
 )
 
-router.get('/voter', verifyUser, voter)
+router.get(
+    '/voter',
+    verifyUser,
+    voter
+)
 
-router.delete('/delete/:pollId', verifyUser, deletePoll)
+router.delete(
+    '/delete/:pollId',
+    verifyUser,
+    deletePoll
+)
 
-router.get('/fetch/:username', verifyUser, fetchUserPolls)
+router.get(
+    '/fetch/:username',
+    verifyUser,
+    fetchUserPolls
+)
 
-router.patch('/edit/toggle/:pollId/:type', verifyUser, edit)
+router.patch(
+    '/edit/toggle/:pollId/:type',
+    verifyUser,
+    edit
+)
 
-router.patch('/edit/expiry/:pollId/', verifyUser, editExpiry)
+router.patch(
+    '/edit/expiry/:pollId/',
+    verifyUser,
+    editExpiry
+)
 
-router.post('/vote/:createdById/:pollId/:optionId', verifyUser, vote)
+router.post(
+    '/vote/:createdById/:pollId/:optionId',
+    verifyUser,
+    vote
+)
 
 
 export default router
