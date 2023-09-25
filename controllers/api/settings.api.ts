@@ -96,7 +96,7 @@ const messageType = expressAsyncHandler(async (req: Request, res: Response) => {
         type !== 'normal' && type !== 'all' &&
         type !== 'nasty' && type !== 'relationship'
     ) {
-        sendError(res, StatusCodes.BadRequest, 'Something went wrong.')
+        sendError(res, StatusCodes.BadRequest, 'Invalid value given.')
         return
     }
 
