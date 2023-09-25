@@ -33,16 +33,10 @@ router.route(
 
 router.get('/:userId', fetchMsg)
 
-router.get(
-    '/edit/:msgId',
-    verifyUser,
-    editMsgVisibility
-)
+router.use(verifyUser)
 
-router.delete(
-    '/delete/:msgId',
-    verifyUser,
-    deleteMessage
-)
+router.get('/edit/:msgId', editMsgVisibility)
+
+router.delete('/delete/:msgId', deleteMessage)
 
 export default router
