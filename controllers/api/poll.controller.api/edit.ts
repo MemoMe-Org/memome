@@ -52,5 +52,9 @@ const edit = expressAsyncHandler(async (req: Request, res: Response) => {
     sendSuccess(res, StatusCodes.OK)
 })
 
+const editExpiry = expressAsyncHandler(async (req: Request, res: Response) => {
 
-export { edit }
+})
+
+
+export { edit, editExpiry }
