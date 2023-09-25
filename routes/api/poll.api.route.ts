@@ -20,6 +20,7 @@ router.post(
     ],
     create
 )
+
 router.get(
     '/get/:createdById/:pollId',
     limit({
@@ -29,11 +30,17 @@ router.get(
     }),
     poll
 )
+
 router.get('/voter', verifyUser, voter)
+
 router.delete('/delete/:pollId', verifyUser, deletePoll)
+
 router.get('/fetch/:username', verifyUser, fetchUserPolls)
+
 router.patch('/edit/toggle/:pollId/:type', verifyUser, edit)
+
 router.patch('/edit/expiry/:pollId/', verifyUser, editExpiry)
+
 router.post('/vote/:createdById/:pollId/:optionId', verifyUser, vote)
 
 
