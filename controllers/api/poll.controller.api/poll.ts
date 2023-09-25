@@ -7,10 +7,8 @@ import { sendError, sendSuccess } from '../../../helpers/sendRes'
 
 
 const poll = expressAsyncHandler(async (req: Request, res: Response) => {
-    let voter
     let token = ''
     let decoded: any
-    let isAuthenticated = true
     const { pollId, createdById } = req.params
 
     const authHeader = req.headers?.authorization
@@ -20,10 +18,6 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
 
     if (token) {
         decoded = jwt.verify(token, process.env.JWT_SECRET!)
-    }
-
-    if (!decoded?.id) {
-        isAuthenticated = false
     }
 
     const userId = decoded?.id
@@ -49,26 +43,6 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    if (userId) {
-        voter = await prisma.users.findUnique({
-            where: {
-                id: userId
-            },
-            select: {
-                username: true,
-                Profile: {
-                    select: {
-                        avatar: true
-                    }
-                }
-            }
-        })
-    }
-
-    if (!voter) {
-        isAuthenticated = false
-    }
-
     if (!user) {
         sendError(res, StatusCodes.NotFound, 'User not found.')
         return
@@ -81,7 +55,7 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
 
     const ids: string[] = [createdById, userId]
 
-    if (isAuthenticated === true && userId !== createdById) {
+    if (userId && userId !== createdById) {
         for (const idx of ids) {
             await prisma.profiles.update({
                 where: {
@@ -96,18 +70,7 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
         }
     }
 
-    await prisma.poll.update({
-        where: {
-            id: pollId
-        },
-        data: {
-            views: {
-                increment: 1
-            },
-        }
-    })
-
-    const pollInfo = await prisma.poll.findUnique({
+    const pollVotes = await prisma.poll.findUnique({
         where: {
             id: pollId,
         },
@@ -137,17 +100,27 @@ const poll = expressAsyncHandler(async (req: Request, res: Response) => {
         },
     })
 
-    if (!pollInfo || !outputPoll) {
+    if (!pollVotes || !outputPoll) {
         sendError(res, StatusCodes.NotFound, 'Poll not found.')
         return
     }
 
-    const hasVoted = pollInfo.votes.some((vote) => vote.userId === userId)
-    const votedOption = hasVoted ? pollInfo.votes[0].optionId : null
+    await prisma.poll.update({
+        where: {
+            id: pollId
+        },
+        data: {
+            views: {
+                increment: 1
+            },
+        }
+    })
+
+    const hasVoted = pollVotes.votes.some((vote) => vote.userId === userId)
+    const votedOption = hasVoted ? pollVotes.votes[0].optionId : null
 
     sendSuccess(res, StatusCodes.OK, {
         user,
-        voter: { ...voter, isAuthenticated },
         poll: { ...outputPoll, hasVoted, votedOption },
     })
 })
