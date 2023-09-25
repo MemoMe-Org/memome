@@ -4,10 +4,11 @@ import limit from '../../middlewares/limiter.middleware'
 import verifyUser from '../../middlewares/verifyUser.middleware'
 import { vote } from '../../controllers/api/poll.controller.api/vote'
 import { poll } from '../../controllers/api/poll.controller.api/poll'
-import { edit } from '../../controllers/api/poll.controller.api/edit'
+import { voter } from '../../controllers/api/poll.controller.api/voter'
 import { create } from '../../controllers/api/poll.controller.api/create'
 import fetchUserPolls from '../../controllers/api/poll.controller.api/fetch'
 import { deletePoll } from '../../controllers/api/poll.controller.api/delete'
+import { edit, editExpiry } from '../../controllers/api/poll.controller.api/edit'
 
 const router: Router = Router()
 
@@ -28,13 +29,11 @@ router.get(
     }),
     poll
 )
-
-router.patch('/edit/:pollId/:type', verifyUser, edit)
-
+router.get('/voter', verifyUser, voter)
 router.delete('/delete/:pollId', verifyUser, deletePoll)
-
 router.get('/fetch/:username', verifyUser, fetchUserPolls)
-
+router.patch('/edit/toggle/:pollId/:type', verifyUser, edit)
+router.patch('/edit/expiry/:pollId/', verifyUser, editExpiry)
 router.post('/vote/:createdById/:pollId/:optionId', verifyUser, vote)
 
 
