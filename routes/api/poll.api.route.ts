@@ -38,7 +38,7 @@ router.get('/fetch/:username', fetchUserPolls)
 
 router.patch('/edit/toggle/:pollId/:type', edit)
 
-router.patch('/edit/expiry/:pollId/', editExpiry)
+router.post('/edit/expiry/:pollId/', editExpiry)
 
 router.post('/vote/:createdById/:pollId/:optionId', vote)
 
