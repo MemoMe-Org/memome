@@ -53,8 +53,46 @@ const edit = expressAsyncHandler(async (req: Request, res: Response) => {
 })
 
 const editExpiry = expressAsyncHandler(async (req: Request, res: Response) => {
+    // @ts-ignore
+    const userId = req.userId
+    const { date } = req.body
+    const { pollId } = req.params
 
+    if (!date) {
+        sendError(res, StatusCodes.BadRequest, 'Invalid Date.')
+        return
+    }
+
+    const poll = await prisma.poll.findUnique({
+        where: {
+            id: pollId,
+            createdById: userId,
+        }
+    })
+
+    if (!poll) {
+        sendError(res, StatusCodes.NotFound, 'Poll not found.')
+        return
+    }
+
+    const getDate = new Date(date)
+
+    if (getDate < new Date()) {
+        sendError(res, StatusCodes.BadRequest, 'Invalid Expiry Date.')
+        return
+    }
+
+    await prisma.poll.update({
+        where: {
+            id: pollId,
+            createdById: userId,
+        },
+        data: {
+            expiry: date
+        }
+    })
+
+    sendSuccess(res, StatusCodes.OK)
 })
-
 
 export { edit, editExpiry }
