@@ -33,6 +33,14 @@ const vote = expressAsyncHandler(async (req: Request, res: Response) => {
         return
     }
 
+    if (poll.expiry) {
+        const pollExpiry = new Date(poll.expiry)
+        if (pollExpiry < new Date()) {
+            sendError(res, StatusCodes.Unauthorized, 'Poll has expired.')
+            return
+        }
+    }
+
     const voted = await prisma.vote.findUnique({
         where: {
             userId_pollId: {
