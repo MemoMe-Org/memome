@@ -68,5 +68,10 @@ app.use('/api/user/', userApi)
 app.use('/api/msg', msgApiRoute)
 app.use('/api/poll', pollApiRoute)
 app.use('/auth/api', authApiRoute)
+app.get('/', (req: Request, res: Response) => {
+    res.json({
+        message: "MemoMe Server."
+    })
+})
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`))
