@@ -238,7 +238,7 @@ table, td { color: #000000; } @media (max-width: 480px) { #u_content_heading_2 .
   <div style="font-family: 'Lato',sans-serif; font-size: 15px; line-height: 130%; text-align: left; word-wrap: break-word;">
     <p style="line-height: 130%;">In summary, MemoMe offers a user-friendly interface combined with robust features. Whether you're here to host polls, utilize our message generator, or explore the array of communication options, MemoMe is your ideal choice.</p>
 <p style="line-height: 130%;"> </p>
-<p style="line-height: 130%;">To get started, simply sign up today and unlock the full potential of MemoMe. We look forward to having you as an active member of our community and witnessing how you use the platform to host polls, gather opinions, and engage in anonymous voting.</p>
+<p style="line-height: 130%;">We look forward to having you as an active member of our community and witnessing how you use the platform to host polls, gather opinions, and engage in anonymous voting.</p>
 <p style="line-height: 130%;"> </p>
 <p style="line-height: 130%;">Thank you for choosing MemoMe for your anonymous communication needs. Together, we'll redefine communication in a secure and open environment.</p>
   </div>
