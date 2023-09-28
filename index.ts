@@ -35,24 +35,18 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     const origin: unknown = req.headers.origin
     if (allowedOrigins.includes(origin as string)) {
         res.header('Access-Control-Allow-Credentials')
-        res.header("Access-Control-Allow-Origin", origin as string)
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+        res.header('Access-Control-Allow-Origin')
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
     }
     next()
 })
 app.use(cookieParser())
 app.use(logger('dev'))
 app.use(cors({
-    origin: (origin, callback) => {
-        if (allowedOrigins.indexOf(origin!) !== -1 || !origin) {
-            callback(null, true)
-        } else {
-            throw new Error("Not allowed by CORS!")
-        }
-    },
+    origin: allowedOrigins,
     credentials: true,
     optionsSuccessStatus: 200,
-    methods: "GET,DELETE,POST,PATCH"
+    methods: "GET, DELETE, POST, PATCH"
 } as CorsOptions))
 app.use(session({
     resave: false,
@@ -70,7 +64,7 @@ app.use('/api/poll', pollApiRoute)
 app.use('/auth/api', authApiRoute)
 app.get('/', (req: Request, res: Response) => {
     res.json({
-        message: "MemoMe Server."
+        message: "MemoMe Server is Live."
     })
 })
 

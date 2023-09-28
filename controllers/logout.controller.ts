@@ -5,9 +5,9 @@ import expressAsyncHandler from 'express-async-handler'
 
 const clear = (req: Request, res: Response) => {
     const cookieNames = Object.keys(req.cookies)
-    cookieNames.forEach((cookie: string) => {
+    for (const cookie of cookieNames) {
         res.clearCookie(cookie)
-    })
+    }
 
     res.sendStatus(StatusCodes.NoContent)
 }

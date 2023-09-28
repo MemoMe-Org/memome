@@ -15,7 +15,7 @@ router.route(
 ).get(
     limit({
         max: 1,
-        timerArr: [14, 9, 15],
+        timerArr: [14, 9, 12],
         msg: 'Denied by Cheat System.'
     }),
     checkUser

@@ -1,10 +1,10 @@
 import { sendNodeEmail } from '../helpers/sendEmail'
 
 const welcome = async (username: string, email: string) => {
-    await sendNodeEmail({
-        to: email,
-        subject: 'Welcome to MemoMe',
-        body: `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  await sendNodeEmail({
+    to: email,
+    subject: 'Welcome to MemoMe',
+    body: `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 <!--[if gte mso 9]>
@@ -89,8 +89,6 @@ a[x-apple-data-detectors='true'] {
 
 table, td { color: #000000; } @media (max-width: 480px) { #u_content_heading_2 .v-font-size { font-size: 14px !important; } #u_content_heading_2 .v-text-align { text-align: center !important; } #u_content_heading_2 .v-line-height { line-height: 130% !important; } #u_content_heading_3 .v-font-size { font-size: 18px !important; } #u_content_text_2 .v-text-align { text-align: left !important; } #u_content_text_3 .v-line-height { line-height: 130% !important; } }
     </style>
-
-
 
 <!--[if !mso]><!--><link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet" type="text/css"><!--<![endif]-->
 
@@ -238,7 +236,7 @@ table, td { color: #000000; } @media (max-width: 480px) { #u_content_heading_2 .
   <div style="font-family: 'Lato',sans-serif; font-size: 15px; line-height: 130%; text-align: left; word-wrap: break-word;">
     <p style="line-height: 130%;">In summary, MemoMe offers a user-friendly interface combined with robust features. Whether you're here to host polls, utilize our message generator, or explore the array of communication options, MemoMe is your ideal choice.</p>
 <p style="line-height: 130%;"> </p>
-<p style="line-height: 130%;">To get started, simply sign up today and unlock the full potential of MemoMe. We look forward to having you as an active member of our community and witnessing how you use the platform to host polls, gather opinions, and engage in anonymous voting.</p>
+<p style="line-height: 130%;">We look forward to having you as an active member of our community and witnessing how you use the platform to host polls, gather opinions, and engage in anonymous voting.</p>
 <p style="line-height: 130%;"> </p>
 <p style="line-height: 130%;">Thank you for choosing MemoMe for your anonymous communication needs. Together, we'll redefine communication in a secure and open environment.</p>
   </div>
@@ -297,7 +295,7 @@ table, td { color: #000000; } @media (max-width: 480px) { #u_content_heading_2 .
 
 </html>
         `
-    })
+  })
 }
 
 export default welcome

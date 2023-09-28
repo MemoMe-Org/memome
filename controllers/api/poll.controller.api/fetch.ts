@@ -1,5 +1,6 @@
 import prisma from '../../../prisma'
 import { Request, Response } from 'express'
+import sortByDates from '../../../utils/sort'
 import StatusCodes from '../../../enums/StatusCodes'
 import expressAsyncHandler from 'express-async-handler'
 import { sendError, sendSuccess } from '../../../helpers/sendRes'
@@ -115,7 +116,7 @@ const fetchUserPolls = expressAsyncHandler(async (req: Request, res: Response) =
     })
 
     sendSuccess(res, StatusCodes.OK, {
-        polls: pollsWithVoteStatus,
+        polls: sortByDates(pollsWithVoteStatus),
         length: totalPollsCount,
         isAuthenticated
     })
