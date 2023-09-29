@@ -1,12 +1,15 @@
 import { Router, } from 'express'
 import { githubAuth } from '../controllers/github/'
+import { isAuth } from '../controllers/api/auth.api'
 import limit from '../middlewares/limiter.middleware'
 import { login } from '../controllers/login.controller'
 import { signup } from '../controllers/signup.controller'
 import { logout } from '../controllers/logout.controller'
 import { sendOtp } from '../controllers/send-otp.controller'
 import refreshToken from '../controllers/refresh.controller'
+import deleteAccount from '../controllers/delete.controller'
 import { verify } from '../controllers/reset-pswd.controller'
+import verifyUser from '../middlewares/verifyUser.middleware'
 import { passport } from '../controllers/google/callback.google'
 import { githubAuthCallback } from '../controllers/github/callback.github'
 
@@ -60,5 +63,10 @@ router.post('/req-otp', limit({
     timerArr: [30 * 60],
     msg: 'Try again later..'
 }), sendOtp)
+
+router.use(verifyUser)
+
+router.get('/isAuth', isAuth)
+router.post('/delete', deleteAccount)
 
 export default router
