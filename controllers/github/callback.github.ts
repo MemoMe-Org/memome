@@ -10,7 +10,7 @@ import { enc_decrypt } from '../../helpers/enc_decrypt'
 import { getIpAddress } from '../../utils/getIpAddress'
 import expressAsyncHandler from 'express-async-handler'
 import connectModels from '../../helpers/connect-models'
-import genRandomString from '../../utils/genRandomString'
+import { generateUsername } from 'unique-username-generator'
 
 const githubAuthCallback = expressAsyncHandler(async (req: Request, res: Response) => {
     const { code } = req.query
@@ -48,9 +48,14 @@ const githubAuthCallback = expressAsyncHandler(async (req: Request, res: Respons
     const ipAddress: string = getIpAddress(req)
     const userAgent = req.headers['user-agent']
 
-    let user = await prisma.users.findUnique({
+    let user = await prisma.users.findFirst({
         where: {
-            provider_id: String(userData.id)
+            OR: [
+                { email },
+                {
+                    provider_id: String(userData.id)
+                }
+            ]
         }
     })
 
@@ -60,7 +65,7 @@ const githubAuthCallback = expressAsyncHandler(async (req: Request, res: Respons
         })
 
         if (usernameTaken || !USER_REGEX.test(username)) {
-            username = genRandomString()
+            username = generateUsername("", 0, 32) // no delimiter, 0 to 32 max
         }
 
         user = await prisma.users.create({
@@ -92,7 +97,7 @@ const githubAuthCallback = expressAsyncHandler(async (req: Request, res: Respons
     if (isProd) {
         if (await enc_decrypt(user.ip_address!, 'd') !== ipAddress) {
             await newLogin(
-                new Date().toUTCString(),
+                new Date(new Date().setHours(new Date().getHours() + 1)).toUTCString(),
                 user.email,
                 user.username,
                 userAgent!,
