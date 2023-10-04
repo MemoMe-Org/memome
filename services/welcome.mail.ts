@@ -124,7 +124,7 @@ table, td { color: #000000; } @media (max-width: 480px) { #u_content_heading_2 .
   <tr>
     <td class="v-text-align" style="padding-right: 0px;padding-left: 0px;" align="center">
 
-      <img align="center" border="0" src="https://d15zb4m4p46ai4.cloudfront.net/Dist/logo-2.png" alt="" title="" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 30%;max-width: 144px;" width="144"/>
+      <img align="center" border="0" src="https://d15zb4m4p46ai4.cloudfront.net/Dist/logo-1.png" alt="" title="" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 30%;max-width: 144px;" width="144"/>
 
     </td>
   </tr>
@@ -225,6 +225,17 @@ table, td { color: #000000; } @media (max-width: 480px) { #u_content_heading_2 .
   <div class="v-text-align v-line-height v-font-size" style="font-family: 'Lato',sans-serif; font-size: 15px; line-height: 140%; text-align: left; word-wrap: break-word;">
     <p style="line-height: 130%;"><strong>Empowering Communication:</strong></p>
 <p style="line-height: 130%;">MemoMe is not just another anonymous website; it is a platform that empowers you to communicate openly and honestly without the fear of judgment or consequences. It's the perfect place for sharing secrets, expressing emotions, and connecting with people from diverse backgrounds, all while preserving your anonymity and privacy.</p>
+  </div>
+</table>
+
+<table id="u_content_text_3" style="font-family:arial,helvetica,sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+  <tbody>
+    <tr>
+      <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;" align="left">
+        
+  <div class="v-text-align v-line-height v-font-size" style="font-family: 'Lato',sans-serif; font-size: 15px; line-height: 140%; text-align: left; word-wrap: break-word;">
+    <p style="line-height: 130%;"><strong>Unlock New Horizons with MemoMe Levels:</strong></p>
+<p style="line-height: 130%;">As you continue to engage with MemoMe, you'll notice your level increasing. This isn't just a number; it's a symbol of your dedication to our community</p>
   </div>
 </table>
 
