@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
 import prisma from '../../../prisma'
 import { Request, Response } from 'express'
-import sortByDates from '../../../utils/sort'
 import StatusCodes from '../../../enums/StatusCodes'
 import expressAsyncHandler from 'express-async-handler'
 import { enc_decrypt } from '../../../helpers/enc_decrypt'
@@ -40,7 +39,10 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
             userId: user.id,
         },
         skip: offset,
-        take: limit
+        take: limit,
+        orderBy: {
+            date: 'desc'
+        }
     })
 
     let totalMessagesCount = await prisma.message.count({
@@ -66,7 +68,10 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
                 private: false
             },
             skip: offset,
-            take: limit
+            take: limit,
+            orderBy: {
+                date: 'desc'
+            }
         })
 
         totalMessagesCount = await prisma.message.count({
@@ -88,7 +93,7 @@ const fetchMsg = expressAsyncHandler(async (req: Request, res: Response) => {
     }))
 
     sendSuccess(res, StatusCodes.OK, {
-        messages: sortByDates(decrytedMsgs),
+        messages: decrytedMsgs,
         length: totalMessagesCount,
         isAuthenticated
     })
