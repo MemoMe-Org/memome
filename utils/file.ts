@@ -4,8 +4,9 @@ import { sendError } from '../helpers/sendRes'
 import StatusCodes from '../enums/StatusCodes'
 
 /*
-mb - megabit * 1000
-MB - megabyte * 1024
+mb - megabit * 1,000,000
+MB - megabyte * 1,048,576
+MiB - mebibyte * 2^20
 */
 
 const handleFile = (
@@ -15,8 +16,8 @@ const handleFile = (
     ...extensions: string[]
 ): any => {
     const size: number = file.size
-    const extension = file.originalname.split('.').pop()
-    const isAllowedExtension = extensions.includes(extension)
+    const extension: string = file.originalname.split('.').pop()
+    const isAllowedExtension: boolean = extensions.includes(extension)
 
     if (!isAllowedExtension) {
         sendError(
